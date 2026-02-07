@@ -1,45 +1,188 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+    ChevronDown, 
+    ChevronUp, 
+    User, 
+    Phone, 
+    Link as LinkIcon, 
+    MapPin, 
+    CreditCard, 
+    Calendar, 
+    FileText, 
+    CheckCircle 
+} from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload';
-
-// ... (existing imports)
+import CurrencyInput from '@/components/ui/CurrencyInput';
+import { MOTORBIKE_MODELS } from '@/lib/constants';
 
 export default function NewCarPage() {
-  // ... (existing state)
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const [activeStep, setActiveStep] = useState(1);
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+    const [showOriginInfo, setShowOriginInfo] = useState(false);
+    const [dealStatus, setDealStatus] = useState<'PENDING' | 'DEPOSITED' | 'BOUGHT_NOW'>('PENDING');
+    
+    // Prompt states
+    const [showDocsPrompt, setShowDocsPrompt] = useState(false);
+    const [showDraftPrompt, setShowDraftPrompt] = useState(false);
+    const [pendingDraftData, setPendingDraftData] = useState<any>(null);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Removed - Handled by ImageUpload component
-  };
+    const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-  const handleRemoveImage = (index: number) => {
-    // Removed - Handled by ImageUpload component
-  };
+    const [formData, setFormData] = useState({
+        hinhAnh: [] as string[],
+        dongXe: '',
+        tinhTrang: 95,
+        namSanXuat: new Date().getFullYear(),
+        mauXe: '',
+        bienSo: '',
+        nguonGoc: 'MUA_DAN',
+        nguoiBan: '',
+        soDienThoai: '',
+        facebookLink: '',
+        tinhThanh: '',
+        tongGiaMua: '' as string | number,
+        soTienCoc: '' as string | number,
+        nguoiGiuTien: '',
+        ngayHenGiao: '',
+        hoSo_trangThai: 'CHUA_CAN',
+        hoSo_noiGiu: 'CHU_CU',
+        hoSo_ngayHen: '',
+        hoSo_nguoiPhuTrach: ''
+    });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user types
-    if (errors[name]) {
-        setErrors(prev => ({ ...prev, [name]: false }));
-    }
-  };
+    useEffect(() => {
+        // Check for draft
+        const draft = localStorage.getItem('car_draft');
+        if (draft) {
+            try {
+                const data = JSON.parse(draft);
+                setPendingDraftData(data);
+                setShowDraftPrompt(true);
+            } catch (e) {
+                console.error("Failed to parse draft", e);
+            }
+        }
+    }, []);
 
-  // ... (rest of functions)
+    useEffect(() => {
+        // Save draft
+        if (formData.dongXe) {
+            localStorage.setItem('car_draft', JSON.stringify(formData));
+        }
+    }, [formData]);
+
+    const setBrand = (model: string) => {
+        setFormData(prev => ({ ...prev, dongXe: model }));
+        setExpandedCategory(null);
+    };
+
+    const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+         setFormData(prev => ({ ...prev, facebookLink: e.target.value }));
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        // Clear error when user types
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: false }));
+        }
+    };
+
+    const nextStep = () => {
+        // Validate step 1
+        if (activeStep === 1) {
+            const newErrors: Record<string, boolean> = {};
+            if (!formData.dongXe) newErrors.dongXe = true;
+            if (!formData.namSanXuat) newErrors.namSanXuat = true;
+            if (!formData.mauXe) newErrors.mauXe = true;
+            
+            if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors);
+                return;
+            }
+        }
+        setActiveStep(prev => prev + 1);
+    };
+
+    const prevStep = () => setActiveStep(prev => prev - 1);
+
+    const handleSaveCar = async () => {
+        setLoading(true);
+        try {
+            // Mock API call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Clear draft
+            localStorage.removeItem('car_draft');
+            
+            setLoading(false);
+            setShowDocsPrompt(true);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
+    const handleUpdateDocs = async () => {
+        setLoading(true);
+        try {
+            // Mock API call for docs update
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setLoading(false);
+            router.push('/cars');
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
+    const handleRestoreDraft = () => {
+        if (pendingDraftData) {
+            setFormData(pendingDraftData);
+            setShowDraftPrompt(false);
+        }
+    };
+
+    const handleDiscardDraft = () => {
+        setShowDraftPrompt(false);
+        localStorage.removeItem('car_draft');
+    };
+
+    const stepVariants = {
+        hidden: { opacity: 0, x: 20 },
+        visible: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: -20 }
+    };
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 block">
-      {/* ... (Header) ... */}
-
       <form onSubmit={(e) => e.preventDefault()} className="p-5 max-w-lg mx-auto">
         <AnimatePresence mode='wait'>
             
             {/* Step 1: Thông tin xe */}
             {activeStep === 1 && (
                 <motion.div 
-                    // ... (animation props)
+                    key="step1"
+                    variants={stepVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
                     className="space-y-6"
                 >
-                     {/* ... (Title) ... */}
+                    <div className="text-center mb-6">
+                         <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-white dark:border-gray-800 shadow-lg shadow-blue-100 dark:shadow-none">
+                            <User size={28} className="text-blue-600 dark:text-blue-400" strokeWidth={2} />
+                        </div>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Thông Tin Xe</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Nhập thông tin cơ bản về xe</p>
+                    </div>
 
                     <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-5">
                         
@@ -53,7 +196,6 @@ export default function NewCarPage() {
                             />
                         </div>
 
-                        {/* ... (Rest of the form) ... */}
                              <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block">Chọn nhanh mẫu xe</label>
                              
                              {Object.entries(MOTORBIKE_MODELS).map(([category, models]) => (
