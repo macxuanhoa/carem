@@ -301,7 +301,7 @@ export default function NewCarPage() {
 
           if (Object.keys(newErrors).length > 0) {
               setErrors(newErrors);
-              toast.error('Vui lòng kiểm tra các trường màu đỏ');
+              // toast.error('Vui lòng kiểm tra các trường màu đỏ'); // Removed to reduce noise
               return;
           }
       }
