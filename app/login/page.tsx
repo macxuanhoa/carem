@@ -51,9 +51,9 @@ export default function LoginPage() {
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600" />
 
             {/* HEADER SECTION */}
-            <div className="flex flex-col items-center mb-8 relative pt-2">
-                <div className="relative mb-6">
-                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-lg border-[3px] border-white ring-1 ring-gray-100 bg-white">
+            <div className="flex flex-col items-center mb-6 relative pt-4">
+                <div className="relative mb-4">
+                    <div className="w-20 h-20 relative rounded-full overflow-hidden shadow-lg border-[3px] border-white ring-1 ring-gray-100 bg-white">
                         <Image 
                             src="/avtcarem.jpg" 
                             alt="Logo Webxe2" 
@@ -66,17 +66,16 @@ export default function LoginPage() {
                 
                 <div className="text-center w-full space-y-3">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">HỆ THỐNG QUẢN LÝ</h1>
-                        <p className="text-blue-600 text-xs font-bold uppercase tracking-widest mt-1">Webxe2 System v2.0</p>
+                        <h1 className="text-xl font-extrabold text-gray-900 tracking-tight uppercase">HỆ THỐNG QUẢN LÝ</h1>
                     </div>
 
                     {/* Business Info Box */}
-                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-1.5 text-gray-700 font-bold text-[11px] uppercase tracking-wide">
+                    <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100 flex flex-col items-center gap-2 max-w-[280px] mx-auto">
+                        <div className="flex items-center gap-1.5 text-gray-700 font-bold text-[10px] uppercase tracking-wide">
                             <Sparkles size={12} className="text-amber-500 fill-amber-500" />
                             <span>Chuyên Tay Ga Cao Cấp</span>
                         </div>
-                        <a href="tel:0914929292" className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 hover:text-blue-700 transition-all cursor-pointer group">
+                        <a href="tel:0914929292" className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 hover:text-blue-700 transition-all cursor-pointer group w-full justify-center">
                              <Phone size={14} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
                              <span className="text-gray-900 font-bold text-sm tracking-widest group-hover:text-blue-700">0914.92.92.92</span>
                         </a>
@@ -152,7 +151,7 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all duration-200 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transition-all duration-200 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                     {isPending ? (
                         <Loader2 size={20} className="animate-spin text-white/80" />
@@ -166,12 +165,12 @@ export default function LoginPage() {
                 
                 {/* FOOTER ADDRESS - Clean & Legible */}
                 <div className="pt-6 mt-2 border-t border-gray-100">
-                     <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                            <MapPin size={12} />
-                            Địa Chỉ Showroom
+                     <div className="flex flex-col items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                            <MapPin size={10} />
+                            Địa Chỉ
                         </div>
-                        <p className="text-[13px] font-medium text-gray-600 text-center leading-relaxed">
+                        <p className="text-[11px] font-semibold text-gray-600 text-center leading-relaxed max-w-[260px] mx-auto">
                             107 Nguyễn Tất Thành, Thanh Hà, Hội An
                         </p>
                      </div>
