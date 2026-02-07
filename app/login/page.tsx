@@ -22,16 +22,31 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex h-[100dvh] w-full items-center justify-center bg-white px-4 font-sans relative overflow-hidden overscroll-none touch-none selection:bg-blue-100">
+    <div className="flex h-[100dvh] w-full items-center justify-center bg-[#F8FAFC] px-4 font-sans relative overflow-hidden overscroll-none touch-none selection:bg-indigo-100 selection:text-indigo-900">
       
-      {/* Premium Background */}
-      <div className="absolute inset-0 z-0">
-          {/* Abstract Mesh Gradients */}
-          <div className="absolute top-[-10%] left-[-20%] w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100/40 via-purple-50/20 to-transparent blur-[120px] animate-pulse-slow" />
-          <div className="absolute bottom-[-10%] right-[-20%] w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-100/40 via-blue-50/20 to-transparent blur-[120px] animate-pulse-slow delay-1000" />
-          
-          {/* Grid Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
+      {/* Artistic Background - Living Shapes */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.div 
+            animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 90, 0],
+                x: [0, 50, 0],
+                y: [0, -50, 0]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-100/50 rounded-full blur-[100px] mix-blend-multiply" 
+          />
+          <motion.div 
+            animate={{ 
+                scale: [1, 1.3, 1],
+                rotate: [0, -60, 0],
+                x: [0, -30, 0],
+                y: [0, 50, 0]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100/50 rounded-full blur-[100px] mix-blend-multiply" 
+          />
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04]" />
       </div>
 
       <motion.div 
@@ -40,19 +55,21 @@ export default function LoginPage() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-[380px] relative z-10"
       >
-          {/* Main Card */}
-          <div className="bg-white/70 backdrop-blur-3xl rounded-[40px] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.08),0_0_0_1px_rgba(255,255,255,0.8)] p-8 sm:p-10 border border-white/50">
+          {/* Card Container */}
+          <div className="bg-white/80 backdrop-blur-2xl rounded-[40px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05),0_0_0_1px_rgba(255,255,255,0.6)] p-8 sm:p-10 relative overflow-hidden group hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.08)] transition-all duration-500">
             
-            {/* Logo Section */}
-            <div className="flex flex-col items-center mb-8">
+            {/* Top Highlight Line */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-50 rounded-b-full" />
+
+            {/* Logo & Header */}
+            <div className="flex flex-col items-center mb-10">
                 <motion.div 
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.1, duration: 0.5, type: "spring" }}
-                    className="relative"
+                    whileHover={{ scale: 1.05, rotate: 2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="relative cursor-pointer"
                 >
-                    <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-xl opacity-70" />
-                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-2xl border-[4px] border-white">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-purple-100 rounded-full blur-lg opacity-80" />
+                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-4 border-white z-10">
                         <Image 
                             src="/avtcarem.jpg" 
                             alt="Logo" 
@@ -61,52 +78,49 @@ export default function LoginPage() {
                             priority
                         />
                     </div>
-                    <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-1.5 rounded-full border-2 border-white shadow-lg">
-                        <Sparkles size={12} fill="currentColor" />
-                    </div>
                 </motion.div>
                 
-                <div className="mt-6 text-center space-y-1">
-                    <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Xin Chào</h1>
-                    <p className="text-gray-500 text-sm font-medium">Đăng nhập hệ thống Webxe2</p>
+                <div className="mt-6 text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 tracking-tight mb-2">Xin chào bạn!</h1>
+                    <p className="text-gray-500 text-sm font-medium px-4">Hãy đăng nhập để bắt đầu ngày làm việc hiệu quả</p>
                 </div>
             </div>
 
             {/* Form */}
             <form action={formAction} className="space-y-5">
                 <div className="space-y-4">
-                    {/* Username */}
-                    <div className="group relative transition-all duration-300 focus-within:scale-[1.02]">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
-                            <User size={20} strokeWidth={2} />
+                    {/* Username Input */}
+                    <div className="group relative">
+                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
+                            <User size={18} />
                         </div>
                         <input
                             name="username"
                             type="text"
                             required
-                            placeholder="Tài khoản"
-                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/50 border border-gray-100 text-gray-900 placeholder:text-gray-400 font-medium outline-none focus:bg-white focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 shadow-sm transition-all"
+                            placeholder="Tên đăng nhập"
+                            className="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50/50 border border-transparent hover:bg-gray-50 focus:bg-white focus:border-blue-100 focus:ring-4 focus:ring-blue-50 text-gray-900 placeholder:text-gray-400 font-medium outline-none transition-all duration-300"
                         />
                     </div>
 
-                    {/* Password */}
-                    <div className="group relative transition-all duration-300 focus-within:scale-[1.02]">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
-                            <Lock size={20} strokeWidth={2} />
+                    {/* Password Input */}
+                    <div className="group relative">
+                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
+                            <Lock size={18} />
                         </div>
                         <input
                             name="password"
                             type={showPassword ? "text" : "password"}
                             required
                             placeholder="Mật khẩu"
-                            className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/50 border border-gray-100 text-gray-900 placeholder:text-gray-400 font-medium outline-none focus:bg-white focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 shadow-sm transition-all"
+                            className="w-full pl-12 pr-14 py-4 rounded-2xl bg-gray-50/50 border border-transparent hover:bg-gray-50 focus:bg-white focus:border-blue-100 focus:ring-4 focus:ring-blue-50 text-gray-900 placeholder:text-gray-400 font-medium outline-none transition-all duration-300"
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors cursor-pointer tracking-wider"
+                            className="absolute inset-y-0 right-0 pr-5 flex items-center text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors cursor-pointer tracking-widest uppercase"
                         >
-                            {showPassword ? "ẨN" : "HIỆN"}
+                            {showPassword ? "Ẩn" : "Hiện"}
                         </button>
                     </div>
                 </div>
@@ -115,11 +129,9 @@ export default function LoginPage() {
                     <motion.div 
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
-                        className="p-4 rounded-2xl bg-red-50/80 border border-red-100 flex items-center gap-3 text-sm text-red-600 font-medium"
+                        className="px-4 py-3 rounded-2xl bg-red-50/80 border border-red-100 flex items-center gap-3 text-sm text-red-600 font-medium"
                     >
-                        <div className="p-1 bg-red-100 rounded-full">
-                            <AlertCircle size={14} className="text-red-600" />
-                        </div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                         {errorMessage}
                     </motion.div>
                 )}
@@ -127,20 +139,22 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white font-bold py-4 rounded-2xl shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-gray-300/50 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center group"
+                    className="w-full mt-2 bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-xl shadow-gray-200 hover:shadow-2xl hover:shadow-gray-300 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center group"
                 >
                     {isPending ? (
-                        <Loader2 size={20} className="animate-spin" />
+                        <Loader2 size={20} className="animate-spin text-gray-400" />
                     ) : (
                         <>
-                            Đăng Nhập
-                            <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform opacity-70 group-hover:opacity-100" />
+                            <span className="mr-2">Đăng Nhập</span>
+                            <div className="bg-white/20 p-1 rounded-full group-hover:bg-white/30 transition-colors">
+                                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                            </div>
                         </>
                     )}
                 </button>
                 
-                <div className="pt-6 text-center">
-                     <p className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.2em]">
+                <div className="pt-8 text-center opacity-60 hover:opacity-100 transition-opacity">
+                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">
                         Webxe2 System
                      </p>
                 </div>
