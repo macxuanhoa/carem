@@ -102,9 +102,12 @@ export default function NewCarPage() {
             if (!formData.dongXe) newErrors.dongXe = true;
             if (!formData.namSanXuat) newErrors.namSanXuat = true;
             if (!formData.mauXe) newErrors.mauXe = true;
+            if (formData.hinhAnh.length === 0) newErrors.hinhAnh = true;
             
             if (Object.keys(newErrors).length > 0) {
                 setErrors(newErrors);
+                // Scroll to top to see error
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 return;
             }
         }
@@ -188,12 +191,22 @@ export default function NewCarPage() {
                         
                         {/* Image Upload Component */}
                         <div>
-                            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-3">Hình Ảnh Xe</label>
-                            <ImageUpload 
-                                value={formData.hinhAnh}
-                                onChange={(urls) => setFormData(prev => ({ ...prev, hinhAnh: urls }))}
-                                onRemove={(url) => setFormData(prev => ({ ...prev, hinhAnh: prev.hinhAnh.filter(x => x !== url) }))}
-                            />
+                            <div className="flex justify-between items-center mb-3">
+                                <label className={`text-xs font-bold uppercase ${errors.hinhAnh ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>
+                                    Hình Ảnh Xe {errors.hinhAnh && '(Bắt buộc)'}
+                                </label>
+                                {errors.hinhAnh && <span className="text-[10px] text-red-500 font-bold bg-red-50 px-2 py-0.5 rounded-md">Vui lòng tải ít nhất 1 ảnh</span>}
+                            </div>
+                            <div className={errors.hinhAnh ? 'p-1 border-2 border-red-100 rounded-2xl bg-red-50/30' : ''}>
+                                <ImageUpload 
+                                    value={formData.hinhAnh}
+                                    onChange={(urls) => {
+                                        setFormData(prev => ({ ...prev, hinhAnh: urls }));
+                                        if (urls.length > 0) setErrors(prev => ({ ...prev, hinhAnh: false }));
+                                    }}
+                                    onRemove={(url) => setFormData(prev => ({ ...prev, hinhAnh: prev.hinhAnh.filter(x => x !== url) }))}
+                                />
+                            </div>
                         </div>
 
                              <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block">Chọn nhanh mẫu xe</label>
