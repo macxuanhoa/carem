@@ -150,8 +150,8 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
                         </button>
                      )}
                 </div>
-            </div>
         </div>
+      </div>
     </div>
 
     {/* Model Selection Modal - Portaled to Body */}
