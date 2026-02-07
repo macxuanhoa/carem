@@ -8,6 +8,11 @@ import { formatTimeAgo, formatStatus } from '@/lib/utils';
 export default function CarCard({ car }: { car: any }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+    // Touch handling for swipe
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const minSwipeDistance = 50;
+
     const isOverdue = car.hoSo?.trangThai === 'QUA_HAN';
     const isSold = car.trangThai === 'DA_BAN';
     const isDeposited = car.soTienCoc > 0 && !isSold;
@@ -23,16 +28,34 @@ export default function CarCard({ car }: { car: any }) {
 
     const hasMultipleImages = images.length > 1;
 
-    const handlePrevImage = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
     };
 
-    const handleNextImage = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = (e: React.TouchEvent) => {
+        if (!touchStart || !touchEnd) return;
+        
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+        
+        if (isLeftSwipe) {
+            // Next image
+            e.preventDefault();
+            e.stopPropagation();
+            setCurrentImageIndex(prev => prev === images.length - 1 ? 0 : prev + 1);
+        }
+        if (isRightSwipe) {
+            // Prev image
+            e.preventDefault();
+            e.stopPropagation();
+            setCurrentImageIndex(prev => prev === 0 ? images.length - 1 : prev - 1);
+        }
     };
     
     // Helper for status badge
@@ -53,7 +76,12 @@ export default function CarCard({ car }: { car: any }) {
                 ${isOverdue ? 'ring-2 ring-red-500/50' : ''}
             `}>
                 {/* Header Badge & Image */}
-                <div className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800 group/image">
+                <div 
+                    className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800 group/image touch-pan-y"
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                >
                     {images.length > 0 ? (
                         <>
                             <img 
@@ -62,24 +90,11 @@ export default function CarCard({ car }: { car: any }) {
                                 className="w-full h-full object-cover transition-transform duration-500"
                             />
                             
-                            {/* Navigation Arrows - Only show if multiple images */}
+                            {/* Navigation Arrows - Removed as per request */}
                             {hasMultipleImages && (
                                 <>
-                                    <button 
-                                        onClick={handlePrevImage}
-                                        className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-white/80 dark:bg-black/50 text-gray-700 dark:text-white opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-white dark:hover:bg-black/70 shadow-sm"
-                                    >
-                                        <ChevronLeft size={16} />
-                                    </button>
-                                    <button 
-                                        onClick={handleNextImage}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-white/80 dark:bg-black/50 text-gray-700 dark:text-white opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-white dark:hover:bg-black/70 shadow-sm"
-                                    >
-                                        <ChevronRight size={16} />
-                                    </button>
-                                    
                                     {/* Image Indicator Dots */}
-                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-0 group-hover/image:opacity-100 transition-opacity">
+                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-100 transition-opacity">
                                         {images.map((_, idx) => (
                                             <div 
                                                 key={idx} 
