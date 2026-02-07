@@ -12,6 +12,8 @@ import NotificationBell from '@/components/NotificationBell';
 import { formatCurrency, formatTimeAgo, formatStatus } from '@/lib/utils';
 import { unstable_cache } from 'next/cache';
 
+const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect fill='%23f1f5f9' width='600' height='400'/%3E%3Cpath fill='%23cbd5e1' d='M300 180c-22.09 0-40 17.91-40 40s17.91 40 40 40 40-17.91 40-40-17.91-40-40-40zm0 60c-11.03 0-20-8.97-20-20s8.97-20 20-20 20 8.97 20 20-8.97 20-20 20z'/%3E%3Ctext x='50%25' y='70%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%2394a3b8'%3ECh%C6%B0a%20c%C3%B3%20%E1%BA%A3nh%3C/text%3E%3C/svg%3E";
+
 const getDashboardStats = unstable_cache(
     async () => {
         const sevenDaysAgo = new Date();
@@ -193,7 +195,16 @@ export default async function DashboardPage() {
                         <div className="flex items-center">
                             <div className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4 font-bold text-sm border border-gray-100 dark:border-gray-700 group-hover:border-blue-100 dark:group-hover:border-blue-900 overflow-hidden relative">
                                 {image ? (
-                                    <img src={image} className="w-full h-full object-cover" alt={car.dongXe} />
+                                    <img 
+                                        src={image} 
+                                        className="w-full h-full object-cover" 
+                                        alt={car.dongXe} 
+                                        onError={(e) => {
+                                            if (e.currentTarget.src !== PLACEHOLDER_IMAGE) {
+                                                e.currentTarget.src = PLACEHOLDER_IMAGE;
+                                            }
+                                        }}
+                                    />
                                 ) : (
                                     <div className="bg-gray-50 dark:bg-gray-800 w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
                                         {car.dongXe.substring(0, 1).toUpperCase()}
