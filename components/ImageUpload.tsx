@@ -69,13 +69,13 @@ export default function ImageUpload({
               toast.error(`Lỗi: ${error.message}`);
             }}
             appearance={{
-                button: "bg-blue-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors ut-uploading:cursor-not-allowed",
-                allowedContent: "text-gray-500 text-xs mt-2",
-                container: "w-full flex flex-col items-center"
+                button: "bg-blue-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors ut-uploading:cursor-not-allowed shadow-md shadow-blue-200",
+                allowedContent: "text-gray-500 text-xs mt-2 font-medium",
+                container: "w-full flex flex-col items-center gap-2"
             }}
             content={{
                 button({ ready }) {
-                    if (ready) return <span className="flex items-center gap-2"><ImageIcon size={18} /> Chọn Ảnh</span>;
+                    if (ready) return <div className="flex items-center gap-2"><ImageIcon size={20} /> <span>Chọn Ảnh</span></div>;
                     return "Đang chuẩn bị...";
                 },
                 allowedContent: "Ảnh tối đa 16MB (JPG, PNG, WEBP)"
