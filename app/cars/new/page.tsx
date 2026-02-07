@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { 
   ArrowLeft, CheckCircle, CreditCard, Car, MapPin, 
   User, Link as LinkIcon, Calendar, X, FileText, ChevronDown, ChevronUp,
-  Camera, Image as ImageIcon
+  Camera, Image as ImageIcon, Phone
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -563,14 +563,17 @@ export default function NewCarPage() {
                                                 </div>
                                                 <div>
                                                     <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ (Tùy chọn)</label>
-                                                    <input
-                                                        type="tel"
-                                                        name="soDienThoai"
-                                                        value={formData.soDienThoai}
-                                                        onChange={handleChange}
-                                                        className="input-primary"
-                                                        placeholder="0912..."
-                                                    />
+                                                    <div className="relative group">
+                                                        <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
+                                                        <input
+                                                            type="tel"
+                                                            name="soDienThoai"
+                                                            value={formData.soDienThoai}
+                                                            onChange={handleChange}
+                                                            className="input-primary pl-11!"
+                                                            placeholder="0912..."
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
 
