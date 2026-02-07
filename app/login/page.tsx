@@ -42,18 +42,18 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[420px] relative z-20"
+        className="w-full max-w-[420px] relative z-20 flex flex-col h-full sm:h-auto justify-center"
       >
           {/* MAIN CARD - Clean & Sharp */}
-          <div className="bg-white rounded-[24px] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-8 sm:p-10 relative overflow-hidden border border-gray-100">
+          <div className="bg-white rounded-none sm:rounded-[32px] shadow-none sm:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden sm:border border-gray-100 flex flex-col justify-center min-h-[100dvh] sm:min-h-0">
             
             {/* Top Brand Stripe */}
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600" />
 
             {/* HEADER SECTION */}
-            <div className="flex flex-col items-center mb-6 relative pt-4">
-                <div className="relative mb-4">
-                    <div className="w-20 h-20 relative rounded-full overflow-hidden shadow-lg border-[3px] border-white ring-1 ring-gray-100 bg-white">
+            <div className="flex flex-col items-center mb-8 relative pt-2">
+                <div className="relative mb-6">
+                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-[4px] border-white ring-1 ring-gray-100 bg-white">
                         <Image 
                             src="/avtcarem.jpg" 
                             alt="Logo Webxe2" 
@@ -64,20 +64,20 @@ export default function LoginPage() {
                     </div>
                 </div>
                 
-                <div className="text-center w-full space-y-3">
+                <div className="text-center w-full space-y-4">
                     <div>
-                        <h1 className="text-xl font-extrabold text-gray-900 tracking-tight uppercase">HỆ THỐNG QUẢN LÝ</h1>
+                        <h1 className="text-[22px] sm:text-2xl font-black text-gray-900 tracking-tight uppercase leading-tight">HỆ THỐNG QUẢN LÝ</h1>
                     </div>
 
                     {/* Business Info Box */}
-                    <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100 flex flex-col items-center gap-2 max-w-[280px] mx-auto">
-                        <div className="flex items-center gap-1.5 text-gray-700 font-bold text-[10px] uppercase tracking-wide">
-                            <Sparkles size={12} className="text-amber-500 fill-amber-500" />
+                    <div className="bg-blue-50/50 rounded-2xl p-4 border border-blue-100/60 flex flex-col items-center gap-3 max-w-[300px] mx-auto backdrop-blur-sm">
+                        <div className="flex items-center gap-2 text-blue-800 font-extrabold text-[11px] uppercase tracking-wider">
+                            <Sparkles size={14} className="text-blue-600 fill-blue-600" />
                             <span>Chuyên Tay Ga Cao Cấp</span>
                         </div>
-                        <a href="tel:0914929292" className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 hover:text-blue-700 transition-all cursor-pointer group w-full justify-center">
-                             <Phone size={14} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
-                             <span className="text-gray-900 font-bold text-sm tracking-widest group-hover:text-blue-700">0914.92.92.92</span>
+                        <a href="tel:0914929292" className="flex items-center gap-3 bg-white px-5 py-2.5 rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] border border-blue-100 hover:border-blue-300 hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer group w-full justify-center">
+                             <Phone size={16} className="text-blue-500 fill-blue-100" />
+                             <span className="text-gray-900 font-bold text-[15px] tracking-widest">0914.92.92.92</span>
                         </a>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transition-all duration-200 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_20px_-5px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                     {isPending ? (
                         <Loader2 size={20} className="animate-spin text-white/80" />
