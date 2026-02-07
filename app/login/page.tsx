@@ -51,7 +51,7 @@ export default function LoginPage() {
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600" />
 
             {/* HEADER SECTION */}
-            <div className="flex flex-col items-center mb-8 relative pt-2">
+            <div className="flex flex-col items-center mb-8 relative pt-12 md:pt-4">
                 <div className="relative mb-6">
                     <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-[4px] border-white ring-1 ring-gray-100 bg-white">
                         <Image 
