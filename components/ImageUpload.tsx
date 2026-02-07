@@ -27,8 +27,8 @@ export default function ImageUpload({
             img.src = event.target?.result as string;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1200;
-                const MAX_HEIGHT = 1200;
+                const MAX_WIDTH = 1920; // Tăng độ phân giải tối đa (cũ là 1200)
+                const MAX_HEIGHT = 1920;
                 let width = img.width;
                 let height = img.height;
 
@@ -49,8 +49,8 @@ export default function ImageUpload({
                 const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0, width, height);
                 
-                // Compress to JPEG with 0.7 quality
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                // Compress to JPEG with 0.9 quality (High Quality)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 resolve(dataUrl);
             };
             img.onerror = (err) => reject(err);
