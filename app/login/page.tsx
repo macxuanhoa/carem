@@ -52,8 +52,8 @@ export default function LoginPage() {
                         priority
                     />
                 </div>
-                <h1 className="text-xl font-bold text-gray-900 uppercase tracking-tight text-center">HỆ THỐNG QUẢN LÝ XE</h1>
-                <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-wider">Webxe2 System v2.0</p>
+                <h1 className="text-xl font-bold text-gray-900 uppercase tracking-tight text-center">CỬA HÀNG XE MÁY CÀ REM</h1>
+                <p className="text-xs text-blue-600 font-bold mt-1 uppercase tracking-wider">CHUYÊN MUA BÁN TAY GA CAO CẤP UY TÍN</p>
             </div>
 
             {/* FORM SECTION */}
@@ -147,19 +147,20 @@ export default function LoginPage() {
             {/* Footer - Technical */}
             <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col items-center gap-2">
                  <div className="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
-                    <ShieldCheck size={14} />
-                    <span>Bảo mật SSL 256-bit</span>
+                    <Phone size={14} />
+                    <span>Hotline: 0931.44.00.55</span>
                  </div>
-                 <p className="text-[10px] text-gray-300 text-center max-w-[200px]">
-                    Hỗ trợ kỹ thuật: 0914.92.92.92 (Admin)
-                 </p>
+                 <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-medium text-center max-w-[220px]">
+                    <MapPin size={12} className="shrink-0" />
+                    <span>107 Nguyễn Tất Thành, Thanh Hà, Hội An</span>
+                 </div>
             </div>
 
           </div>
           
           {/* Bottom Copyright */}
           <div className="text-center mt-6">
-             <p className="text-[10px] text-gray-400 font-medium">&copy; 2026 Webxe2 Internal System. v2.0.1</p>
+             <p className="text-[10px] text-gray-400 font-medium">&copy; 2026 Cà Rem Motor. All rights reserved.</p>
           </div>
       </m.div>
       </LazyMotion>
