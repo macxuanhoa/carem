@@ -2,12 +2,15 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import ImageUpload from '@/components/ImageUpload';
 import { 
   Badge, Users, DollarSign, FileText, 
   Calendar, MapPin, Activity, 
   CreditCard, Wrench, ShieldAlert, CheckCircle, Clock,
   ArrowRight, Image as ImageIcon,
-  ChevronLeft, ChevronRight, Phone, ExternalLink, Edit
+  ChevronLeft, ChevronRight, Phone, ExternalLink, Edit, X, Save, Plus
 } from 'lucide-react';
 
 // Deal Timeline Component
@@ -91,7 +94,11 @@ export default function CarDetailTabs({ car, totalGop, totalChiPhi, isOverdue, u
 }
 
 function InfoTab({ car, isOverdue, userRole }: any) {
+    const router = useRouter();
     const [currentImageIdx, setCurrentImageIdx] = useState(0);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [editingImages, setEditingImages] = useState<string[]>([]);
     
     // Parse images safely
     let images: string[] = [];
@@ -100,6 +107,33 @@ function InfoTab({ car, isOverdue, userRole }: any) {
     } catch (e) {
         images = [];
     }
+
+    const handleOpenModal = () => {
+        setEditingImages([...images]);
+        setShowImageModal(true);
+    };
+
+    const handleSaveImages = async () => {
+        setIsSaving(true);
+        try {
+            const res = await fetch(`/api/cars/${car.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ hinhAnh: JSON.stringify(editingImages) })
+            });
+
+            if (!res.ok) throw new Error('Failed to update');
+
+            toast.success('Cập nhật hình ảnh thành công');
+            setShowImageModal(false);
+            router.refresh();
+        } catch (error) {
+            toast.error('Có lỗi xảy ra khi lưu ảnh');
+            console.error(error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     return (
         <div className="space-y-4 p-4">
@@ -120,12 +154,12 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                         </div>
                         
                         {/* Quick Edit Image Button */}
-                        <Link 
-                            href={`/cars/${car.id}/edit`}
+                        <button 
+                            onClick={handleOpenModal}
                             className="absolute top-3 right-3 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full backdrop-blur-md transition-colors opacity-0 group-hover:opacity-100"
                         >
                             <Edit size={16} />
-                        </Link>
+                        </button>
                         
                         {/* Navigation Arrows */}
                         {images.length > 1 && (
@@ -155,15 +189,53 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                     <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100 dark:bg-gray-800 relative">
                         <ImageIcon size={48} strokeWidth={1.5} className="mb-2 opacity-50"/>
                         <span className="text-xs font-medium mb-3">Chưa có hình ảnh</span>
-                        <Link 
-                            href={`/cars/${car.id}/edit`}
-                            className="px-4 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                        <button 
+                            onClick={handleOpenModal}
+                            className="px-4 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center"
                         >
-                            + Thêm ảnh ngay
-                        </Link>
+                            <Plus size={16} className="mr-1.5" /> Thêm ảnh ngay
+                        </button>
                     </div>
                 )}
             </div>
+
+            {/* Quick Upload Modal */}
+            {showImageModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh]">
+                        <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Quản Lý Hình Ảnh</h3>
+                            <button onClick={() => setShowImageModal(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+                                <X size={20} className="text-gray-500" />
+                            </button>
+                        </div>
+                        
+                        <div className="p-6 overflow-y-auto flex-1">
+                            <ImageUpload 
+                                value={editingImages}
+                                onChange={(urls) => setEditingImages(urls)}
+                                onRemove={(url) => setEditingImages(prev => prev.filter(x => x !== url))}
+                            />
+                        </div>
+
+                        <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl flex justify-end gap-3">
+                            <button 
+                                onClick={() => setShowImageModal(false)}
+                                className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                Hủy
+                            </button>
+                            <button 
+                                onClick={handleSaveImages}
+                                disabled={isSaving}
+                                className="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-blue-900/30 transition-colors flex items-center disabled:opacity-70"
+                            >
+                                {isSaving ? 'Đang lưu...' : <><Save size={18} className="mr-2" /> Lưu Thay Đổi</>}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* 2. Main Info Card - Redesigned */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800">
