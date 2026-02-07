@@ -137,11 +137,11 @@ export default function ImageUpload({
         )}
 
         {/* Custom Upload Button */}
-        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-blue-200 hover:border-blue-400 bg-blue-50/30 hover:bg-blue-50 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="p-3 bg-blue-100 text-blue-600 rounded-full group-hover:scale-110 transition-transform">
-                <CloudUpload size={24} />
+        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="p-4 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
+                <CloudUpload size={32} strokeWidth={2.5} />
             </div>
-            <span className="text-xs font-bold text-blue-600 group-hover:text-blue-700">Thêm Ảnh</span>
+            <span className="text-sm font-bold text-blue-700 group-hover:text-blue-800 text-center px-2">Thêm Ảnh</span>
             <input 
                 type="file" 
                 multiple 

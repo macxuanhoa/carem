@@ -99,6 +99,37 @@ function InfoTab({ car, isOverdue, userRole }: any) {
     const [showImageModal, setShowImageModal] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [editingImages, setEditingImages] = useState<string[]>([]);
+
+    // Touch handling for swipe
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+        
+        if (isLeftSwipe) {
+             // Next image
+             setCurrentImageIdx(prev => prev === images.length - 1 ? 0 : prev + 1);
+        }
+        if (isRightSwipe) {
+            // Prev image
+            setCurrentImageIdx(prev => prev === 0 ? images.length - 1 : prev - 1);
+        }
+    };
     
     // Parse images safely
     let images: string[] = [];
@@ -138,7 +169,12 @@ function InfoTab({ car, isOverdue, userRole }: any) {
     return (
         <div className="space-y-4 p-4">
             {/* 1. Image Carousel - Improved */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden relative aspect-video group">
+            <div 
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden relative aspect-video group touch-pan-y"
+            >
                 {images.length > 0 ? (
                     <>
                         <img 
