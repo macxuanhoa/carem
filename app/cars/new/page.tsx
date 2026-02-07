@@ -73,7 +73,9 @@ export default function NewCarPage() {
     useEffect(() => {
         // Save draft
         if (formData.dongXe) {
-            localStorage.setItem('car_draft', JSON.stringify(formData));
+            // Exclude large image data from local storage
+            const { hinhAnh, ...draftData } = formData;
+            localStorage.setItem('car_draft', JSON.stringify(draftData));
         }
     }, [formData]);
 

@@ -68,17 +68,35 @@ export default function ImageUpload({
     
     try {
         for (const file of files) {
-            // Client-side compression and conversion to Base64
-            // This avoids API calls and works everywhere (Vercel, local, etc.)
+            // Client-side compression to reduce size before upload
             const base64 = await compressImage(file);
-            newUrls.push(base64);
+            
+            // Convert Base64 back to Blob for upload
+            const res = await fetch(base64);
+            const blob = await res.blob();
+            const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+
+            const formData = new FormData();
+            formData.append('file', compressedFile);
+            
+            const uploadRes = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!uploadRes.ok) throw new Error('Upload failed');
+            
+            const data = await uploadRes.json();
+            if (data.success) {
+                newUrls.push(data.url);
+            }
         }
         
         onChange([...value, ...newUrls]);
-        toast.success("Đã thêm ảnh thành công!");
+        toast.success("Đã tải ảnh lên thành công!");
     } catch (error) {
         console.error(error);
-        toast.error("Lỗi xử lý ảnh. Vui lòng thử lại.");
+        toast.error("Lỗi tải ảnh lên. Vui lòng thử lại.");
     } finally {
         setIsUploading(false);
         // Reset input
