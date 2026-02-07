@@ -88,18 +88,18 @@ export default function LoginPage() {
                     <div className="absolute bottom-1.5 right-1.5 w-5 h-5 bg-green-500 rounded-full border-[3px] border-white z-20 shadow-sm animate-pulse" />
                 </motion.div>
                 
-                <div className="mt-6 text-center w-full">
-                    <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 mb-3 tracking-tight">Xin chào bạn!</h1>
+                <div className="mt-6 text-center w-full px-2">
+                    <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 mb-4 tracking-tight">Xin chào bạn!</h1>
                     
                     {/* Badge Info */}
-                    <div className="inline-flex flex-col items-center gap-2 bg-blue-50/50 rounded-2xl p-3 border border-blue-100/50 w-full">
-                        <div className="flex items-center gap-1.5 text-blue-700 font-bold text-[11px] uppercase tracking-wider">
-                            <Sparkles size={12} className="text-blue-500 fill-blue-500" />
-                            Chuyên Mua Bán Tay Ga Cao Cấp
+                    <div className="inline-flex flex-col items-center gap-3 bg-blue-50/50 rounded-2xl p-4 border border-blue-100/50 w-full backdrop-blur-sm">
+                        <div className="flex items-center justify-center gap-1.5 text-blue-700 font-extrabold text-[10px] sm:text-[11px] uppercase tracking-wider text-center leading-relaxed">
+                            <Sparkles size={12} className="text-blue-500 fill-blue-500 shrink-0" />
+                            <span>Chuyên Mua Bán Tay Ga Cao Cấp</span>
                         </div>
-                        <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm border border-blue-100">
-                             <Phone size={12} className="text-gray-400" />
-                             <span className="text-gray-800 font-bold text-sm tracking-wide">0914.92.92.92</span>
+                        <div className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-blue-100/60 group-hover:scale-105 transition-transform duration-300">
+                             <Phone size={14} className="text-blue-500" />
+                             <span className="text-gray-900 font-bold text-sm tracking-widest">0914.92.92.92</span>
                         </div>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
                             placeholder="Tên đăng nhập"
                             onFocus={() => setFocusedInput('username')}
                             onBlur={() => setFocusedInput(null)}
-                            className="w-full pl-12 pr-5 py-4.5 rounded-2xl bg-white/60 border border-gray-100 hover:bg-white hover:border-blue-200 focus:bg-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 text-gray-900 placeholder:text-gray-400 font-medium outline-none transition-all duration-300"
+                            className="w-full pl-12 pr-5 py-4.5 rounded-2xl bg-white/60 border border-gray-100 hover:bg-white hover:border-blue-200 focus:bg-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 text-gray-900 font-semibold placeholder:text-gray-400/80 outline-none transition-all duration-300"
                         />
                     </motion.div>
 
@@ -142,7 +142,7 @@ export default function LoginPage() {
                             placeholder="Mật khẩu"
                             onFocus={() => setFocusedInput('password')}
                             onBlur={() => setFocusedInput(null)}
-                            className="w-full pl-12 pr-14 py-4.5 rounded-2xl bg-white/60 border border-gray-100 hover:bg-white hover:border-blue-200 focus:bg-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 text-gray-900 placeholder:text-gray-400 font-medium outline-none transition-all duration-300"
+                            className="w-full pl-12 pr-14 py-4.5 rounded-2xl bg-white/60 border border-gray-100 hover:bg-white hover:border-blue-200 focus:bg-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 text-gray-900 font-semibold placeholder:text-gray-400/80 outline-none transition-all duration-300"
                         />
                         <button
                             type="button"
@@ -173,9 +173,10 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-4 bg-gray-900 hover:bg-black text-white font-bold py-4.5 rounded-2xl shadow-xl shadow-gray-900/20 hover:shadow-2xl hover:shadow-gray-900/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center group relative overflow-hidden"
+                    className="w-full mt-4 bg-[#1a1f2c] hover:bg-black text-white font-bold py-4.5 rounded-2xl shadow-xl shadow-gray-900/20 hover:shadow-2xl hover:shadow-gray-900/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center group relative overflow-hidden"
                 >
-                    {/* Shine Effect */}
+                    {/* Glass Texture & Shine */}
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light" />
                     <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
                     
                     {isPending ? (
@@ -183,7 +184,7 @@ export default function LoginPage() {
                     ) : (
                         <div className="flex items-center gap-3 relative z-10">
                             <span className="text-[15px] tracking-wide">Đăng Nhập Ngay</span>
-                            <div className="bg-white/20 p-1 rounded-full group-hover:bg-white/30 transition-colors">
+                            <div className="bg-white/10 p-1.5 rounded-full group-hover:bg-white/20 transition-colors backdrop-blur-sm border border-white/10">
                                 <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                             </div>
                         </div>
@@ -192,12 +193,12 @@ export default function LoginPage() {
                 
                 {/* FOOTER ADDRESS */}
                 <div className="pt-8 mt-2 border-t border-gray-100/50">
-                     <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-300 group cursor-default">
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-blue-500 uppercase tracking-[0.2em] bg-blue-50 px-3 py-1 rounded-full">
-                            <MapPin size={10} />
+                     <div className="flex flex-col items-center gap-3 opacity-70 hover:opacity-100 transition-opacity duration-300 group cursor-default">
+                        <div className="flex items-center gap-1.5 text-[9px] font-extrabold text-blue-500 uppercase tracking-[0.25em] bg-blue-50/80 px-3 py-1.5 rounded-full border border-blue-100">
+                            <MapPin size={10} className="fill-blue-500/20" />
                             Địa Chỉ Showroom
                         </div>
-                        <p className="text-[12px] font-medium text-gray-500 text-center max-w-[250px] leading-relaxed group-hover:text-gray-800 transition-colors">
+                        <p className="text-[12px] font-semibold text-gray-500 text-center w-full whitespace-nowrap group-hover:text-blue-900 transition-colors">
                             107 Nguyễn Tất Thành, Thanh Hà, Hội An
                         </p>
                      </div>
