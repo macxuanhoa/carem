@@ -3,7 +3,7 @@
 import { useActionState, useState, useEffect } from 'react';
 import { authenticate } from '@/app/lib/actions';
 import { Lock, User, Loader2, AlertCircle, ArrowRight, Sparkles, MapPin, Phone } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 export default function LoginPage() {
@@ -38,7 +38,8 @@ export default function LoginPage() {
           <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-50/40 rounded-full blur-[100px]" />
       </div>
 
-      <motion.div 
+      <LazyMotion features={domAnimation}>
+      <m.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -136,7 +137,7 @@ export default function LoginPage() {
 
                 <AnimatePresence>
                     {errorMessage && (
-                        <motion.div 
+                        <m.div 
                             initial={{ opacity: 0, height: 0, scale: 0.98 }}
                             animate={{ opacity: 1, height: 'auto', scale: 1 }}
                             exit={{ opacity: 0, height: 0, scale: 0.98 }}
@@ -144,7 +145,7 @@ export default function LoginPage() {
                         >
                             <AlertCircle size={16} className="shrink-0 text-red-500" />
                             {errorMessage}
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
 
@@ -182,7 +183,8 @@ export default function LoginPage() {
           <div className="text-center mt-6">
              <p className="text-[11px] text-gray-400 font-medium">&copy; 2026 Webxe2 System. All rights reserved.</p>
           </div>
-      </motion.div>
+      </m.div>
+      </LazyMotion>
     </div>
   );
 }
