@@ -23,10 +23,10 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex h-[100dvh] w-full items-center justify-center bg-[#F8F9FB] px-4 font-sans relative overflow-hidden overscroll-none touch-none selection:bg-blue-100 selection:text-blue-900">
+    <div className="flex min-h-[100dvh] w-full items-center justify-center bg-[#F8F9FB] p-4 font-sans relative overflow-y-auto selection:bg-blue-100 selection:text-blue-900">
       
       {/* PROFESSIONAL BACKGROUND (Subtle & Clean) */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Soft Corporate Gradient */}
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-50 via-blue-50/20 to-white" />
           
@@ -43,7 +43,7 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[420px] relative z-20 flex flex-col items-center justify-center min-h-[100dvh] py-6"
+        className="w-full max-w-[420px] relative z-20 flex flex-col items-center justify-center py-8 sm:py-0"
       >
           {/* MAIN CARD - Clean & Sharp */}
           <div className="bg-white w-full rounded-[32px] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden border border-gray-100 flex flex-col justify-center">
