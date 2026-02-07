@@ -14,84 +14,87 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f0f2f5] px-4 font-sans relative overflow-hidden">
+    <div className="flex min-h-screen items-center justify-center bg-[#FDFDFD] px-4 font-sans relative overflow-hidden">
       
-      {/* Subtle Background Elements for "Delicate/Gentle" feel */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/50 rounded-full blur-[120px] mix-blend-multiply opacity-70 animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-100/50 rounded-full blur-[120px] mix-blend-multiply opacity-70 animate-pulse" style={{ animationDelay: '3s' }} />
+      {/* Sophisticated Background - Gentle Gradients */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-50/40 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-indigo-50/40 rounded-full blur-[100px]" />
+          {/* Subtle Grain Texture for texture/refinement */}
+          <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150" />
       </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[400px] bg-white/80 backdrop-blur-xl rounded-[30px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] border border-white/60 p-10 relative z-10"
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} // Apple-style easing
+        className="w-full max-w-[420px] bg-white/60 backdrop-blur-2xl rounded-[32px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.02),0_0_0_1px_rgba(255,255,255,0.8)] p-10 relative z-10"
       >
-          {/* Logo Section */}
+          {/* Logo Section - Floating effect */}
           <div className="flex flex-col items-center mb-10">
              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="w-28 h-28 relative rounded-full overflow-hidden shadow-xl shadow-blue-500/10 border-4 border-white mb-6 group"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="w-24 h-24 relative rounded-full overflow-hidden shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] border-[3px] border-white mb-6"
              >
                 <Image 
                     src="/avtcarem.jpg" 
                     alt="Webxe2 Logo" 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover"
                     priority
                 />
              </motion.div>
-             <div className="text-center space-y-1">
-                <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">Chào mừng trở lại</h1>
-                <p className="text-gray-400 text-sm font-medium">Đăng nhập để quản lý hệ thống</p>
-             </div>
+             <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-center"
+             >
+                <h1 className="text-2xl font-bold text-gray-800 tracking-tight mb-1.5 font-display">Chào mừng trở lại</h1>
+                <p className="text-gray-400 text-[13px] font-medium tracking-wide uppercase">Hệ thống quản lý xe chuyên nghiệp</p>
+             </motion.div>
           </div>
 
           {/* Form */}
           <form action={formAction} className="space-y-6">
-            <div className="space-y-5">
+            <div className="space-y-4">
               
-              <div className="group">
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-300 group-focus-within:text-blue-500 transition-colors duration-300">
-                        <User size={20} strokeWidth={2} />
-                    </div>
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        required
-                        autoFocus
-                        placeholder="Tên đăng nhập"
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50/50 border border-gray-100 text-gray-800 placeholder:text-gray-400 font-medium text-[15px] outline-none focus:bg-white focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 shadow-sm shadow-gray-100/50"
-                    />
+              <div className="group relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors duration-300">
+                    <User size={18} />
                 </div>
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    required
+                    autoFocus
+                    placeholder="Tên đăng nhập"
+                    className="w-full pl-11 pr-4 py-4 rounded-2xl bg-white/50 border border-gray-100 text-gray-800 placeholder:text-gray-400 text-[15px] font-medium outline-none focus:bg-white focus:border-blue-100 focus:shadow-[0_4px_20px_-2px_rgba(59,130,246,0.1)] transition-all duration-300"
+                />
               </div>
 
-              <div className="group">
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-300 group-focus-within:text-blue-500 transition-colors duration-300">
-                        <Lock size={20} strokeWidth={2} />
-                    </div>
-                    <input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        placeholder="Mật khẩu"
-                        className="w-full pl-12 pr-12 py-4 rounded-2xl bg-gray-50/50 border border-gray-100 text-gray-800 placeholder:text-gray-400 font-medium text-[15px] outline-none focus:bg-white focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 shadow-sm shadow-gray-100/50"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-blue-600 transition-colors cursor-pointer text-[11px] font-bold tracking-wider"
-                    >
-                        {showPassword ? "ẨN" : "HIỆN"}
-                    </button>
+              <div className="group relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors duration-300">
+                    <Lock size={18} />
                 </div>
+                <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="Mật khẩu"
+                    className="w-full pl-11 pr-12 py-4 rounded-2xl bg-white/50 border border-gray-100 text-gray-800 placeholder:text-gray-400 text-[15px] font-medium outline-none focus:bg-white focus:border-blue-100 focus:shadow-[0_4px_20px_-2px_rgba(59,130,246,0.1)] transition-all duration-300"
+                />
+                <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer text-[10px] font-bold tracking-wider"
+                >
+                    {showPassword ? "ẨN" : "HIỆN"}
+                </button>
               </div>
             </div>
 
@@ -99,9 +102,9 @@ export default function LoginPage() {
               <motion.div 
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="p-3 rounded-xl bg-red-50/80 border border-red-100 flex items-center gap-3 text-sm text-red-600 font-medium"
+                className="p-3 rounded-xl bg-red-50/50 border border-red-100/50 flex items-center gap-3 text-[13px] text-red-600 font-medium"
               >
-                <AlertCircle size={18} className="shrink-0 text-red-500" />
+                <AlertCircle size={16} className="shrink-0 text-red-500" />
                 {errorMessage}
               </motion.div>
             )}
@@ -109,23 +112,23 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full mt-2 bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-xl shadow-gray-200 hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-[15px] tracking-wide group"
+              className="w-full mt-4 bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)] hover:scale-[1.02] transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-[15px] tracking-wide group"
             >
               {isPending ? (
                   <>
-                    <Loader2 size={20} className="animate-spin mr-2" />
-                    Đang xử lý...
+                    <Loader2 size={18} className="animate-spin mr-2" />
+                    <span className="text-gray-300">Đang xác thực...</span>
                   </>
               ) : (
                   <>
                     Đăng Nhập
-                    <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={18} className="ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </>
               )}
             </button>
             
-            <div className="pt-4 text-center">
-                <p className="text-[11px] text-gray-300 font-bold uppercase tracking-[0.2em]">
+            <div className="pt-6 text-center">
+                <p className="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] hover:text-gray-400 transition-colors cursor-default">
                     Webxe2 System &copy; 2026
                 </p>
             </div>
