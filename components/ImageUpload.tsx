@@ -1,10 +1,9 @@
 "use client";
 
-import { useUploadThing } from "@/lib/uploadthing";
 import { X, Image as ImageIcon, Loader2, CloudUpload } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { useCallback } from "react";
+import { useState } from "react";
 
 interface ImageUploadProps {
   value: string[];
@@ -17,24 +16,44 @@ export default function ImageUpload({
   onChange,
   onRemove,
 }: ImageUploadProps) {
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (res) => {
-      const urls = res.map((r) => r.url);
-      onChange([...value, ...urls]);
-      toast.success("Đã tải ảnh lên thành công!");
-    },
-    onUploadError: (error: Error) => {
-      toast.error(`Lỗi: ${error.message}`);
-    },
-  });
+  const [isUploading, setIsUploading] = useState(false);
 
-  const onUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
+  const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setIsUploading(true);
     const files = Array.from(e.target.files);
-    if (files.length > 0) {
-        await startUpload(files);
+    const newUrls: string[] = [];
+    
+    try {
+        for (const file of files) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!res.ok) throw new Error('Upload failed');
+            
+            const data = await res.json();
+            if (data.success) {
+                newUrls.push(data.url);
+            }
+        }
+        
+        onChange([...value, ...newUrls]);
+        toast.success("Đã tải ảnh lên thành công!");
+    } catch (error) {
+        console.error(error);
+        toast.error("Lỗi tải ảnh lên. Vui lòng thử lại.");
+    } finally {
+        setIsUploading(false);
+        // Reset input
+        e.target.value = '';
     }
-  }, [startUpload]);
+  };
 
   return (
     <div className="space-y-4">
