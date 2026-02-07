@@ -281,9 +281,16 @@ export default function NewCarPage() {
 
   const nextStep = () => {
       // Basic validation per step
-      if (activeStep === 1 && (!formData.dongXe || !formData.namSanXuat || !formData.mauXe)) {
-          toast.error('Vui lòng điền thông tin xe');
-          return;
+      if (activeStep === 1) {
+          if (!formData.dongXe || !formData.namSanXuat || !formData.mauXe) {
+              toast.error('Vui lòng điền thông tin xe');
+              return;
+          }
+          // Validate Year (Must be 4 digits)
+          if (formData.namSanXuat.toString().length !== 4) {
+              toast.error('Năm sản xuất phải có 4 số (Ví dụ: 2023)');
+              return;
+          }
       }
       setActiveStep(prev => prev + 1);
   };
