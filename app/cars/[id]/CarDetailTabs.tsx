@@ -197,7 +197,7 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                             <Edit size={16} />
                         </button>
                         
-                        {/* Navigation Arrows */}
+                        {/* Navigation Arrows - Always Visible and Bigger */}
                         {images.length > 1 && (
                             <>
                                 <button 
@@ -205,18 +205,18 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                                         e.stopPropagation();
                                         setCurrentImageIdx(prev => prev === 0 ? images.length - 1 : prev - 1);
                                     }}
-                                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-colors"
+                                    className="absolute left-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/30 hover:bg-white/50 text-white backdrop-blur-md transition-all shadow-lg active:scale-95"
                                 >
-                                    <ChevronLeft size={20} />
+                                    <ChevronLeft size={28} strokeWidth={2.5} />
                                 </button>
                                 <button 
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setCurrentImageIdx(prev => prev === images.length - 1 ? 0 : prev + 1);
                                     }}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/30 hover:bg-white/50 text-white backdrop-blur-md transition-all shadow-lg active:scale-95"
                                 >
-                                    <ChevronRight size={20} />
+                                    <ChevronRight size={28} strokeWidth={2.5} />
                                 </button>
                             </>
                         )}
@@ -227,9 +227,9 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                         <span className="text-xs font-medium mb-3">Chưa có hình ảnh</span>
                         <button 
                             onClick={handleOpenModal}
-                            className="px-4 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center"
+                            className="px-6 py-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-bold rounded-2xl shadow-md border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all active:scale-95 flex items-center"
                         >
-                            <Plus size={16} className="mr-1.5" /> Thêm ảnh ngay
+                            <Plus size={20} className="mr-2" /> Thêm ảnh ngay
                         </button>
                     </div>
                 )}
