@@ -2,7 +2,7 @@
 
 import { useActionState, useState, useEffect } from 'react';
 import { authenticate } from '@/app/lib/actions';
-import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck, Phone, MapPin } from 'lucide-react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
