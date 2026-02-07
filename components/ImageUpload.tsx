@@ -27,8 +27,8 @@ export default function ImageUpload({
             img.src = event.target?.result as string;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1920; // Tăng độ phân giải tối đa (cũ là 1200)
-                const MAX_HEIGHT = 1920;
+                const MAX_WIDTH = 1600; // Balance between quality and size for DB storage
+                const MAX_HEIGHT = 1600;
                 let width = img.width;
                 let height = img.height;
 
@@ -49,8 +49,8 @@ export default function ImageUpload({
                 const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0, width, height);
                 
-                // Compress to JPEG with 0.9 quality (High Quality)
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                // Compress to JPEG with 0.85 quality (Good quality, reasonable size ~200-300KB)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
                 resolve(dataUrl);
             };
             img.onerror = (err) => reject(err);
@@ -68,35 +68,17 @@ export default function ImageUpload({
     
     try {
         for (const file of files) {
-            // Client-side compression to reduce size before upload
+            // Client-side compression and usage of Base64 directly
+            // This bypasses Vercel 4.5MB body limit per file request and file system restrictions
             const base64 = await compressImage(file);
-            
-            // Convert Base64 back to Blob for upload
-            const res = await fetch(base64);
-            const blob = await res.blob();
-            const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
-
-            const formData = new FormData();
-            formData.append('file', compressedFile);
-            
-            const uploadRes = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!uploadRes.ok) throw new Error('Upload failed');
-            
-            const data = await uploadRes.json();
-            if (data.success) {
-                newUrls.push(data.url);
-            }
+            newUrls.push(base64);
         }
         
         onChange([...value, ...newUrls]);
-        toast.success("Đã tải ảnh lên thành công!");
+        toast.success("Đã thêm ảnh thành công!");
     } catch (error) {
         console.error(error);
-        toast.error("Lỗi tải ảnh lên. Vui lòng thử lại.");
+        toast.error("Lỗi xử lý ảnh. Vui lòng thử lại.");
     } finally {
         setIsUploading(false);
         // Reset input
