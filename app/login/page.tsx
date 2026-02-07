@@ -1,3 +1,27 @@
+'use client';
+
+import { useActionState, useState, useEffect } from 'react';
+import { authenticate } from '@/app/lib/actions';
+import { Lock, User, Loader2, AlertCircle, ArrowRight, Sparkles, MapPin, Phone } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+
+export default function LoginPage() {
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  );
+  const [showPassword, setShowPassword] = useState(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
+  // Prevent scroll bounce on mobile
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+        document.body.style.overflow = '';
+    };
+  }, []);
+
   return (
     <div className="flex h-[100dvh] w-full items-center justify-center bg-[#F8F9FB] px-4 font-sans relative overflow-hidden overscroll-none touch-none selection:bg-blue-100 selection:text-blue-900">
       
