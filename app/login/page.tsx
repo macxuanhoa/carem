@@ -23,15 +23,15 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex min-h-[100dvh] w-full items-center justify-center bg-[#F8F9FB] p-4 font-sans relative overflow-y-auto selection:bg-blue-100 selection:text-blue-900">
+    <div className="flex min-h-dvh w-full items-center justify-center bg-[#F8F9FB] p-4 font-sans relative overflow-y-auto selection:bg-blue-100 selection:text-blue-900">
       
       {/* PROFESSIONAL BACKGROUND (Subtle & Clean) */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Soft Corporate Gradient */}
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-50 via-blue-50/20 to-white" />
+          <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-gray-50 via-blue-50/20 to-white" />
           
           {/* Subtle Grid for Structure */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[40px_40px]" />
           
           {/* Ambient Glows (Restrained) */}
           <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-100/30 rounded-full blur-[120px]" />
@@ -49,12 +49,12 @@ export default function LoginPage() {
           <div className="bg-white w-full rounded-[32px] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden border border-gray-100 flex flex-col justify-center">
             
             {/* Top Brand Stripe */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600" />
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-blue-600 to-indigo-600" />
 
             {/* HEADER SECTION */}
             <div className="flex flex-col items-center mb-8 relative pt-12 md:pt-4">
                 <div className="relative mb-6">
-                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-[4px] border-white ring-1 ring-gray-100 bg-white">
+                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-4 border-white ring-1 ring-gray-100 bg-white">
                         <Image 
                             src="/avtcarem.jpg" 
                             alt="Logo Webxe2" 

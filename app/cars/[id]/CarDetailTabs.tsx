@@ -31,7 +31,7 @@ function DealTimeline({ status, deposit, isSold }: { status: string, deposit: nu
 
                 {steps.map((step, idx) => (
                     <div key={idx} className="flex flex-col items-center relative z-10">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center border-[2px] transition-all duration-500 bg-white dark:bg-gray-900 ${
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-white dark:bg-gray-900 ${
                             step.active 
                             ? 'border-green-500 scale-110' 
                             : 'border-gray-200 dark:border-gray-700'
