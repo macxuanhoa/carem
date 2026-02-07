@@ -2,12 +2,13 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
-  Car, FileText, DollarSign, Wallet, TrendingUp, Bell, ArrowRight
+  Car, FileText, DollarSign, Wallet, TrendingUp, ArrowRight
 } from 'lucide-react';
 import DashboardChart from './components/DashboardChart';
 import DashboardSearch from '@/components/DashboardSearch';
 import ThemeToggle from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
+import NotificationBell from '@/components/NotificationBell';
 import { formatCurrency, formatTimeAgo, formatStatus } from '@/lib/utils';
 import { unstable_cache } from 'next/cache';
 
@@ -94,12 +95,7 @@ export default async function DashboardPage() {
                 <div className="md:hidden">
                     <ThemeToggle />
                 </div>
-                <Link href="/cars?sort=overdue" className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-2.5 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all relative active:scale-95 shadow-sm">
-                    <Bell size={20} strokeWidth={2} />
-                    {(overdueDocs > 0 || pendingExpenses > 0) && (
-                        <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
-                    )}
-                </Link>
+                <NotificationBell />
               </div>
           </div>
 
