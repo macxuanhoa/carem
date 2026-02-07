@@ -33,6 +33,7 @@ export default function NewCarPage() {
   const [dealStatus, setDealStatus] = useState<'PENDING' | 'DEPOSITED' | 'BOUGHT_NOW'>('PENDING'); // PENDING, DEPOSITED, BOUGHT_NOW
   const [createdCarId, setCreatedCarId] = useState<number | null>(null);
   const [showDocsPrompt, setShowDocsPrompt] = useState(false);
+  const [showOriginInfo, setShowOriginInfo] = useState(false); // Collapsible state
 
   // Form State
   const [formData, setFormData] = useState({
@@ -489,103 +490,133 @@ export default function NewCarPage() {
                         </div>
 
                         {/* Merged Fields from old Step 1 */}
-                        <div className="border-t border-gray-100 dark:border-gray-800 pt-6 mt-6 space-y-4">
+                        <div className="border-t border-gray-100 dark:border-gray-800 pt-4 mt-4">
+                            <button
+                                type="button"
+                                onClick={() => setShowOriginInfo(!showOriginInfo)}
+                                className="w-full flex items-center justify-between text-left group"
+                            >
+                                <div>
+                                    <h3 className="text-sm font-bold text-gray-800 dark:text-white flex items-center">
+                                        <User size={18} className="mr-2 text-blue-500" />
+                                        Nguồn Gốc & Người Bán
+                                    </h3>
+                                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 ml-6.5">
+                                        Thông tin chủ xe, nơi mua (Không bắt buộc nhập ngay)
+                                    </p>
+                                </div>
+                                <div className={`p-2 rounded-full bg-gray-50 dark:bg-gray-800 transition-transform duration-200 ${showOriginInfo ? 'rotate-180' : ''}`}>
+                                    <ChevronDown size={18} className="text-gray-500" />
+                                </div>
+                            </button>
                             
-                            {/* Nguồn Gốc */}
-                            <div>
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">Nguồn Gốc Xe</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {[
-                                        { id: 'MUA_DAN', label: 'Mua Dân' },
-                                        { id: 'MUA_LAI', label: 'Mua Lại / Thợ' },
-                                        { id: 'MUA_FB', label: 'Mua Facebook' },
-                                        { id: 'KHAC', label: 'Khác' }
-                                    ].map(source => (
-                                        <button
-                                            key={source.id}
-                                            type="button"
-                                            onClick={() => setFormData(prev => ({ ...prev, nguonGoc: source.id }))}
-                                            className={`p-3 rounded-xl text-xs font-bold border transition-all ${
-                                                formData.nguonGoc === source.id
-                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
-                                                : 'bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                                            }`}
-                                        >
-                                            {source.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Người Bán</label>
-                                    <div className="relative group">
-                                        <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
-                                        <input
-                                            type="text"
-                                            name="nguoiBan"
-                                            required
-                                            value={formData.nguoiBan}
-                                            onChange={handleChange}
-                                            className="input-primary pl-11!"
-                                            placeholder="Tên chủ xe"
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ (Tùy chọn)</label>
-                                    <input
-                                        type="tel"
-                                        name="soDienThoai"
-                                        value={formData.soDienThoai}
-                                        onChange={handleChange}
-                                        className="input-primary"
-                                        placeholder="0912..."
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Conditional Link Input if Source is Facebook */}
                             <AnimatePresence>
-                                {formData.nguonGoc === 'MUA_FB' && (
+                                {showOriginInfo && (
                                     <motion.div
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: 'auto', opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
                                         className="overflow-hidden"
                                     >
-                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Link Bài Đăng</label>
-                                        <div className="relative group">
-                                            <LinkIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
-                                            <input
-                                                type="url"
-                                                name="facebookLink"
-                                                value={formData.facebookLink}
-                                                onChange={handleLinkChange}
-                                                className="input-primary pl-11! text-blue-600 dark:text-blue-400"
-                                                placeholder="https://facebook.com/..."
-                                            />
+                                        <div className="pt-4 space-y-4">
+                                            {/* Nguồn Gốc */}
+                                            <div>
+                                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">Nguồn Gốc Xe</label>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {[
+                                                        { id: 'MUA_DAN', label: 'Mua Dân' },
+                                                        { id: 'MUA_LAI', label: 'Mua Lại / Thợ' },
+                                                        { id: 'MUA_FB', label: 'Mua Facebook' },
+                                                        { id: 'KHAC', label: 'Khác' }
+                                                    ].map(source => (
+                                                        <button
+                                                            key={source.id}
+                                                            type="button"
+                                                            onClick={() => setFormData(prev => ({ ...prev, nguonGoc: source.id }))}
+                                                            className={`p-3 rounded-xl text-xs font-bold border transition-all ${
+                                                                formData.nguonGoc === source.id
+                                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
+                                                                : 'bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                                            }`}
+                                                        >
+                                                            {source.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Người Bán</label>
+                                                    <div className="relative group">
+                                                        <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
+                                                        <input
+                                                            type="text"
+                                                            name="nguoiBan"
+                                                            value={formData.nguoiBan}
+                                                            onChange={handleChange}
+                                                            className="input-primary pl-11!"
+                                                            placeholder="Tên chủ xe"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ (Tùy chọn)</label>
+                                                    <input
+                                                        type="tel"
+                                                        name="soDienThoai"
+                                                        value={formData.soDienThoai}
+                                                        onChange={handleChange}
+                                                        className="input-primary"
+                                                        placeholder="0912..."
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Conditional Link Input if Source is Facebook */}
+                                            <AnimatePresence>
+                                                {formData.nguonGoc === 'MUA_FB' && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: 'auto', opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="overflow-hidden"
+                                                    >
+                                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Link Bài Đăng</label>
+                                                        <div className="relative group">
+                                                            <LinkIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
+                                                            <input
+                                                                type="url"
+                                                                name="facebookLink"
+                                                                value={formData.facebookLink}
+                                                                onChange={handleLinkChange}
+                                                                className="input-primary pl-11! text-blue-600 dark:text-blue-400"
+                                                                placeholder="https://facebook.com/..."
+                                                            />
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+
+                                            <div>
+                                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Khu Vực</label>
+                                                <div className="relative group">
+                                                    <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
+                                                    <input
+                                                        type="text"
+                                                        name="tinhThanh"
+                                                        value={formData.tinhThanh}
+                                                        onChange={handleChange}
+                                                        className="input-primary pl-11!"
+                                                        placeholder="Hà Nội"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-
-                            <div>
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Khu Vực</label>
-                                <div className="relative group">
-                                    <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
-                                    <input
-                                        type="text"
-                                        name="tinhThanh"
-                                        required
-                                        value={formData.tinhThanh}
-                                        onChange={handleChange}
-                                        className="input-primary pl-11!"
-                                        placeholder="Hà Nội"
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
 
