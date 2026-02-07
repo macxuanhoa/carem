@@ -472,6 +472,20 @@ function FinanceTab({ car, totalGop, totalChiPhi }: any) {
 }
 
 function RecordsTab({ car, isOverdue }: any) {
+    const getDocStatusLabel = (status: string) => {
+        const map: Record<string, string> = {
+            'CHUA_CAN': 'Chưa Cần',
+            'HUA_RUT': 'Hứa Rút',
+            'DANG_RUT': 'Đang Rút',
+            'DA_RUT': 'Đã Rút',
+            'CHUA_CO': 'Chưa Có',
+            'QUA_HAN': 'Quá Hạn',
+            'DANG_GIU': 'Đang Giữ',
+            'DA_GIAO': 'Đã Giao'
+        };
+        return map[status] || status;
+    };
+
     return (
         <div className="p-4 space-y-4">
             {isOverdue && (
@@ -497,7 +511,7 @@ function RecordsTab({ car, isOverdue }: any) {
                     <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                         <span className="text-gray-500 text-xs font-bold uppercase">Trạng thái</span>
                         <span className={`font-bold text-xs px-2 py-1 rounded-md ${car.hoSo?.trangThai === 'QUA_HAN' ? 'bg-red-100 text-red-600' : 'bg-white text-gray-800 shadow-sm'}`}>
-                            {car.hoSo?.trangThai || 'CHUA_CO'}
+                            {getDocStatusLabel(car.hoSo?.trangThai || 'CHUA_CO')}
                         </span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">

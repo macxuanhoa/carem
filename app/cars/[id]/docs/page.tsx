@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Clock, FileText, ArrowRight, User } from 'lucide-react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const DOC_STEPS = [
   { key: 'CHUA_CAN', label: 'Chưa Cần', desc: 'Hồ sơ chưa cần rút hoặc chưa xử lý' },
@@ -64,7 +65,7 @@ export default function DocsPage({ params }: { params: Promise<{ id: string }> }
     }
   };
 
-  if (!car) return <div className="p-10 text-center text-blue-600 animate-pulse">Đang tải...</div>;
+  if (!car) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><LoadingSpinner /></div>;
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24 p-4">
@@ -135,7 +136,7 @@ export default function DocsPage({ params }: { params: Promise<{ id: string }> }
               <div>
                   <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Ngày Hẹn Rút</label>
                   <div className="relative">
-                      <Clock size={16} className="absolute left-3 top-3 text-gray-400"/>
+                      <Clock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
                       <input
                           type="date"
                           className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 pl-9 text-sm outline-none"
@@ -147,7 +148,7 @@ export default function DocsPage({ params }: { params: Promise<{ id: string }> }
               <div>
                   <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Người Phụ Trách</label>
                   <div className="relative">
-                      <User size={16} className="absolute left-3 top-3 text-gray-400"/>
+                      <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
                       <input
                           type="text"
                           className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 pl-9 text-sm outline-none"

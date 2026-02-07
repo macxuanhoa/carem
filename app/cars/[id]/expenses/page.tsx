@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Plus, Trash2, Wrench, DollarSign, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatCurrency } from '@/lib/utils';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Expense {
     id: number;
@@ -118,7 +119,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
 
     const totalExpense = expenses.reduce((sum, e) => sum + e.giaThucTe, 0);
 
-    if (loading) return <div className="p-8 text-center">Đang tải...</div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><LoadingSpinner /></div>;
 
     return (
         <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-20">
