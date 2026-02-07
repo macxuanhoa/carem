@@ -96,7 +96,7 @@ export default function NewCarPage() {
                                     </AnimatePresence>
                                 </div>
                              ))}
-                        </div>
+                        
 
                         <div>
                             <label className={`text-xs font-bold uppercase block mb-1.5 ${errors.dongXe ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>Dòng Xe (Tên đầy đủ)</label>

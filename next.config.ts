@@ -15,8 +15,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone", // Required for Docker
   reactCompiler: true,
+  poweredByHeader: false,
+  compress: true,
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', 'date-fns'],
+  },
   turbopack: {},
   images: {
+    formats: ['image/avif', 'image/webp'],
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: "https",

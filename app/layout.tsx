@@ -7,7 +7,12 @@ import NextTopLoader from 'nextjs-toploader';
 import Providers from "./providers";
 import AppShell from "@/components/AppShell";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "Quản Lý Xe",

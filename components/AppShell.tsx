@@ -12,9 +12,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-7xl min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
         {!isLoginPage && (
-            <header className="hidden md:flex bg-white dark:bg-gray-900 dark:border-b dark:border-gray-800 shadow-sm p-4 justify-between items-center sticky top-0 z-50 transition-colors duration-200">
-                <div className="font-bold text-xl text-blue-600 dark:text-blue-500">AUTO MANAGER</div>
-                <div className="flex items-center gap-6">
+            <header className="hidden md:flex bg-white dark:bg-gray-900 dark:border-b dark:border-gray-800 shadow-sm px-6 py-4 justify-between items-center sticky top-0 z-50 transition-colors duration-200">
+                <div className="flex flex-col">
+                    <div className="font-black text-xl text-blue-600 dark:text-blue-500 uppercase tracking-tight leading-none">
+                        XE MÁY CÀ REM
+                    </div>
+                    <div className="text-[10px] text-gray-400 dark:text-gray-500 font-medium mt-1 flex items-center gap-1">
+                        <span>107 Nguyễn Tất Thành, Hội An</span>
+                    </div>
+                </div>
+                <div className="flex items-center gap-8">
                     <nav className="space-x-6 text-sm font-medium text-gray-600 dark:text-gray-300">
                         <Link href="/" className={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${pathname === '/' ? 'text-blue-600 dark:text-blue-400' : ''}`}>Dashboard</Link>
                         <Link href="/cars" className={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${pathname?.startsWith('/cars') ? 'text-blue-600 dark:text-blue-400' : ''}`}>Xe</Link>
