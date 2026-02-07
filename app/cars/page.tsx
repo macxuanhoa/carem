@@ -1,12 +1,12 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Plus } from 'lucide-react';
+import { Plus, Car } from 'lucide-react';
 import { Suspense } from 'react';
 import SearchInput from './SearchInput';
 import QuickFilters from '@/components/QuickFilters';
 import ViewOptions from '@/components/ViewOptions';
-import { formatCurrency, formatTimeAgo, formatStatus } from '@/lib/utils';
 import CarListSkeleton from '@/components/skeletons/CarListSkeleton';
+import CarCard from '@/components/CarCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +16,12 @@ const CAR_STATUS_GROUPS = [
     { label: 'Hủy / Treo', statuses: ['HUY_GIAO_DICH'] }
 ];
 
-async function CarList({ sort, group, groupBy, query, status, model }: { sort: string, group: string, groupBy?: string, query?: string, status?: string, model?: string }) {
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+async function CarList({ sort, group, groupBy, query, status, model, page = 1 }: { sort: string, group: string, groupBy?: string, query?: string, status?: string, model?: string, page?: number }) {
+    const ITEMS_PER_PAGE = 20;
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+
     let orderBy: any = { createdAt: 'desc' };
     if (sort === 'price_asc') orderBy = { tongGiaMua: 'asc' };
     if (sort === 'price_desc') orderBy = { tongGiaMua: 'desc' };
@@ -65,11 +70,19 @@ async function CarList({ sort, group, groupBy, query, status, model }: { sort: s
         whereClause.dongXe = { contains: model };
     }
 
-    const cars = await prisma.xeMuaVao.findMany({
-        where: whereClause,
-        orderBy,
-        include: { banRa: true, hoSo: true },
-    });
+    // Parallel Fetching: Get Data + Total Count for Pagination
+    const [cars, totalCount] = await Promise.all([
+        prisma.xeMuaVao.findMany({
+            where: whereClause,
+            orderBy,
+            include: { banRa: true, hoSo: true },
+            skip,
+            take: ITEMS_PER_PAGE,
+        }),
+        prisma.xeMuaVao.count({ where: whereClause })
+    ]);
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
     if (cars.length === 0) {
         return (
@@ -83,7 +96,50 @@ async function CarList({ sort, group, groupBy, query, status, model }: { sort: s
         );
     }
 
-    // Grouping Logic
+    const renderPagination = () => {
+        if (totalPages <= 1) return null;
+
+        const createPageUrl = (newPage: number) => {
+            const params = new URLSearchParams();
+            if (sort) params.set('sort', sort);
+            if (group) params.set('group', group);
+            if (groupBy) params.set('groupBy', groupBy);
+            if (query) params.set('q', query);
+            if (status) params.set('status', status);
+            if (model) params.set('model', model);
+            params.set('page', newPage.toString());
+            return `/cars?${params.toString()}`;
+        };
+
+        return (
+            <div className="flex justify-center items-center gap-4 mt-8 pb-8">
+                <Link
+                    href={createPageUrl(page > 1 ? page - 1 : 1)}
+                    className={`p-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm transition-all ${
+                        page <= 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                    }`}
+                >
+                    <ChevronLeft size={20} className="text-gray-600 dark:text-gray-400" />
+                </Link>
+                
+                <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
+                    Trang {page} / {totalPages}
+                </span>
+
+                <Link
+                    href={createPageUrl(page < totalPages ? page + 1 : totalPages)}
+                    className={`p-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm transition-all ${
+                        page >= totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                    }`}
+                >
+                    <ChevronRight size={20} className="text-gray-600 dark:text-gray-400" />
+                </Link>
+            </div>
+        );
+    };
+
+    // Grouping Logic (Client-side grouping of the CURRENT PAGE only - Limitation of mixing pagination + grouping)
+    // Note: True grouping with pagination requires complex SQL. For now, we group the fetched page.
     if (groupBy && groupBy !== 'none') {
         const groups: Record<string, typeof cars> = {};
         
@@ -113,145 +169,30 @@ async function CarList({ sort, group, groupBy, query, status, model }: { sort: s
                         </div>
                     </div>
                 ))}
+                {renderPagination()}
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
-            {cars.map((car) => <CarCard key={car.id} car={car} />)}
+        <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
+                {cars.map((car) => <CarCard key={car.id} car={car} />)}
+            </div>
+            {renderPagination()}
         </div>
     );
 }
 
-function CarCard({ car }: { car: any }) {
-    const isOverdue = car.hoSo?.trangThai === 'QUA_HAN';
-    const isSold = car.trangThai === 'DA_BAN';
-    const isDeposited = car.soTienCoc > 0 && !isSold;
-    const isSelling = !isSold && !isDeposited && (car.trangThai === 'DANG_BAN' || !!car.facebookLink);
-    
-    // Parse Image
-    let thumbnail = null;
-    try {
-        const images = JSON.parse(car.hinhAnh || '[]');
-        if (images.length > 0) thumbnail = images[0];
-    } catch (e) {
-        // Ignore error
-    }
-    
-    // Helper for status badge
-    const getStatusBadge = () => {
-        if (isSold) return { label: 'Đã Bán', color: 'bg-green-100 text-green-700 ring-1 ring-green-600/20' };
-        if (isDeposited) return { label: 'Đã Cọc', color: 'bg-amber-100 text-amber-700 ring-1 ring-amber-600/20' };
-        if (isOverdue) return { label: 'Quá Hạn', color: 'bg-red-100 text-red-700 ring-1 ring-red-600/20' };
-        if (isSelling) return { label: 'Đang Bán', color: 'bg-blue-100 text-blue-700 ring-1 ring-blue-600/20' };
-        return { label: formatStatus(car.trangThai), color: 'bg-gray-100 text-gray-600 ring-1 ring-gray-600/20' };
-    };
-
-    const status = getStatusBadge();
-    
-    return (
-        <Link href={`/cars/${car.id}`} className="block group h-full">
-            <div className={`bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-all duration-300 relative overflow-hidden h-full flex flex-col
-                group-hover:shadow-md group-hover:translate-y-[-2px] group-hover:border-blue-200 dark:group-hover:border-blue-800
-                ${isOverdue ? 'ring-2 ring-red-500/50' : ''}
-            `}>
-                {/* Header Badge & Image */}
-                <div className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800">
-                    {thumbnail ? (
-                        <img 
-                            src={thumbnail} 
-                            alt={car.dongXe} 
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-gray-700">
-                            <Car size={48} strokeWidth={1.5} />
-                            <span className="text-[10px] font-bold uppercase mt-2">Chưa có ảnh</span>
-                        </div>
-                    )}
-
-                    <div className="absolute top-3 left-3 flex gap-1">
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg shadow-sm backdrop-blur-md ${status.color}`}>
-                            {status.label}
-                        </span>
-                    </div>
-
-                    <div className="absolute top-3 right-3">
-                        <span className="text-[10px] text-gray-600 dark:text-gray-300 font-bold bg-white/90 dark:bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg shadow-sm border border-white/20">
-                            {formatTimeAgo(new Date(car.createdAt))}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Main Info */}
-                <div className="px-4 pt-4 mb-2 flex-1">
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2 line-clamp-2">
-                        {car.dongXe}
-                    </h3>
-                    <div className="flex flex-wrap gap-2 text-xs text-gray-600 dark:text-gray-400">
-                         <span className="bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-md border border-gray-100 dark:border-gray-700 font-medium">Đời {car.namSanXuat}</span>
-                         <span className="bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-md border border-gray-100 dark:border-gray-700">{car.mauXe}</span>
-                         {car.bienSo && (
-                             <span className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400 px-2 py-1 rounded-md border border-yellow-100 dark:border-yellow-900/30 font-mono font-medium">
-                                {car.bienSo}
-                             </span>
-                         )}
-                    </div>
-                    <p className="text-[10px] text-gray-400 mt-3 flex items-center">
-                        <span className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mr-1.5"></span>
-                        Nhập: {new Date(car.createdAt).toLocaleDateString('vi-VN')}
-                    </p>
-                </div>
-
-                {/* Footer: Price */}
-                <div className="mt-auto bg-gray-50/50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 p-4 flex justify-between items-end">
-                     <div>
-                        <p className="text-[10px] text-gray-400 uppercase font-bold mb-0.5 tracking-wide">Giá vốn</p>
-                        <p className="font-bold text-gray-900 dark:text-white text-xl tracking-tight">{car.tongGiaMua.toLocaleString()} <span className="text-xs font-normal text-gray-500">đ</span></p>
-                     </div>
-                     {car.soTienCoc > 0 && (
-                         <div className="text-right">
-                             <p className="text-[10px] text-gray-400 uppercase font-bold mb-0.5">Đã cọc</p>
-                             <p className="font-bold text-green-600 dark:text-green-400 text-sm bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-md border border-green-100 dark:border-green-900/30">
-                                +{car.soTienCoc.toLocaleString()}
-                             </p>
-                         </div>
-                     )}
-                </div>
-
-                {/* Overdue Warning Overlay */}
-                {isOverdue && (
-                    <div className="absolute top-0 right-0">
-                        <div className="bg-red-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-lg shadow-sm">
-                            HỒ SƠ QUÁ HẠN
-                        </div>
-                    </div>
-                )}
-            </div>
-        </Link>
-    );
-}
-
-// Icon for empty state
-function Car({ size, className, strokeWidth = 2 }: { size: number, className?: string, strokeWidth?: number }) {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
-            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-            <circle cx="7" cy="17" r="2" />
-            <circle cx="17" cy="17" r="2" />
-        </svg>
-    )
-}
-
-export default async function CarsPage({ searchParams }: { searchParams: Promise<{ sort?: string, group?: string, groupBy?: string, q?: string, status?: string, model?: string }> }) {
-  const { sort, group, groupBy, q, status, model } = await searchParams;
+export default async function CarsPage({ searchParams }: { searchParams: Promise<{ sort?: string, group?: string, groupBy?: string, q?: string, status?: string, model?: string, page?: string }> }) {
+  const { sort, group, groupBy, q, status, model, page } = await searchParams;
   const currentSort = sort || 'date_desc'; // Default: Newest to Oldest
   const currentGroup = group || 'inventory';
   const currentGroupBy = groupBy || 'none';
   const currentQuery = q || '';
   const currentStatus = status || 'all';
   const currentModel = model || '';
+  const currentPage = parseInt(page || '1', 10);
 
   // Get dynamic model list for filter
   const distinctModels = await prisma.xeMuaVao.findMany({
@@ -286,6 +227,13 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
             
             {/* Group By Dropdown - Moved to ViewOptions */}
             <ViewOptions models={availableModels} />
+            <Link 
+                href="/cars/new" 
+                className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors shadow-sm ml-4"
+            >
+                <Plus size={18} strokeWidth={2.5} />
+                Nhập Xe
+            </Link>
         </div>
         
         <SearchInput />
@@ -297,13 +245,9 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
 
       <div className="px-4 mt-4 pb-safe-bottom">
         <Suspense fallback={<CarListSkeleton />}>
-            <CarList sort={currentSort} group={currentGroup} groupBy={currentGroupBy} query={currentQuery} status={currentStatus} model={currentModel} />
+            <CarList sort={currentSort} group={currentGroup} groupBy={currentGroupBy} query={currentQuery} status={currentStatus} model={currentModel} page={currentPage} />
         </Suspense>
       </div>
-
-      <Link href="/cars/new" className="md:hidden fixed bottom-24 right-4 bg-blue-600 text-white p-4 rounded-full shadow-lg shadow-blue-300 hover:bg-blue-700 active:scale-90 transition-all z-50">
-        <Plus size={28} strokeWidth={3} />
-      </Link>
     </div>
   );
 }

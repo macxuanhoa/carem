@@ -4,10 +4,14 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import CarDetailTabs from './CarDetailTabs';
 import CarHeaderActions from './CarHeaderActions';
+import { auth } from '@/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role || 'STAFF'; // Default to STAFF if not found
+
   const { id } = await params;
   const car = await prisma.xeMuaVao.findUnique({
     where: { id: parseInt(id) },
@@ -46,7 +50,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         car={car} 
         totalGop={totalGop} 
         totalChiPhi={totalChiPhi} 
-        isOverdue={isOverdue} 
+        isOverdue={isOverdue}
+        userRole={userRole}
       />
     </div>
   );

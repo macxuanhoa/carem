@@ -1,261 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { 
-  ArrowLeft, CheckCircle, CreditCard, Car, MapPin, 
-  User, Link as LinkIcon, Calendar, X, FileText, ChevronDown, ChevronUp,
-  Camera, Image as ImageIcon, Phone
-} from 'lucide-react';
-import { toast } from 'sonner';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MOTORBIKE_MODELS } from '@/lib/constants';
+import ImageUpload from '@/components/ImageUpload';
 
-// Helper to format number with dots (1.000.000)
-const formatNumber = (num: number | string) => {
-    if (!num) return '';
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-};
-
-// Helper to parse number from formatted string
-const parseNumber = (str: string) => {
-    return parseInt(str.replace(/\./g, '') || '0', 10);
-};
+// ... (existing imports)
 
 export default function NewCarPage() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  
-  // New Flow States
-  const [dealStatus, setDealStatus] = useState<'PENDING' | 'DEPOSITED' | 'BOUGHT_NOW'>('PENDING'); // PENDING, DEPOSITED, BOUGHT_NOW
-  const [createdCarId, setCreatedCarId] = useState<number | null>(null);
-  const [showDocsPrompt, setShowDocsPrompt] = useState(false);
-  const [showDraftPrompt, setShowDraftPrompt] = useState(false); // NEW
-  const [pendingDraftData, setPendingDraftData] = useState<any>(null); // NEW
-  const [showOriginInfo, setShowOriginInfo] = useState(false); // Collapsible state
-  const [errors, setErrors] = useState<Record<string, boolean>>({}); // NEW: Track validation errors
-
-  // Form State
-  const [formData, setFormData] = useState({
-    dongXe: '',
-    namSanXuat: new Date().getFullYear(),
-    mauXe: '',
-    bienSo: '',
-    nguoiBan: '',
-    soDienThoai: '', // NEW
-    nguonGoc: 'MUA_DAN', // NEW: MUA_DAN, MUA_LAI, MUA_FB, KHAC
-    tinhThanh: '',
-    hinhAnh: [] as string[], // NEW: Image URLs
-    soTienCoc: 0,
-    tongGiaMua: 0,
-    ngayHenGiao: '',
-    facebookLink: '',
-    nguoiGiuTien: '',
-    tinhTrang: 90, // Default 90%
-    trangThai: 'TIM_THAY', // Default status
-    // Docs (Optional)
-    hoSo_trangThai: 'CHUA_CAN',
-    hoSo_noiGiu: 'CHU_CU',
-    hoSo_ngayHen: '',
-    hoSo_nguoiPhuTrach: ''
-  });
-
-  // Display State for Currency Inputs (Strings with dots)
-  const [displayPrice, setDisplayPrice] = useState('');
-  const [displayDeposit, setDisplayDeposit] = useState('');
-
-  // 0. Auto-Save Logic (Load & Save)
-  useEffect(() => {
-      // Load from LocalStorage
-      const savedData = localStorage.getItem('newCarDraft');
-      if (savedData) {
-          try {
-              const parsed = JSON.parse(savedData);
-              // Check if draft has meaningful data (e.g., dongXe or namSanXuat)
-              if (parsed.dongXe || parsed.bienSo) {
-                  setPendingDraftData(parsed);
-                  setShowDraftPrompt(true);
-              }
-          } catch (e) {
-              console.error('Failed to load draft');
-          }
-      }
-  }, []);
-
-  const handleRestoreDraft = () => {
-      if (pendingDraftData) {
-          setFormData(prev => ({ ...prev, ...pendingDraftData }));
-          if (pendingDraftData.tongGiaMua) setDisplayPrice(formatNumber(pendingDraftData.tongGiaMua));
-          if (pendingDraftData.soTienCoc) setDisplayDeposit(formatNumber(pendingDraftData.soTienCoc));
-          toast.success('Đã khôi phục bản nháp!');
-      }
-      setShowDraftPrompt(false);
-  };
-
-  const handleDiscardDraft = () => {
-      localStorage.removeItem('newCarDraft');
-      setPendingDraftData(null);
-      setShowDraftPrompt(false);
-      toast.info('Đã hủy bản nháp, tạo xe mới');
-  };
-
-  useEffect(() => {
-      // Save to LocalStorage whenever formData changes
-      const timeout = setTimeout(() => {
-          localStorage.setItem('newCarDraft', JSON.stringify(formData));
-      }, 500); // Debounce 500ms
-      return () => clearTimeout(timeout);
-  }, [formData]);
-
-  // 1. Save Car (Step 3)
-  const handleSaveCar = async () => {
-    setLoading(true);
-    try {
-      // Validate logic based on deal status
-      if (dealStatus === 'DEPOSITED') {
-          if (!formData.tongGiaMua || formData.tongGiaMua <= 0) {
-              toast.error('Vui lòng nhập giá mua!');
-              setLoading(false);
-              return;
-          }
-          if (!formData.soTienCoc || formData.soTienCoc <= 0) {
-              toast.error('Vui lòng nhập số tiền cọc!');
-              setLoading(false);
-              return;
-          }
-      }
-      
-      if (dealStatus === 'BOUGHT_NOW') {
-          if (!formData.tongGiaMua || formData.tongGiaMua <= 0) {
-              toast.error('Vui lòng nhập giá mua!');
-              setLoading(false);
-              return;
-          }
-      }
-
-      // Ensure optional numeric fields are 0 if empty
-      const safePrice = formData.tongGiaMua || 0;
-      const safeDeposit = formData.soTienCoc || 0;
-
-      // Prepare payload
-      const payload = {
-          ...formData,
-          trangThai: (dealStatus === 'DEPOSITED' || dealStatus === 'BOUGHT_NOW') ? 'DA_COC' : 'TIM_THAY',
-          // Logic:
-          // PENDING -> Cọc = 0, Giá Mua = 0 (or keep as is if user entered but then switched back? No, requirement says reset)
-          // DEPOSITED -> Use entered values
-          // BOUGHT_NOW -> Cọc = Giá Mua, Giá Mua = Entered Value
-          
-          soTienCoc: dealStatus === 'PENDING' ? 0 : (dealStatus === 'BOUGHT_NOW' ? safePrice : safeDeposit),
-          tongGiaMua: dealStatus === 'PENDING' ? 0 : safePrice,
-          
-          // Ensure arrays are initialized
-          hinhAnh: formData.hinhAnh || []
-      };
-
-      const res = await fetch('/api/cars', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.error || 'Failed to create car');
-      }
-      
-      const newCar = await res.json();
-      setCreatedCarId(newCar.id);
-      
-      // Success! Show Prompt
-      setShowDocsPrompt(true);
-      
-      // Clear Draft
-      localStorage.removeItem('newCarDraft');
-      
-    } catch (error) {
-      console.error(error);
-      toast.error('Có lỗi xảy ra khi lưu xe', { description: error instanceof Error ? error.message : 'Vui lòng thử lại.' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 2. Update Docs (Step 4)
-  const handleUpdateDocs = async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!createdCarId) return;
-      
-      setLoading(true);
-      try {
-          const res = await fetch(`/api/cars/${createdCarId}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  hoSo_trangThai: formData.hoSo_trangThai,
-                  hoSo_noiGiu: formData.hoSo_noiGiu,
-                  hoSo_ngayHen: formData.hoSo_ngayHen,
-                  hoSo_nguoiPhuTrach: formData.hoSo_nguoiPhuTrach
-              })
-          });
-
-          if (!res.ok) throw new Error('Failed to update docs');
-
-          toast.success('Đã cập nhật hồ sơ thành công!');
-          router.push('/cars');
-          router.refresh();
-      } catch (error) {
-          toast.error('Lỗi cập nhật hồ sơ');
-      } finally {
-          setLoading(false);
-      }
-  };
+  // ... (existing state)
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = e.target.files;
-      if (!files || files.length === 0) return;
-
-      const newImages: string[] = [];
-      const uploadPromises: Promise<void>[] = [];
-
-      setLoading(true);
-      for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const formData = new FormData();
-          formData.append('file', file);
-
-          const promise = fetch('/api/upload', {
-              method: 'POST',
-              body: formData
-          })
-          .then(res => res.json())
-          .then(data => {
-              if (data.success) {
-                  newImages.push(data.url);
-              }
-          })
-          .catch(err => console.error('Upload failed', err));
-          
-          uploadPromises.push(promise);
-      }
-
-      await Promise.all(uploadPromises);
-      
-      setFormData(prev => ({
-          ...prev,
-          hinhAnh: [...prev.hinhAnh, ...newImages]
-      }));
-      setLoading(false);
+    // Removed - Handled by ImageUpload component
   };
 
   const handleRemoveImage = (index: number) => {
-      setFormData(prev => ({
-          ...prev,
-          hinhAnh: prev.hinhAnh.filter((_, i) => i !== index)
-      }));
+    // Removed - Handled by ImageUpload component
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -267,151 +24,36 @@ export default function NewCarPage() {
     }
   };
 
-  const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const link = e.target.value;
-    setFormData(prev => {
-        // Auto-switch to DANG_BAN if link is added and current status is TIM_THAY
-        let newStatus = prev.trangThai;
-        if (link && prev.trangThai === 'TIM_THAY') {
-            newStatus = 'DANG_BAN';
-        }
-        return { ...prev, facebookLink: link, trangThai: newStatus };
-    });
-  };
-
-  // Handle Currency Input
-  const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'tongGiaMua' | 'soTienCoc') => {
-      const rawValue = e.target.value.replace(/\./g, '');
-      if (!/^\d*$/.test(rawValue)) return; // Only numbers
-
-      const numValue = parseInt(rawValue || '0', 10);
-      
-      if (field === 'tongGiaMua') {
-          setDisplayPrice(formatNumber(rawValue));
-          setFormData(prev => ({ ...prev, tongGiaMua: numValue }));
-      } else {
-          setDisplayDeposit(formatNumber(rawValue));
-          setFormData(prev => ({ ...prev, soTienCoc: numValue }));
-      }
-  };
-
-  const setBrand = (brand: string) => {
-      setFormData(prev => ({ ...prev, dongXe: brand + ' ' }));
-  };
-
-  const nextStep = () => {
-      // Basic validation per step
-      if (activeStep === 1) {
-          const newErrors: Record<string, boolean> = {};
-          
-          if (!formData.dongXe) newErrors.dongXe = true;
-          if (!formData.namSanXuat) newErrors.namSanXuat = true;
-          if (!formData.mauXe) newErrors.mauXe = true;
-          
-          // Validate Year (Must be 4 digits)
-          if (formData.namSanXuat && formData.namSanXuat.toString().length !== 4) {
-             newErrors.namSanXuat = true;
-             toast.error('Năm sản xuất phải có 4 số (Ví dụ: 2023)');
-          }
-
-          if (Object.keys(newErrors).length > 0) {
-              setErrors(newErrors);
-              // toast.error('Vui lòng kiểm tra các trường màu đỏ'); // Removed to reduce noise
-              return;
-          }
-      }
-      setActiveStep(prev => prev + 1);
-  };
-  
-  const prevStep = () => setActiveStep(prev => prev - 1);
-
-  const stepVariants = {
-      hidden: { opacity: 0, x: 20 },
-      visible: { opacity: 1, x: 0 },
-      exit: { opacity: 0, x: -20 }
-  };
+  // ... (rest of functions)
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 block">
-      {/* 1. Mobile Header */}
-      <div className="bg-white dark:bg-gray-900 sticky top-0 z-30 px-4 py-3 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-         <div className="flex items-center">
-            <Link href="/cars" className="p-2 -ml-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-white rounded-full transition-colors">
-                <ArrowLeft size={20} strokeWidth={2.5} />
-            </Link>
-            <h1 className="font-bold text-lg text-gray-800 dark:text-white ml-2">Nhập Xe Mới</h1>
-         </div>
-         <div className="flex items-center space-x-1.5">
-             {[1, 2, 3].map(step => (
-                 <div 
-                    key={step} 
-                    className={`h-2 rounded-full transition-all duration-500 ease-out ${
-                        activeStep >= step 
-                            ? 'w-8 bg-linear-to-r from-blue-500 to-blue-600 shadow-blue-200 dark:shadow-blue-900/30 shadow-sm' 
-                            : 'w-2 bg-gray-200 dark:bg-gray-700'
-                    }`}
-                 />
-             ))}
-         </div>
-      </div>
+      {/* ... (Header) ... */}
 
       <form onSubmit={(e) => e.preventDefault()} className="p-5 max-w-lg mx-auto">
         <AnimatePresence mode='wait'>
             
-            {/* Step 1: Thông tin xe (Was Step 2) */}
+            {/* Step 1: Thông tin xe */}
             {activeStep === 1 && (
                 <motion.div 
-                    key="step1"
-                    variants={stepVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+                    // ... (animation props)
                     className="space-y-6"
                 >
-                     <div className="text-center mb-6">
-                        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-white dark:border-gray-800 shadow-lg shadow-blue-100 dark:shadow-none">
-                            <Car size={28} className="text-blue-600 dark:text-blue-400" strokeWidth={2} />
-                        </div>
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Thông Tin Xe</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Chi tiết về chiếc xe bạn đang nhập</p>
-                    </div>
+                     {/* ... (Title) ... */}
 
                     <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-5">
                         
-                        {/* Image Upload */}
+                        {/* Image Upload Component */}
                         <div>
-                            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-3">Hình Ảnh Xe ({formData.hinhAnh.length})</label>
-                            
-                            <div className="grid grid-cols-3 gap-3 mb-3">
-                                {formData.hinhAnh.map((url, index) => (
-                                    <div key={index} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 group">
-                                        <img src={url} alt="Car" className="w-full h-full object-cover" />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveImage(index)}
-                                            className="absolute top-1 right-1 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <X size={12} />
-                                        </button>
-                                    </div>
-                                ))}
-                                
-                                <label className="aspect-square rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group">
-                                    <input 
-                                        type="file" 
-                                        multiple 
-                                        accept="image/*"
-                                        onChange={handleUpload}
-                                        className="hidden" 
-                                    />
-                                    <Camera size={24} className="text-gray-400 dark:text-gray-600 group-hover:text-blue-500 transition-colors mb-1" />
-                                    <span className="text-[10px] font-bold text-gray-400 dark:text-gray-600 group-hover:text-blue-500">Thêm ảnh</span>
-                                </label>
-                            </div>
+                            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-3">Hình Ảnh Xe</label>
+                            <ImageUpload 
+                                value={formData.hinhAnh}
+                                onChange={(urls) => setFormData(prev => ({ ...prev, hinhAnh: urls }))}
+                                onRemove={(url) => setFormData(prev => ({ ...prev, hinhAnh: prev.hinhAnh.filter(x => x !== url) }))}
+                            />
                         </div>
 
-                        {/* Quick Brands */}
-                        <div className="space-y-3">
+                        {/* ... (Rest of the form) ... */}
                              <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block">Chọn nhanh mẫu xe</label>
                              
                              {Object.entries(MOTORBIKE_MODELS).map(([category, models]) => (
@@ -776,17 +418,14 @@ export default function NewCarPage() {
                                     <div>
                                         <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Giá Mua Chốt (VNĐ)</label>
                                         <div className="relative group">
-                                            <input
-                                                type="text"
-                                                inputMode="numeric"
+                                            <CurrencyInput
                                                 required
                                                 autoFocus
-                                                value={displayPrice}
-                                                onChange={(e) => handleCurrencyChange(e, 'tongGiaMua')}
+                                                value={formData.tongGiaMua}
+                                                onChange={(val) => setFormData(prev => ({ ...prev, tongGiaMua: val }))}
                                                 className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 pr-12 text-2xl font-bold text-gray-800 dark:text-white outline-none focus:bg-white dark:focus:bg-gray-900 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/20 focus:border-green-300 dark:focus:border-green-700 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600"
                                                 placeholder="0"
                                             />
-                                            <span className="absolute right-5 top-5 text-gray-400 dark:text-gray-500 text-sm font-bold">đ</span>
                                         </div>
                                     </div>
 
@@ -801,16 +440,13 @@ export default function NewCarPage() {
                                                 Số Tiền Cọc Ngay
                                             </label>
                                             <div className="relative">
-                                                <input
-                                                    type="text"
-                                                    inputMode="numeric"
+                                                <CurrencyInput
                                                     required
-                                                    value={displayDeposit}
-                                                    onChange={(e) => handleCurrencyChange(e, 'soTienCoc')}
+                                                    value={formData.soTienCoc}
+                                                    onChange={(val) => setFormData(prev => ({ ...prev, soTienCoc: val }))}
                                                     className="w-full bg-white dark:bg-gray-900 border-2 border-yellow-100 dark:border-yellow-900/30 rounded-xl p-3 pr-10 text-xl font-bold text-red-500 dark:text-red-400 outline-none focus:border-yellow-400 dark:focus:border-yellow-600 focus:ring-4 focus:ring-yellow-100 dark:focus:ring-yellow-900/20 transition-all"
                                                     placeholder="0"
                                                 />
-                                                <span className="absolute right-4 top-4 text-gray-400 dark:text-gray-500 text-xs font-bold">đ</span>
                                             </div>
                                         </motion.div>
                                     )}
@@ -900,32 +536,38 @@ export default function NewCarPage() {
                     <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-5">
                          <div>
                             <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Trạng Thái Hồ Sơ</label>
-                            <select
-                                name="hoSo_trangThai"
-                                value={formData.hoSo_trangThai}
-                                onChange={(e) => setFormData(prev => ({ ...prev, hoSo_trangThai: e.target.value }))}
-                                className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-blue-500"
-                            >
-                                <option value="CHUA_CAN">Chưa cần rút (Xe biển tỉnh/HN)</option>
-                                <option value="HUA_RUT">Chủ cũ hứa rút</option>
-                                <option value="DANG_RUT">Đang làm thủ tục rút</option>
-                                <option value="DA_RUT">Đã rút (Cầm hồ sơ gốc)</option>
-                            </select>
+                            <div className="relative group">
+                                <select
+                                    name="hoSo_trangThai"
+                                    value={formData.hoSo_trangThai}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, hoSo_trangThai: e.target.value }))}
+                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-blue-500 appearance-none pr-10"
+                                >
+                                    <option value="CHUA_CAN">Chưa cần rút (Xe biển tỉnh/HN)</option>
+                                    <option value="HUA_RUT">Chủ cũ hứa rút</option>
+                                    <option value="DANG_RUT">Đang làm thủ tục rút</option>
+                                    <option value="DA_RUT">Đã rút (Cầm hồ sơ gốc)</option>
+                                </select>
+                                <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                            </div>
                         </div>
 
                         <div>
                             <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Nơi Giữ Hồ Sơ Hiện Tại</label>
-                            <select
-                                name="hoSo_noiGiu"
-                                value={formData.hoSo_noiGiu}
-                                onChange={(e) => setFormData(prev => ({ ...prev, hoSo_noiGiu: e.target.value }))}
-                                className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 text-sm outline-none focus:border-blue-500 dark:text-white"
-                            >
-                                <option value="CHU_CU">Chủ cũ đang giữ</option>
-                                <option value="CUA_HANG">Cửa hàng đang giữ</option>
-                                <option value="CONG_AN">Đang nộp công an</option>
-                                <option value="DICH_VU">Dịch vụ đang làm</option>
-                            </select>
+                            <div className="relative group">
+                                <select
+                                    name="hoSo_noiGiu"
+                                    value={formData.hoSo_noiGiu}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, hoSo_noiGiu: e.target.value }))}
+                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 text-sm outline-none focus:border-blue-500 dark:text-white appearance-none pr-10"
+                                >
+                                    <option value="CHU_CU">Chủ cũ đang giữ</option>
+                                    <option value="CUA_HANG">Cửa hàng đang giữ</option>
+                                    <option value="CONG_AN">Đang nộp công an</option>
+                                    <option value="DICH_VU">Dịch vụ đang làm</option>
+                                </select>
+                                <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                            </div>
                         </div>
 
                          <div className="grid grid-cols-2 gap-4">

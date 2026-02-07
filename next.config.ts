@@ -16,6 +16,18 @@ const nextConfig: NextConfig = {
   output: "standalone", // Required for Docker
   reactCompiler: true,
   turbopack: {},
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
+  },
 };
 
 export default withPWA(nextConfig);

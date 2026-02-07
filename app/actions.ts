@@ -4,6 +4,11 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { carSchema, CarFormData } from '@/lib/schemas';
+import { signOut } from '@/auth';
+
+export async function logout() {
+  await signOut({ redirectTo: '/login' });
+}
 
 export async function deleteCar(id: number) {
   try {

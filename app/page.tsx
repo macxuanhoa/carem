@@ -7,40 +7,65 @@ import {
 import DashboardChart from './components/DashboardChart';
 import DashboardSearch from '@/components/DashboardSearch';
 import ThemeToggle from '@/components/ThemeToggle';
+import UserMenu from '@/components/UserMenu';
 import { formatCurrency, formatTimeAgo, formatStatus } from '@/lib/utils';
+import { unstable_cache } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
-export default async function DashboardPage() {
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+const getDashboardStats = unstable_cache(
+    async () => {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  // 1. Fetch Stats (Parallel Fetching for Performance)
-  const [
+        const [
+            carsInStock,
+            overdueDocs,
+            pendingExpenses,
+            recentSales,
+            recentImports,
+            recentExpenses
+        ] = await Promise.all([
+            prisma.xeMuaVao.count({ where: { trangThai: { notIn: ['DA_BAN', 'HUY_GIAO_DICH'] } } }),
+            prisma.hoSoXe.count({ where: { trangThai: 'QUA_HAN' } }),
+            prisma.chiPhiXe.count({ where: { trangThai: 'CHO_DUYET' } }),
+            prisma.xeBanRa.findMany({
+                where: { ngayBan: { gte: sevenDaysAgo } },
+                select: { ngayBan: true, giaBan: true }
+            }),
+            prisma.xeMuaVao.findMany({
+                orderBy: { createdAt: 'desc' },
+                take: 5,
+                select: { id: true, dongXe: true, bienSo: true, trangThai: true, createdAt: true, tongGiaMua: true, hinhAnh: true }
+            }),
+            prisma.xeMuaVao.findMany({
+                where: { createdAt: { gte: sevenDaysAgo } },
+                select: { createdAt: true, tongGiaMua: true }
+            })
+        ]);
+
+        return {
+            carsInStock,
+            overdueDocs,
+            pendingExpenses,
+            recentSales,
+            recentImports,
+            recentExpenses
+        };
+    },
+    ['dashboard-stats'],
+    { revalidate: 60 } // Cache for 60 seconds
+);
+
+export default async function DashboardPage() {
+  const {
     carsInStock,
     overdueDocs,
     pendingExpenses,
     recentSales,
     recentImports,
-    recentExpenses // NEW
-  ] = await Promise.all([
-    prisma.xeMuaVao.count({ where: { trangThai: { notIn: ['DA_BAN', 'HUY_GIAO_DICH'] } } }),
-    prisma.hoSoXe.count({ where: { trangThai: 'QUA_HAN' } }),
-    prisma.chiPhiXe.count({ where: { trangThai: 'CHO_DUYET' } }),
-    prisma.xeBanRa.findMany({
-        where: { ngayBan: { gte: sevenDaysAgo } },
-        select: { ngayBan: true, giaBan: true }
-    }),
-    prisma.xeMuaVao.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: 5,
-        select: { id: true, dongXe: true, bienSo: true, trangThai: true, createdAt: true, tongGiaMua: true }
-    }),
-    prisma.xeMuaVao.findMany({ // Get recent spending (Buying cars)
-        where: { createdAt: { gte: sevenDaysAgo } },
-        select: { createdAt: true, tongGiaMua: true }
-    })
-  ]);
+    recentExpenses
+  } = await getDashboardStats();
 
   // Optimized Data Processing
   const chartData = Array.from({ length: 7 }).map((_, i) => {
@@ -66,21 +91,7 @@ export default async function DashboardPage() {
       {/* 1. Ultra Clean Sticky Header */}
       <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-6 pt-12 pb-4 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
-              <Link href="/reports" className="flex items-center space-x-3 group cursor-pointer p-1.5 -ml-1.5 rounded-xl hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all active:scale-95">
-                  <div className="w-10 h-10 rounded-full overflow-hidden shadow-md ring-2 ring-white dark:ring-gray-700 relative">
-                      <Image 
-                        src="/avtcarem.jpg" 
-                        alt="Cà Rem" 
-                        fill
-                        className="object-cover"
-                        sizes="40px"
-                      />
-                  </div>
-                  <div>
-                      <p className="text-gray-400 text-[10px] uppercase font-bold tracking-widest">Xin chào,</p>
-                      <h1 className="text-xl font-bold text-gray-900 dark:text-white">Cà Rem</h1>
-                  </div>
-              </Link>
+              <UserMenu />
               <div className="flex items-center gap-2">
                 <div className="md:hidden">
                     <ThemeToggle />
@@ -176,11 +187,24 @@ export default async function DashboardPage() {
                 </Link>
             </div>
             <div className="space-y-3">
-                {recentImports.map(car => (
+                {recentImports.map(car => {
+                    let image = null;
+                    try {
+                        const images = JSON.parse(car.hinhAnh || '[]');
+                        if (images.length > 0) image = images[0];
+                    } catch (e) {}
+
+                    return (
                     <Link key={car.id} href={`/cars/${car.id}`} className="card-premium p-4 flex justify-between items-center group">
                         <div className="flex items-center">
-                            <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-2xl flex items-center justify-center mr-4 font-bold text-gray-400 dark:text-gray-500 text-sm border border-gray-100 dark:border-gray-700 group-hover:border-blue-100 dark:group-hover:border-blue-900 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
-                                {car.dongXe.substring(0, 1).toUpperCase()}
+                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4 font-bold text-sm border border-gray-100 dark:border-gray-700 group-hover:border-blue-100 dark:group-hover:border-blue-900 overflow-hidden relative">
+                                {image ? (
+                                    <img src={image} className="w-full h-full object-cover" alt={car.dongXe} />
+                                ) : (
+                                    <div className="bg-gray-50 dark:bg-gray-800 w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+                                        {car.dongXe.substring(0, 1).toUpperCase()}
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 <h4 className="font-bold text-sm text-gray-900 dark:text-white mb-0.5 line-clamp-1">{car.dongXe}</h4>
@@ -205,7 +229,7 @@ export default async function DashboardPage() {
                             </div>
                         </div>
                     </Link>
-                ))}
+                )})}
             </div>
         </section>
 

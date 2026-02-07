@@ -57,6 +57,12 @@ model XeMuaVao {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  // Indexes for performance
+  @@index([trangThai])
+  @@index([createdAt])
+  @@index([dongXe])
+  @@index([bienSo])
+  
   // Relations
   banRa           XeBanRa?
   hoSo            HoSoXe?
@@ -79,6 +85,8 @@ model XeBanRa {
   daThuDuTien     Boolean  @default(false)
   
   trangThai       String @default("DANG_BAN")
+
+  @@index([ngayBan])
 }
 
 // 3. QUẢN LÝ HỒ SƠ XE
@@ -97,6 +105,8 @@ model HoSoXe {
   
   nguoiChiuTrachNhiem String? 
   ghiChu          String?     
+
+  @@index([trangThai])
 }
 
 // 4. GÓP XE – ĐẦU TƯ XE
@@ -157,6 +167,8 @@ model ChiPhiXe {
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt // Track thời gian duyệt
+
+  @@index([trangThai])
 }
 
 // 6. NOTE – XE CẦN TÌM LẠI – XE TREO
@@ -169,6 +181,21 @@ model GhiChuXe {
   loaiGhiChu      String @default("KHAC") 
   
   createdAt       DateTime @default(now())
+}
+
+// 8. USERS & ROLES
+enum Role {
+  ADMIN
+  STAFF
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
 }
 
 // 7. AUDIT LOG (LỊCH SỬ THAY ĐỔI)

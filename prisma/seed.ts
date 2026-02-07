@@ -11,6 +11,28 @@ async function main() {
   await prisma.xeBanRa.deleteMany();
   await prisma.xeGopDauTu.deleteMany();
   await prisma.xeMuaVao.deleteMany();
+  await prisma.user.deleteMany();
+
+  // --- 0. USERS ---
+  // Default Admin User
+  await prisma.user.create({
+      data: {
+          username: 'admin',
+          password: '123', // In production, hash this!
+          name: 'Administrator',
+          role: 'ADMIN'
+      }
+  });
+
+  // Default Staff User
+  await prisma.user.create({
+      data: {
+          username: 'sale1',
+          password: '123',
+          name: 'Nhân Viên Sale',
+          role: 'STAFF'
+      }
+  });
 
   // --- 1. XE SỐ ---
   await prisma.xeMuaVao.create({

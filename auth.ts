@@ -1,35 +1,48 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import { prisma } from "@/lib/prisma"
+import { authConfig } from "./auth.config"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
-      name: "Admin Access",
+      name: "Account Access",
       credentials: {
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (credentials?.password === process.env.ADMIN_PASSWORD) {
-            return { id: "1", name: "Admin", email: "admin@webxe.com" }
+        console.log('Authorizing user:', credentials?.username);
+        if (!credentials?.username || !credentials?.password) return null;
+
+        try {
+            const user = await prisma.user.findUnique({
+                where: { username: credentials.username as string }
+            });
+
+            console.log('User found:', user ? 'Yes' : 'No');
+
+            if (!user) return null;
+
+            // In production, compare hashed password!
+            if (user.password === credentials.password) {
+                console.log('Password match!');
+                return { 
+                    id: user.id, 
+                    name: user.name, 
+                    role: user.role
+                }
+            } else {
+                console.log('Password mismatch');
+            }
+        } catch (error) {
+            console.error('Auth Error:', error);
+            return null;
         }
+        
         return null
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    authorized: async ({ auth, request: { nextUrl } }) => {
-      const isLoggedIn = !!auth?.user;
-      const isOnLoginPage = nextUrl.pathname.startsWith('/login');
-      
-      if (isOnLoginPage) {
-        if (isLoggedIn) return Response.redirect(new URL('/', nextUrl));
-        return true; // Allow access to login page
-      }
-      
-      return isLoggedIn; // Redirect unauthenticated users to login page
-    },
-  },
 })

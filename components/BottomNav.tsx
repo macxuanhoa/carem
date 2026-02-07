@@ -7,6 +7,9 @@ import { Home, Car, DollarSign, BarChart2, Plus } from 'lucide-react';
 export default function BottomNav() {
   const pathname = usePathname();
 
+  // Hide BottomNav on login page
+  if (pathname === '/login') return null;
+
   const isActive = (path: string) => {
       if (path === '/') return pathname === '/';
       if (path === '/cars') return pathname.startsWith('/cars') && pathname !== '/cars/new';
