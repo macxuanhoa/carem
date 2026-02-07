@@ -1,6 +1,6 @@
 "use client";
 
-import { UploadDropzone } from "@/lib/uploadthing";
+import { UploadButton } from "@/lib/uploadthing";
 import { X, Image as ImageIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -53,31 +53,35 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* Upload Dropzone */}
-      <UploadDropzone
-        endpoint="imageUploader"
-        onUploadBegin={() => setIsUploading(true)}
-        onClientUploadComplete={(res) => {
-          setIsUploading(false);
-          const urls = res.map((r) => r.url);
-          onChange([...value, ...urls]);
-          toast.success("Đã tải ảnh lên thành công!");
-        }}
-        onUploadError={(error: Error) => {
-          setIsUploading(false);
-          toast.error(`Lỗi: ${error.message}`);
-        }}
-        appearance={{
-            container: "border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-2xl p-8 hover:bg-blue-50 transition-colors cursor-pointer",
-            label: "text-blue-600 font-bold hover:text-blue-700",
-            allowedContent: "text-gray-400 text-xs",
-            button: "bg-blue-600 text-white font-bold px-4 py-2 rounded-xl mt-4 hover:bg-blue-700 transition-colors",
-        }}
-        content={{
-            label: "Kéo thả hoặc bấm để chọn ảnh",
-            allowedContent: "Ảnh tối đa 16MB (JPG, PNG, WEBP)",
-        }}
-      />
+      {/* Upload Button */}
+      <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-100 bg-blue-50/30 rounded-2xl hover:bg-blue-50 transition-colors">
+          <UploadButton
+            endpoint="imageUploader"
+            onUploadBegin={() => setIsUploading(true)}
+            onClientUploadComplete={(res) => {
+              setIsUploading(false);
+              const urls = res.map((r) => r.url);
+              onChange([...value, ...urls]);
+              toast.success("Đã tải ảnh lên thành công!");
+            }}
+            onUploadError={(error: Error) => {
+              setIsUploading(false);
+              toast.error(`Lỗi: ${error.message}`);
+            }}
+            appearance={{
+                button: "bg-blue-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors ut-uploading:cursor-not-allowed",
+                allowedContent: "text-gray-500 text-xs mt-2",
+                container: "w-full flex flex-col items-center"
+            }}
+            content={{
+                button({ ready }) {
+                    if (ready) return <span className="flex items-center gap-2"><ImageIcon size={18} /> Chọn Ảnh</span>;
+                    return "Đang chuẩn bị...";
+                },
+                allowedContent: "Ảnh tối đa 16MB (JPG, PNG, WEBP)"
+            }}
+          />
+      </div>
     </div>
   );
 }
