@@ -18,9 +18,13 @@ export async function authenticate(
         redirect: false, 
     });
 
-    // Note: In some NextAuth v5 versions, signIn might still throw on error
-    // or return undefined on success?
     console.log('SignIn Result:', result);
+
+    // If signIn returns an error object (instead of throwing)
+    // We should throw it manually to be caught below
+    if (result?.error) {
+        throw new AuthError(result.error);
+    }
     
     // If we get here, it might be successful.
   } catch (error) {

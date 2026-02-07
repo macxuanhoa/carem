@@ -17,9 +17,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.username || !credentials?.password) return null;
 
         try {
-            const user = await prisma.user.findUnique({
+            let user = await prisma.user.findUnique({
                 where: { username: credentials.username as string }
             });
+
+            // --- AUTO-FIX: Create Admin if missing (for Vercel/New Deployments) ---
+            if (!user && credentials.username === 'admin' && credentials.password === '123') {
+                console.log('User not found. Auto-creating default Admin account...');
+                try {
+                    user = await prisma.user.create({
+                        data: {
+                            username: 'admin',
+                            password: '123', // In real app, hash this!
+                            name: 'Administrator',
+                            role: 'ADMIN'
+                        }
+                    });
+                    console.log('Default Admin created successfully.');
+                } catch (createError) {
+                    console.error('Failed to create admin:', createError);
+                }
+            }
+            // ----------------------------------------------------------------------
 
             console.log('User found:', user ? 'Yes' : 'No');
 
