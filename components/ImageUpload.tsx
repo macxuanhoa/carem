@@ -18,6 +18,47 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
 
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = document.createElement('img');
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 1200;
+                const MAX_HEIGHT = 1200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx?.drawImage(img, 0, 0, width, height);
+                
+                // Compress to JPEG with 0.7 quality
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                resolve(dataUrl);
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
+  };
+
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
@@ -27,27 +68,17 @@ export default function ImageUpload({
     
     try {
         for (const file of files) {
-            const formData = new FormData();
-            formData.append('file', file);
-            
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!res.ok) throw new Error('Upload failed');
-            
-            const data = await res.json();
-            if (data.success) {
-                newUrls.push(data.url);
-            }
+            // Client-side compression and conversion to Base64
+            // This avoids API calls and works everywhere (Vercel, local, etc.)
+            const base64 = await compressImage(file);
+            newUrls.push(base64);
         }
         
         onChange([...value, ...newUrls]);
-        toast.success("Đã tải ảnh lên thành công!");
+        toast.success("Đã thêm ảnh thành công!");
     } catch (error) {
         console.error(error);
-        toast.error("Lỗi tải ảnh lên. Vui lòng thử lại.");
+        toast.error("Lỗi xử lý ảnh. Vui lòng thử lại.");
     } finally {
         setIsUploading(false);
         // Reset input
