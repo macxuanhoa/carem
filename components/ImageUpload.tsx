@@ -27,8 +27,8 @@ export default function ImageUpload({
             img.src = event.target?.result as string;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1600; // Balance between quality and size for DB storage
-                const MAX_HEIGHT = 1600;
+                const MAX_WIDTH = 1920; // Tăng độ phân giải tối đa (cũ là 1200)
+                const MAX_HEIGHT = 1920;
                 let width = img.width;
                 let height = img.height;
 
@@ -49,8 +49,8 @@ export default function ImageUpload({
                 const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0, width, height);
                 
-                // Compress to JPEG with 0.85 quality (Good quality, reasonable size ~200-300KB)
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                // Compress to JPEG with 0.9 quality (High Quality)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 resolve(dataUrl);
             };
             img.onerror = (err) => reject(err);
@@ -68,8 +68,7 @@ export default function ImageUpload({
     
     try {
         for (const file of files) {
-            // Client-side compression and usage of Base64 directly
-            // This bypasses Vercel 4.5MB body limit per file request and file system restrictions
+            // Client-side compression to Base64
             const base64 = await compressImage(file);
             newUrls.push(base64);
         }

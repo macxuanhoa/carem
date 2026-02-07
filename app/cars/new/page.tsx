@@ -121,8 +121,16 @@ export default function NewCarPage() {
     const handleSaveCar = async () => {
         setLoading(true);
         try {
-            // Mock API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const res = await fetch('/api/cars', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || 'Failed to save car');
+            }
             
             // Clear draft
             localStorage.removeItem('car_draft');
@@ -131,6 +139,7 @@ export default function NewCarPage() {
             setShowDocsPrompt(true);
         } catch (error) {
             console.error(error);
+            alert('Lỗi khi lưu xe: ' + (error as Error).message);
             setLoading(false);
         }
     };
