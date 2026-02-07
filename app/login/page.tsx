@@ -25,7 +25,7 @@ export default function LoginPage() {
       {/* Dynamic Background with Car Theme */}
       <div className="absolute inset-0 z-0">
           {/* Abstract Car Silhouette or high quality gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-[#0f172a] to-[#1e1b4b]" />
+          <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-[#0f172a] to-[#1e1b4b]" />
           
           {/* Decorative Glows */}
           <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[100px] animate-pulse" />
@@ -41,7 +41,7 @@ export default function LoginPage() {
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="bg-white/5 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden ring-1 ring-white/5">
+        <div className="bg-white/5 backdrop-blur-2xl rounded-4xl shadow-2xl border border-white/10 overflow-hidden ring-1 ring-white/5">
           
           {/* Header Section */}
           <div className="pt-10 pb-2 px-8 text-center relative">
@@ -49,7 +49,7 @@ export default function LoginPage() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-lg shadow-blue-500/40 mb-6 group transform hover:scale-105 transition-transform duration-300"
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-linear-to-tr from-blue-600 to-indigo-500 shadow-lg shadow-blue-500/40 mb-6 group transform hover:scale-105 transition-transform duration-300"
              >
                 <Car className="w-10 h-10 text-white drop-shadow-md" />
              </motion.div>
@@ -104,7 +104,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 p-[1px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-blue-900/20 bg-[length:200%_auto] hover:bg-right transition-[background-position] duration-500"
+              className="w-full group relative overflow-hidden rounded-xl bg-linear-to-r from-blue-600 via-indigo-600 to-blue-600 p-px focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-[background-position,transform,box-shadow] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-blue-900/20 bg-size-[200%_auto] hover:bg-right duration-500"
             >
               <div className="relative bg-transparent h-full w-full rounded-[11px] px-4 py-4 flex items-center justify-center gap-2 text-white font-bold text-lg">
                 {isPending ? (

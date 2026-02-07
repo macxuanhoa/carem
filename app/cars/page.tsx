@@ -43,13 +43,12 @@ async function CarList({ sort, group, groupBy, query, status, model }: { sort: s
          ];
     }
     else if (status === 'all') {
-        // All Inventory (Excluding Sold/Cancelled)
-        whereClause.trangThai = { in: CAR_STATUS_GROUPS[0].statuses };
-        // We include deposited cars in "All Inventory" for overview
+        // All Inventory + Sold (Excluding Cancelled)
+        whereClause.trangThai = { not: 'HUY_GIAO_DICH' };
     }
     else {
-        // Default (No filter): Show All Inventory
-         whereClause.trangThai = { in: CAR_STATUS_GROUPS[0].statuses };
+        // Default (No filter): Show All (Inventory + Sold)
+         whereClause.trangThai = { not: 'HUY_GIAO_DICH' };
     }
 
     // Search query
