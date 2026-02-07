@@ -2,7 +2,7 @@
 
 import { useActionState, useState, useEffect } from 'react';
 import { authenticate } from '@/app/lib/actions';
-import { Lock, User, Loader2, AlertCircle, ArrowRight, Sparkles, MapPin, Phone } from 'lucide-react';
+import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -23,65 +23,37 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-[#F8F9FB] p-4 font-sans relative overflow-y-auto selection:bg-blue-100 selection:text-blue-900">
+    <div className="flex min-h-dvh w-full items-center justify-center bg-gray-50 p-4 font-sans relative overflow-y-auto selection:bg-blue-100 selection:text-blue-900">
       
-      {/* PROFESSIONAL BACKGROUND (Subtle & Clean) */}
+      {/* Background Pattern - Minimal & Technical */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          {/* Soft Corporate Gradient */}
-          <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-gray-50 via-blue-50/20 to-white" />
-          
-          {/* Subtle Grid for Structure */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[40px_40px]" />
-          
-          {/* Ambient Glows (Restrained) */}
-          <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-100/30 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-50/40 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-white" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-size-[24px_24px]" />
       </div>
 
       <LazyMotion features={domAnimation}>
       <m.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[420px] relative z-20 flex flex-col items-center justify-center py-8 sm:py-0"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full max-w-[400px] relative z-20 flex flex-col items-center justify-center"
       >
-          {/* MAIN CARD - Clean & Sharp */}
-          <div className="bg-white w-full rounded-[32px] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden border border-gray-100 flex flex-col justify-center">
+          {/* MAIN LOGIN CARD - ERP Style */}
+          <div className="bg-white w-full rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-center">
             
-            {/* Top Brand Stripe */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-blue-600 to-indigo-600" />
-
-            {/* HEADER SECTION */}
-            <div className="flex flex-col items-center mb-8 relative pt-12 md:pt-4">
-                <div className="relative mb-6">
-                    <div className="w-24 h-24 relative rounded-full overflow-hidden shadow-xl border-4 border-white ring-1 ring-gray-100 bg-white">
-                        <Image 
-                            src="/avtcarem.jpg" 
-                            alt="Logo Webxe2" 
-                            fill 
-                            className="object-cover"
-                            priority
-                        />
-                    </div>
+            {/* Header: Logo & System Name */}
+            <div className="flex flex-col items-center mb-8">
+                <div className="relative mb-4 w-16 h-16">
+                     <Image 
+                        src="/avtcarem.jpg" 
+                        alt="Logo" 
+                        fill 
+                        className="object-cover rounded-full border border-gray-100 shadow-sm"
+                        priority
+                    />
                 </div>
-                
-                <div className="text-center w-full space-y-4">
-                    <div>
-                        <h1 className="text-[22px] sm:text-2xl font-black text-gray-900 tracking-tight uppercase leading-tight">HỆ THỐNG QUẢN LÝ</h1>
-                    </div>
-
-                    {/* Business Info Box */}
-                    <div className="bg-blue-50/50 rounded-2xl p-4 border border-blue-100/60 flex flex-col items-center gap-3 max-w-[300px] mx-auto backdrop-blur-sm">
-                        <div className="flex items-center gap-2 text-blue-800 font-extrabold text-[11px] uppercase tracking-wider">
-                            <Sparkles size={14} className="text-blue-600 fill-blue-600" />
-                            <span>Chuyên Tay Ga Cao Cấp</span>
-                        </div>
-                        <a href="tel:0914929292" className="flex items-center gap-3 bg-white px-5 py-2.5 rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] border border-blue-100 hover:border-blue-300 hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer group w-full justify-center">
-                             <Phone size={16} className="text-blue-500 fill-blue-100" />
-                             <span className="text-gray-900 font-bold text-[15px] tracking-widest">0914.92.92.92</span>
-                        </a>
-                    </div>
-                </div>
+                <h1 className="text-xl font-bold text-gray-900 uppercase tracking-tight text-center">HỆ THỐNG QUẢN LÝ XE</h1>
+                <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-wider">Webxe2 System v2.0</p>
             </div>
 
             {/* FORM SECTION */}
@@ -89,47 +61,54 @@ export default function LoginPage() {
                 <div className="space-y-4">
                     {/* Username */}
                     <div>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Tài khoản</label>
-                        <div className={`group relative transition-all duration-200 ${focusedInput === 'username' ? 'ring-2 ring-blue-100 rounded-xl' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 ${focusedInput === 'username' ? 'text-blue-600' : 'text-gray-400'}`}>
-                                <User size={18} />
+                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tài khoản</label>
+                        <div className={`relative transition-all duration-200`}>
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                <User size={18} strokeWidth={2} />
                             </div>
                             <input
                                 name="username"
                                 type="text"
                                 required
-                                placeholder="Nhập tên đăng nhập"
+                                placeholder="Nhập mã nhân viên / Admin"
                                 onFocus={() => setFocusedInput('username')}
                                 onBlur={() => setFocusedInput(null)}
-                                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-sm font-medium placeholder:text-gray-400 focus:border-blue-500 focus:outline-none transition-all"
+                                className={`w-full pl-10 pr-4 py-2.5 rounded-md bg-white border text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none transition-all ${
+                                    focusedInput === 'username' 
+                                    ? 'border-blue-600 ring-2 ring-blue-500/10' 
+                                    : 'border-gray-300 hover:border-gray-400'
+                                }`}
                             />
                         </div>
                     </div>
 
                     {/* Password */}
                     <div>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Mật khẩu</label>
-                        <div className={`group relative transition-all duration-200 ${focusedInput === 'password' ? 'ring-2 ring-blue-100 rounded-xl' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 ${focusedInput === 'password' ? 'text-blue-600' : 'text-gray-400'}`}>
-                                <Lock size={18} />
+                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Mật khẩu</label>
+                        <div className={`relative transition-all duration-200`}>
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                <Lock size={18} strokeWidth={2} />
                             </div>
                             <input
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 required
-                                placeholder="Nhập mật khẩu"
+                                placeholder="Nhập mật khẩu hệ thống"
                                 onFocus={() => setFocusedInput('password')}
                                 onBlur={() => setFocusedInput(null)}
-                                className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-sm font-medium placeholder:text-gray-400 focus:border-blue-500 focus:outline-none transition-all"
+                                className={`w-full pl-10 pr-10 py-2.5 rounded-md bg-white border text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none transition-all ${
+                                    focusedInput === 'password' 
+                                    ? 'border-blue-600 ring-2 ring-blue-500/10' 
+                                    : 'border-gray-300 hover:border-gray-400'
+                                }`}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                tabIndex={-1}
                             >
-                                <span className="text-[10px] font-bold text-gray-400 hover:text-blue-600 cursor-pointer uppercase tracking-wider p-1">
-                                    {showPassword ? "Ẩn" : "Hiện"}
-                                </span>
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
                     </div>
@@ -141,10 +120,10 @@ export default function LoginPage() {
                             initial={{ opacity: 0, height: 0, scale: 0.98 }}
                             animate={{ opacity: 1, height: 'auto', scale: 1 }}
                             exit={{ opacity: 0, height: 0, scale: 0.98 }}
-                            className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 flex items-center gap-3 text-sm text-red-600 font-medium"
+                            className="p-3 rounded-md bg-red-50 border border-red-200 flex items-start gap-3 text-sm text-red-700 font-medium"
                         >
-                            <AlertCircle size={16} className="shrink-0 text-red-500" />
-                            {errorMessage}
+                            <AlertCircle size={16} className="shrink-0 mt-0.5 text-red-600" />
+                            <span>{errorMessage}</span>
                         </m.div>
                     )}
                 </AnimatePresence>
@@ -152,36 +131,35 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full mt-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-md shadow-sm hover:shadow transition-all duration-200 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wide"
                 >
                     {isPending ? (
-                        <Loader2 size={20} className="animate-spin text-white/80" />
-                    ) : (
                         <>
-                            <span>Đăng Nhập</span>
-                            <ArrowRight size={16} />
+                            <Loader2 size={18} className="animate-spin text-white/80" />
+                            <span>Đang xử lý...</span>
                         </>
+                    ) : (
+                        <span>Đăng Nhập</span>
                     )}
                 </button>
-                
-                {/* FOOTER ADDRESS - Clean & Legible */}
-                <div className="pt-8 mt-4 border-t border-gray-100/80">
-                     <div className="flex flex-col items-center gap-3">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full">
-                            <MapPin size={11} />
-                            Địa Chỉ
-                        </div>
-                        <p className="text-[13px] font-medium text-gray-600 text-center leading-relaxed max-w-[280px] mx-auto">
-                            107 Nguyễn Tất Thành, Thanh Hà, Hội An
-                        </p>
-                     </div>
-                </div>
             </form>
+            
+            {/* Footer - Technical */}
+            <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col items-center gap-2">
+                 <div className="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+                    <ShieldCheck size={14} />
+                    <span>Bảo mật SSL 256-bit</span>
+                 </div>
+                 <p className="text-[10px] text-gray-300 text-center max-w-[200px]">
+                    Hỗ trợ kỹ thuật: 0914.92.92.92 (Admin)
+                 </p>
+            </div>
+
           </div>
           
           {/* Bottom Copyright */}
           <div className="text-center mt-6">
-             <p className="text-[11px] text-gray-400 font-medium">&copy; 2026 Webxe2 System. All rights reserved.</p>
+             <p className="text-[10px] text-gray-400 font-medium">&copy; 2026 Webxe2 Internal System. v2.0.1</p>
           </div>
       </m.div>
       </LazyMotion>
