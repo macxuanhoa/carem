@@ -116,17 +116,22 @@ function InfoTab({ car, isOverdue, userRole }: any) {
     const handleSaveImages = async () => {
         setIsSaving(true);
         try {
+            // Update the state immediately for better UX
+            const updatedImages = editingImages;
+            
             const res = await fetch(`/api/cars/${car.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ hinhAnh: JSON.stringify(editingImages) })
+                body: JSON.stringify({ hinhAnh: JSON.stringify(updatedImages) })
             });
 
             if (!res.ok) throw new Error('Failed to update');
 
             toast.success('Cập nhật hình ảnh thành công');
             setShowImageModal(false);
-            router.refresh();
+            
+            // Force reload to update images
+            window.location.reload();
         } catch (error) {
             toast.error('Có lỗi xảy ra khi lưu ảnh');
             console.error(error);
