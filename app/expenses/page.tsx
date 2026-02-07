@@ -5,8 +5,6 @@ import { Suspense } from 'react';
 import { formatCurrency, formatShortDate, formatStatus } from '@/lib/utils';
 import ExpenseHeader from './ExpenseHeader';
 
-export const dynamic = 'force-dynamic';
-
 async function ExpenseList({ currentTab, query }: { currentTab: string, query?: string }) {
     const whereClause: any = currentTab === 'PENDING' 
     ? { trangThai: 'CHO_DUYET' } 

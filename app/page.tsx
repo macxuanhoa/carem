@@ -11,8 +11,6 @@ import UserMenu from '@/components/UserMenu';
 import { formatCurrency, formatTimeAgo, formatStatus } from '@/lib/utils';
 import { unstable_cache } from 'next/cache';
 
-export const dynamic = 'force-dynamic';
-
 const getDashboardStats = unstable_cache(
     async () => {
         const sevenDaysAgo = new Date();

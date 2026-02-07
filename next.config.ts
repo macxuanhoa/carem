@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
   compress: true,
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', 'date-fns'],
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
   },
   turbopack: {},
   images: {
