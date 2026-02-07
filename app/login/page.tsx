@@ -42,10 +42,10 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[420px] relative z-20 flex flex-col h-full sm:h-auto justify-center"
+        className="w-full max-w-[420px] relative z-20 flex flex-col items-center justify-center min-h-[100dvh] py-6"
       >
           {/* MAIN CARD - Clean & Sharp */}
-          <div className="bg-white rounded-none sm:rounded-[32px] shadow-none sm:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden sm:border border-gray-100 flex flex-col justify-center min-h-[100dvh] sm:min-h-0">
+          <div className="bg-white w-full rounded-[32px] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] p-6 sm:p-10 relative overflow-hidden border border-gray-100 flex flex-col justify-center">
             
             {/* Top Brand Stripe */}
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600" />
