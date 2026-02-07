@@ -151,7 +151,7 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_20px_-5px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(37,99,235,0.4)] transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full mt-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold py-4 rounded-xl shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                     {isPending ? (
                         <Loader2 size={20} className="animate-spin text-white/80" />
@@ -164,13 +164,13 @@ export default function LoginPage() {
                 </button>
                 
                 {/* FOOTER ADDRESS - Clean & Legible */}
-                <div className="pt-6 mt-2 border-t border-gray-100">
-                     <div className="flex flex-col items-center gap-1.5">
-                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                            <MapPin size={10} />
+                <div className="pt-8 mt-4 border-t border-gray-100/80">
+                     <div className="flex flex-col items-center gap-3">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full">
+                            <MapPin size={11} />
                             Địa Chỉ
                         </div>
-                        <p className="text-[11px] font-semibold text-gray-600 text-center leading-relaxed max-w-[260px] mx-auto">
+                        <p className="text-[13px] font-medium text-gray-600 text-center leading-relaxed max-w-[280px] mx-auto">
                             107 Nguyễn Tất Thành, Thanh Hà, Hội An
                         </p>
                      </div>
