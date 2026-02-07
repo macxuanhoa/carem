@@ -605,7 +605,7 @@ export default function NewCarPage() {
                                                         exit={{ height: 0, opacity: 0 }}
                                                         className="overflow-hidden"
                                                     >
-                                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Link Bài Đăng</label>
+                                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Link Bài Mua / Facebook Người Bán</label>
                                                         <div className="relative group">
                                                             <LinkIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
                                                             <input
