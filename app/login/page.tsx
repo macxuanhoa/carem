@@ -85,7 +85,10 @@ export default function LoginPage() {
                 
                 <div className="mt-6 text-center">
                     <h1 className="text-2xl font-bold text-gray-800 tracking-tight mb-2">Xin chào bạn!</h1>
-                    <p className="text-gray-500 text-sm font-medium px-4">Hãy đăng nhập để bắt đầu ngày làm việc hiệu quả</p>
+                    <div className="space-y-1">
+                        <p className="text-blue-600 text-xs font-bold uppercase tracking-wider">CHUYÊN MUA BÁN TAY GA CAO CẤP UY TÍN</p>
+                        <p className="text-gray-500 text-sm font-bold">0914.92.92.92</p>
+                    </div>
                 </div>
             </div>
 
@@ -169,12 +172,17 @@ export default function LoginPage() {
                     )}
                 </button>
                 
-                <div className="pt-8 text-center opacity-40 hover:opacity-100 transition-opacity duration-300">
-                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-                        <Sparkles size={10} />
-                        Webxe2 System
-                        <Sparkles size={10} />
-                     </p>
+                <div className="pt-8 text-center opacity-60 hover:opacity-100 transition-opacity duration-300">
+                     <div className="flex flex-col items-center gap-1">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            <Sparkles size={10} />
+                            Địa Chỉ
+                            <Sparkles size={10} />
+                        </div>
+                        <p className="text-[11px] font-medium text-gray-500">
+                            107 Nguyễn Tất Thành, Thanh Hà, Hội An
+                        </p>
+                     </div>
                 </div>
             </form>
           </div>
