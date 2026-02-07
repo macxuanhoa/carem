@@ -1,0 +1,37 @@
+
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webxe-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=file:./dev.db
+      - AUTH_SECRET=supersecretkey123
+      - ADMIN_PASSWORD=admin123
+    volumes:
+      # Mount the sqlite db file to persist data
+      - ./prisma/dev.db:/app/prisma/dev.db
+      # Mount public/uploads if you store local files (optional)
+      # - ./public/uploads:/app/public/uploads
+
+  # Optional: If you switch to Postgres later, uncomment this block
+  # db:
+  #   image: postgres:15-alpine
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=myuser
+  #     - POSTGRES_PASSWORD=mypassword
+  #     - POSTGRES_DB=webxe
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   db_data:

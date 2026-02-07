@@ -1,0 +1,185 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. QUẢN LÝ XE (Core)
+model XeMuaVao {
+  id              Int      @id @default(autoincrement())
+  maXe            String?  @unique 
+  
+  // Định danh xe
+  bienSo          String?
+  soKhung         String? 
+  soMay           String?  
+  
+  // Thông tin cơ bản
+  dongXe          String
+  namSanXuat      Int
+  mauXe           String
+  
+  // NEW: Tình trạng xe (0-100%)
+  tinhTrang       Int      @default(90)
+
+  // Nguồn gốc & Facebook
+  nguoiBan        String
+  tinhThanh       String
+  facebookLink    String
+  
+  // NEW: Hình ảnh (Lưu dạng JSON String: ["url1", "url2"])
+  hinhAnh         String   @default("[]")
+  
+  // Tài chính & Thời gian
+  ngayThoaThuan   DateTime @default(now())
+  ngayCoc         DateTime? 
+  soTienCoc       Float    @default(0)
+  
+  tongGiaMua      Float    @default(0) 
+  soTienDaChuyen  Float    @default(0) 
+  
+  ngayHenGiao     DateTime?
+  
+  // Quản lý dòng tiền mua
+  nguoiGiuTien    String?
+  daNhanXe        Boolean  @default(false)
+
+  // Trạng thái xe 
+  trangThai       String @default("TIM_THAY") 
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  banRa           XeBanRa?
+  hoSo            HoSoXe?
+  gopVon          XeGopDauTu[]
+  chiPhi          ChiPhiXe[]
+  ghiChu          GhiChuXe[]
+  lichSu          LichSuThayDoi[] 
+}
+
+// 2. QUẢN LÝ BÁN XE
+model XeBanRa {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int      @unique
+  xeMuaVao        XeMuaVao @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  giaBan          Float
+  khachMua        String
+  ngayBan         DateTime @default(now())
+  daGiaoXe        Boolean  @default(false)
+  daThuDuTien     Boolean  @default(false)
+  
+  trangThai       String @default("DANG_BAN")
+}
+
+// 3. QUẢN LÝ HỒ SƠ XE
+model HoSoXe {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int      @unique
+  xeMuaVao        XeMuaVao @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  noiGiuHoSo      String @default("CHU_CU") 
+  
+  // Logic mới: HUA_RUT, DANG_RUT, DA_RUT, QUA_HAN, CHUA_CAN
+  trangThai       String @default("CHUA_CAN") 
+  
+  ngayHenRut      DateTime? // Ngày hứa rút
+  hanCuoi         DateTime? // Deadline cứng
+  
+  nguoiChiuTrachNhiem String? 
+  ghiChu          String?     
+}
+
+// 4. GÓP XE – ĐẦU TƯ XE
+model XeGopDauTu {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int
+  xeMuaVao        XeMuaVao @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  nguoiGop        String
+  tyLeGop         Float // % (Vd: 50%)
+  soTienGop       Float // Số tiền cam kết góp
+  
+  daGop           Float @default(0) // Số tiền thực tế đã chuyển
+  
+  ngayBatDau      DateTime @default(now())
+  
+  // DANG_GOP, DA_THANH_TOAN (Đã tất toán lời lãi), TRANH_CHAP
+  trangThai       String @default("DANG_GOP") 
+  
+  laiLo           Float? // Kết quả kinh doanh sau khi bán
+  daChiaTien      Boolean @default(false)
+  
+  giayToLienQuan  String? // Link ảnh hợp đồng góp vốn
+  lichSuThanhToan LichSuGopVon[] // Quan hệ 1-n để theo dõi tiến độ
+}
+
+// NEW: Lịch sử nộp tiền góp vốn (Tracking tiến độ)
+model LichSuGopVon {
+  id              Int      @id @default(autoincrement())
+  xeGopDauTuId    Int
+  xeGopDauTu      XeGopDauTu @relation(fields: [xeGopDauTuId], references: [id], onDelete: Cascade)
+  
+  soTien          Float
+  ngayNop         DateTime @default(now())
+  ghiChu          String?
+  hinhAnh         String? // Ảnh bill chuyển khoản
+}
+
+// 5. CHI PHÍ – PHỤ KIỆN – PHỤ TÙNG
+model ChiPhiXe {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int? // Update: Có thể null (Chi phí chung)
+  xeMuaVao        XeMuaVao? @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  loaiChiPhi      String 
+  
+  // Kiểm soát giá
+  giaDuKien       Float    @default(0) // Đề xuất
+  giaThucTe       Float    @default(0) // Duyệt chi / Thực tế bill
+  
+  // Quy trình duyệt
+  nguoiBaoGia     String   // Nhân viên nhập
+  nguoiDuyet      String?  // Quản lý duyệt
+  trangThai       String   @default("CHO_DUYET") // CHO_DUYET, DA_DUYET, TU_CHOI
+  
+  ghiChu          String?
+  anhHoaDon       String? 
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt // Track thời gian duyệt
+}
+
+// 6. NOTE – XE CẦN TÌM LẠI – XE TREO
+model GhiChuXe {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int
+  xeMuaVao        XeMuaVao @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  noiDung         String
+  loaiGhiChu      String @default("KHAC") 
+  
+  createdAt       DateTime @default(now())
+}
+
+// 7. AUDIT LOG (LỊCH SỬ THAY ĐỔI)
+model LichSuThayDoi {
+  id              Int      @id @default(autoincrement())
+  xeMuaVaoId      Int
+  xeMuaVao        XeMuaVao @relation(fields: [xeMuaVaoId], references: [id], onDelete: Cascade)
+  
+  nguoiThucHien   String   // Tên nhân viên/User
+  hanhDong        String   // UPDATE_TRANG_THAI, UPDATE_GIA...
+  chiTiet         String   // Nội dung thay đổi
+  
+  createdAt       DateTime @default(now())
+}
