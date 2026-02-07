@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import BottomNav from "@/components/BottomNav";
 import ScrollToTop from "@/components/ScrollToTop";
-import ThemeToggle from "@/components/ThemeToggle";
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import Providers from "./providers";
-import Link from 'next/link';
+import AppShell from "@/components/AppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,30 +47,8 @@ export default function RootLayout({
           speed={200}
           shadow="0 0 10px #2563eb,0 0 5px #2563eb"
         />
-        <div className="mx-auto max-w-7xl min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
-            {/* Desktop Header - Only visible on md+ screens */}
-            <header className="hidden md:flex bg-white dark:bg-gray-900 dark:border-b dark:border-gray-800 shadow-sm p-4 justify-between items-center sticky top-0 z-50 transition-colors duration-200">
-                <div className="font-bold text-xl text-blue-600 dark:text-blue-500">AUTO MANAGER</div>
-                <div className="flex items-center gap-6">
-                    <nav className="space-x-6 text-sm font-medium text-gray-600 dark:text-gray-300">
-                        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</Link>
-                        <Link href="/cars" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Xe</Link>
-                        <Link href="/expenses" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Chi Phí</Link>
-                        <Link href="/reports" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Báo Cáo</Link>
-                    </nav>
-                    <div className="pl-6 border-l border-gray-200 dark:border-gray-700">
-                        <ThemeToggle />
-                    </div>
-                </div>
-            </header>
-
-            {/* Main Content */}
-            <main className="flex-1 w-full">
-                {children}
-            </main>
-
-            {/* Mobile Bottom Nav */}
-            <BottomNav />
+        <AppShell>
+            {children}
             <ScrollToTop />
             <Toaster 
               position="top-right" 
@@ -92,7 +68,7 @@ export default function RootLayout({
                 }
               }}
             />
-        </div>
+        </AppShell>
         </Providers>
       </body>
     </html>
