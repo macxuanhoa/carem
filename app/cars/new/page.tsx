@@ -518,7 +518,7 @@ export default function NewCarPage() {
                                 <div>
                                     <h3 className="text-sm font-bold text-gray-800 dark:text-white flex items-center">
                                         <User size={18} className="mr-2 text-blue-500" />
-                                        Nguồn Gốc & Người Bán
+                                        Nguồn Gốc Mua
                                     </h3>
                                     <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 ml-6.5">
                                         Thông tin chủ xe, nơi mua (Không bắt buộc nhập ngay)
@@ -581,7 +581,7 @@ export default function NewCarPage() {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ (Tùy chọn)</label>
+                                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ</label>
                                                     <div className="relative group">
                                                         <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors"/>
                                                         <input
