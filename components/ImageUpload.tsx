@@ -1,9 +1,10 @@
 "use client";
 
 import { UploadDropzone } from "@/lib/uploadthing";
-import { X, Image as ImageIcon } from "lucide-react";
+import { X, Image as ImageIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface ImageUploadProps {
   value: string[];
@@ -16,6 +17,8 @@ export default function ImageUpload({
   onChange,
   onRemove,
 }: ImageUploadProps) {
+  const [isUploading, setIsUploading] = useState(false);
+
   return (
     <div className="space-y-4">
       {/* Gallery Grid */}
@@ -40,18 +43,28 @@ export default function ImageUpload({
               />
             </div>
           ))}
+          {/* Loading Placeholder */}
+          {isUploading && (
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center">
+                <Loader2 className="animate-spin text-blue-500 mb-2" size={24} />
+                <span className="text-xs text-gray-500 font-medium">Đang tải...</span>
+            </div>
+          )}
         </div>
       )}
 
       {/* Upload Dropzone */}
       <UploadDropzone
         endpoint="imageUploader"
+        onUploadBegin={() => setIsUploading(true)}
         onClientUploadComplete={(res) => {
+          setIsUploading(false);
           const urls = res.map((r) => r.url);
           onChange([...value, ...urls]);
           toast.success("Đã tải ảnh lên thành công!");
         }}
         onUploadError={(error: Error) => {
+          setIsUploading(false);
           toast.error(`Lỗi: ${error.message}`);
         }}
         appearance={{
@@ -62,7 +75,7 @@ export default function ImageUpload({
         }}
         content={{
             label: "Kéo thả hoặc bấm để chọn ảnh",
-            allowedContent: "Chỉ chấp nhận ảnh (tối đa 4MB)",
+            allowedContent: "Ảnh tối đa 16MB (JPG, PNG, WEBP)",
         }}
       />
     </div>
