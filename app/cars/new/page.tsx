@@ -36,6 +36,7 @@ export default function NewCarPage() {
   const [showDraftPrompt, setShowDraftPrompt] = useState(false); // NEW
   const [pendingDraftData, setPendingDraftData] = useState<any>(null); // NEW
   const [showOriginInfo, setShowOriginInfo] = useState(false); // Collapsible state
+  const [errors, setErrors] = useState<Record<string, boolean>>({}); // NEW: Track validation errors
 
   // Form State
   const [formData, setFormData] = useState({
@@ -245,6 +246,10 @@ export default function NewCarPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error when user types
+    if (errors[name]) {
+        setErrors(prev => ({ ...prev, [name]: false }));
+    }
   };
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -282,13 +287,21 @@ export default function NewCarPage() {
   const nextStep = () => {
       // Basic validation per step
       if (activeStep === 1) {
-          if (!formData.dongXe || !formData.namSanXuat || !formData.mauXe) {
-              toast.error('Vui lòng điền thông tin xe');
-              return;
-          }
+          const newErrors: Record<string, boolean> = {};
+          
+          if (!formData.dongXe) newErrors.dongXe = true;
+          if (!formData.namSanXuat) newErrors.namSanXuat = true;
+          if (!formData.mauXe) newErrors.mauXe = true;
+          
           // Validate Year (Must be 4 digits)
-          if (formData.namSanXuat.toString().length !== 4) {
-              toast.error('Năm sản xuất phải có 4 số (Ví dụ: 2023)');
+          if (formData.namSanXuat && formData.namSanXuat.toString().length !== 4) {
+             newErrors.namSanXuat = true;
+             toast.error('Năm sản xuất phải có 4 số (Ví dụ: 2023)');
+          }
+
+          if (Object.keys(newErrors).length > 0) {
+              setErrors(newErrors);
+              toast.error('Vui lòng kiểm tra các trường màu đỏ');
               return;
           }
       }
@@ -429,17 +442,23 @@ export default function NewCarPage() {
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Dòng Xe (Tên đầy đủ)</label>
-                            <input
-                                type="text"
-                                name="dongXe"
-                                required
-                                autoFocus
-                                value={formData.dongXe}
-                                onChange={handleChange}
-                                className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 text-lg font-bold text-gray-800 dark:text-white outline-none focus:bg-white dark:focus:bg-gray-900 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-300 dark:focus:border-blue-700 transition-all placeholder:font-normal"
-                                placeholder="Vd: Honda SH 150i 2023..."
-                            />
+                            <label className={`text-xs font-bold uppercase block mb-1.5 ${errors.dongXe ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>Dòng Xe (Tên đầy đủ)</label>
+                            <motion.div animate={errors.dongXe ? { x: [-10, 10, -10, 10, 0] } : {}} transition={{ duration: 0.4 }}>
+                                <input
+                                    type="text"
+                                    name="dongXe"
+                                    required
+                                    autoFocus
+                                    value={formData.dongXe}
+                                    onChange={handleChange}
+                                    className={`w-full bg-gray-50 dark:bg-gray-800 border rounded-2xl p-4 text-lg font-bold text-gray-800 dark:text-white outline-none focus:bg-white dark:focus:bg-gray-900 focus:ring-4 transition-all placeholder:font-normal ${
+                                        errors.dongXe 
+                                        ? 'border-red-500 focus:ring-red-100 dark:focus:ring-red-900/20 focus:border-red-500' 
+                                        : 'border-gray-200 dark:border-gray-700 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-300 dark:focus:border-blue-700'
+                                    }`}
+                                    placeholder="Vd: Honda SH 150i 2023..."
+                                />
+                            </motion.div>
                         </div>
 
                         {/* NEW: Condition Slider */}
@@ -479,27 +498,31 @@ export default function NewCarPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Đời Xe (Năm)</label>
-                                <input
-                                    type="number"
-                                    name="namSanXuat"
-                                    required
-                                    value={formData.namSanXuat}
-                                    onChange={handleChange}
-                                    className="input-primary text-center font-bold"
-                                />
+                                <label className={`text-xs font-bold uppercase block mb-1.5 ${errors.namSanXuat ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>Đời Xe (Năm)</label>
+                                <motion.div animate={errors.namSanXuat ? { x: [-10, 10, -10, 10, 0] } : {}} transition={{ duration: 0.4 }}>
+                                    <input
+                                        type="number"
+                                        name="namSanXuat"
+                                        required
+                                        value={formData.namSanXuat}
+                                        onChange={handleChange}
+                                        className={`input-primary text-center font-bold ${errors.namSanXuat ? 'border-red-500 ring-red-100' : ''}`}
+                                    />
+                                </motion.div>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Màu Sắc</label>
-                                <input
-                                    type="text"
-                                    name="mauXe"
-                                    required
-                                    value={formData.mauXe}
-                                    onChange={handleChange}
-                                    className="input-primary text-center font-medium"
-                                    placeholder="Trắng"
-                                />
+                                <label className={`text-xs font-bold uppercase block mb-1.5 ${errors.mauXe ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>Màu Sắc</label>
+                                <motion.div animate={errors.mauXe ? { x: [-10, 10, -10, 10, 0] } : {}} transition={{ duration: 0.4 }}>
+                                    <input
+                                        type="text"
+                                        name="mauXe"
+                                        required
+                                        value={formData.mauXe}
+                                        onChange={handleChange}
+                                        className={`input-primary text-center font-medium ${errors.mauXe ? 'border-red-500 ring-red-100' : ''}`}
+                                        placeholder="Trắng"
+                                    />
+                                </motion.div>
                             </div>
                         </div>
 
