@@ -150,10 +150,14 @@ function InfoTab({ car, isOverdue }: any) {
                 ) : null}
 
                 <div className="relative z-10 text-center">
-                    <div className="inline-block bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-4 py-1.5 rounded-full text-xs font-bold mb-3 uppercase tracking-wider border border-gray-200 dark:border-gray-700">
-                        {car.bienSo || 'Chưa có biển'}
+                    <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3 leading-tight">{car.dongXe}</h2>
+                    
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                        <div className="inline-block bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-700">
+                            {car.bienSo || 'Chưa có biển'}
+                        </div>
                     </div>
-                    <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 leading-tight">{car.dongXe}</h2>
+
                     <div className="flex items-center justify-center space-x-2 text-gray-500 dark:text-gray-400 text-sm font-medium">
                         <span>{car.mauXe}</span>
                         <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
