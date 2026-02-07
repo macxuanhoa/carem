@@ -33,6 +33,8 @@ export default function NewCarPage() {
   const [dealStatus, setDealStatus] = useState<'PENDING' | 'DEPOSITED' | 'BOUGHT_NOW'>('PENDING'); // PENDING, DEPOSITED, BOUGHT_NOW
   const [createdCarId, setCreatedCarId] = useState<number | null>(null);
   const [showDocsPrompt, setShowDocsPrompt] = useState(false);
+  const [showDraftPrompt, setShowDraftPrompt] = useState(false); // NEW
+  const [pendingDraftData, setPendingDraftData] = useState<any>(null); // NEW
   const [showOriginInfo, setShowOriginInfo] = useState(false); // Collapsible state
 
   // Form State
@@ -71,16 +73,33 @@ export default function NewCarPage() {
       if (savedData) {
           try {
               const parsed = JSON.parse(savedData);
-              // Only restore if not stale (e.g., > 24h old - optional)
-              setFormData(prev => ({ ...prev, ...parsed }));
-              if (parsed.tongGiaMua) setDisplayPrice(formatNumber(parsed.tongGiaMua));
-              if (parsed.soTienCoc) setDisplayDeposit(formatNumber(parsed.soTienCoc));
-              toast.info('Đã khôi phục bản nháp xe đang nhập dở');
+              // Check if draft has meaningful data (e.g., dongXe or namSanXuat)
+              if (parsed.dongXe || parsed.bienSo) {
+                  setPendingDraftData(parsed);
+                  setShowDraftPrompt(true);
+              }
           } catch (e) {
               console.error('Failed to load draft');
           }
       }
   }, []);
+
+  const handleRestoreDraft = () => {
+      if (pendingDraftData) {
+          setFormData(prev => ({ ...prev, ...pendingDraftData }));
+          if (pendingDraftData.tongGiaMua) setDisplayPrice(formatNumber(pendingDraftData.tongGiaMua));
+          if (pendingDraftData.soTienCoc) setDisplayDeposit(formatNumber(pendingDraftData.soTienCoc));
+          toast.success('Đã khôi phục bản nháp!');
+      }
+      setShowDraftPrompt(false);
+  };
+
+  const handleDiscardDraft = () => {
+      localStorage.removeItem('newCarDraft');
+      setPendingDraftData(null);
+      setShowDraftPrompt(false);
+      toast.info('Đã hủy bản nháp, tạo xe mới');
+  };
 
   useEffect(() => {
       // Save to LocalStorage whenever formData changes
@@ -953,6 +972,43 @@ export default function NewCarPage() {
                                 className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >
                                 Không, để sau
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+        {/* Draft Prompt Modal */}
+        <AnimatePresence>
+            {showDraftPrompt && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100 dark:border-gray-800"
+                    >
+                        <div className="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full mx-auto mb-4">
+                            <FileText size={24} className="text-blue-600 dark:text-blue-500" />
+                        </div>
+                        
+                        <h3 className="text-lg font-bold text-center text-gray-900 dark:text-white mb-2">Phát Hiện Bản Nháp Cũ</h3>
+                        <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-6">
+                            Bạn có muốn khôi phục dữ liệu xe <strong>{pendingDraftData?.dongXe || 'Chưa đặt tên'}</strong> đang nhập dở không?
+                        </p>
+                        
+                        <div className="flex flex-col gap-3">
+                            <button 
+                                onClick={handleRestoreDraft}
+                                className="w-full px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-blue-900/30 transition-colors"
+                            >
+                                Khôi Phục Bản Nháp
+                            </button>
+                            <button 
+                                onClick={handleDiscardDraft}
+                                className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                Hủy Bỏ, Tạo Mới
                             </button>
                         </div>
                     </motion.div>
