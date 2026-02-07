@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { 
   Badge, Users, DollarSign, FileText, 
   Calendar, MapPin, Activity, 
   CreditCard, Wrench, ShieldAlert, CheckCircle, Clock,
   ArrowRight, Image as ImageIcon,
-  ChevronLeft, ChevronRight, Phone, ExternalLink
+  ChevronLeft, ChevronRight, Phone, ExternalLink, Edit
 } from 'lucide-react';
-import Link from 'next/link';
 
 // Deal Timeline Component
 function DealTimeline({ status, deposit, isSold }: { status: string, deposit: number, isSold: boolean }) {
@@ -119,6 +119,14 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                             {currentImageIdx + 1} / {images.length}
                         </div>
                         
+                        {/* Quick Edit Image Button */}
+                        <Link 
+                            href={`/cars/${car.id}/edit`}
+                            className="absolute top-3 right-3 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full backdrop-blur-md transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                            <Edit size={16} />
+                        </Link>
+                        
                         {/* Navigation Arrows */}
                         {images.length > 1 && (
                             <>
@@ -144,9 +152,15 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                         )}
                     </>
                 ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100 dark:bg-gray-800">
+                    <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100 dark:bg-gray-800 relative">
                         <ImageIcon size={48} strokeWidth={1.5} className="mb-2 opacity-50"/>
-                        <span className="text-xs font-medium">Chưa có hình ảnh</span>
+                        <span className="text-xs font-medium mb-3">Chưa có hình ảnh</span>
+                        <Link 
+                            href={`/cars/${car.id}/edit`}
+                            className="px-4 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                        >
+                            + Thêm ảnh ngay
+                        </Link>
                     </div>
                 )}
             </div>
