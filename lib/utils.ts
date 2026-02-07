@@ -40,6 +40,8 @@ export function formatStatus(status: string): string {
     const map: Record<string, string> = {
         'TIM_THAY': 'Mới Về',
         'DA_COC': 'Đã Cọc',
+        'DA_MUA': 'Đã Mua',
+        'DANG_DON': 'Đang Dọn',
         'DA_CHUYEN_TIEN': 'Đã Chuyển Tiền',
         'CHO_GIAO_XE': 'Chờ Giao Xe',
         'XE_DA_VE': 'Xe Đã Về',
