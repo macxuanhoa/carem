@@ -197,27 +197,10 @@ function InfoTab({ car, isOverdue, userRole }: any) {
                             <Edit size={16} />
                         </button>
                         
-                        {/* Navigation Arrows - Always Visible and Bigger */}
+                        {/* Navigation Arrows - Removed as per request (Swipe enabled) */}
                         {images.length > 1 && (
                             <>
-                                <button 
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentImageIdx(prev => prev === 0 ? images.length - 1 : prev - 1);
-                                    }}
-                                    className="absolute left-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/30 hover:bg-white/50 text-white backdrop-blur-md transition-all shadow-lg active:scale-95"
-                                >
-                                    <ChevronLeft size={28} strokeWidth={2.5} />
-                                </button>
-                                <button 
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentImageIdx(prev => prev === images.length - 1 ? 0 : prev + 1);
-                                    }}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/30 hover:bg-white/50 text-white backdrop-blur-md transition-all shadow-lg active:scale-95"
-                                >
-                                    <ChevronRight size={28} strokeWidth={2.5} />
-                                </button>
+                                {/* Image Indicator Dots (Optional - can add back if needed) */}
                             </>
                         )}
                     </>
