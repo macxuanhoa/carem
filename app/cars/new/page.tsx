@@ -136,13 +136,24 @@ export default function NewCarPage() {
           }
       }
 
+      // Ensure optional numeric fields are 0 if empty
+      const safePrice = formData.tongGiaMua || 0;
+      const safeDeposit = formData.soTienCoc || 0;
+
       // Prepare payload
       const payload = {
           ...formData,
           trangThai: (dealStatus === 'DEPOSITED' || dealStatus === 'BOUGHT_NOW') ? 'DA_COC' : 'TIM_THAY',
-          // If PENDING, ensure prices are 0
-          soTienCoc: dealStatus === 'PENDING' ? 0 : (dealStatus === 'BOUGHT_NOW' ? formData.tongGiaMua : formData.soTienCoc),
-          tongGiaMua: dealStatus === 'PENDING' ? 0 : formData.tongGiaMua,
+          // Logic:
+          // PENDING -> Cọc = 0, Giá Mua = 0 (or keep as is if user entered but then switched back? No, requirement says reset)
+          // DEPOSITED -> Use entered values
+          // BOUGHT_NOW -> Cọc = Giá Mua, Giá Mua = Entered Value
+          
+          soTienCoc: dealStatus === 'PENDING' ? 0 : (dealStatus === 'BOUGHT_NOW' ? safePrice : safeDeposit),
+          tongGiaMua: dealStatus === 'PENDING' ? 0 : safePrice,
+          
+          // Ensure arrays are initialized
+          hinhAnh: formData.hinhAnh || []
       };
 
       const res = await fetch('/api/cars', {
@@ -151,7 +162,10 @@ export default function NewCarPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error('Failed to create car');
+      if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || 'Failed to create car');
+      }
       
       const newCar = await res.json();
       setCreatedCarId(newCar.id);
@@ -163,7 +177,8 @@ export default function NewCarPage() {
       localStorage.removeItem('newCarDraft');
       
     } catch (error) {
-      toast.error('Có lỗi xảy ra', { description: 'Vui lòng thử lại.' });
+      console.error(error);
+      toast.error('Có lỗi xảy ra khi lưu xe', { description: error instanceof Error ? error.message : 'Vui lòng thử lại.' });
     } finally {
       setLoading(false);
     }
