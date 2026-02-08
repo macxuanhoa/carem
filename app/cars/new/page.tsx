@@ -159,11 +159,12 @@ export default function NewCarPage() {
 
     const handleRestoreDraft = () => {
         if (pendingDraftData) {
-            // Restore data but ensure hinhAnh is initialized as empty array if missing (since we don't save images to draft)
-            setFormData({
-                ...pendingDraftData,
-                hinhAnh: pendingDraftData.hinhAnh || []
-            });
+            // Merge draft data into default/current state to ensure all keys exist
+            setFormData(prev => ({
+                ...prev, // Keep default structure/keys
+                ...pendingDraftData, // Overwrite with draft values
+                hinhAnh: pendingDraftData.hinhAnh || [] // Reset images (draft doesn't save them)
+            }));
             setShowDraftPrompt(false);
         }
     };

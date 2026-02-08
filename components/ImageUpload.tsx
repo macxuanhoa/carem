@@ -91,7 +91,7 @@ export default function ImageUpload({
       <div className="flex overflow-x-auto pb-4 gap-3 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide snap-x">
         
         {/* Custom Upload Button - Always First */}
-        <label className={`shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group snap-start ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+        <label className={`shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group snap-start ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="p-3 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
                 <CloudUpload size={24} strokeWidth={2.5} />
             </div>
@@ -108,7 +108,7 @@ export default function ImageUpload({
 
         {/* Loading State */}
         {isUploading && (
-            <div className="shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center animate-pulse snap-start">
+            <div className="shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center animate-pulse snap-start">
                 <Loader2 className="animate-spin text-blue-500 mb-2" size={24} />
                 <span className="text-xs text-gray-500 font-medium">Đang tải...</span>
             </div>
@@ -116,7 +116,7 @@ export default function ImageUpload({
 
         {/* Images */}
         {value.map((url) => (
-          <div key={url} className="shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 group bg-gray-100 snap-start shadow-sm">
+          <div key={url} className="shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border border-gray-200 group bg-gray-100 snap-start shadow-sm">
             <div className="absolute top-1.5 right-1.5 z-10 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 type="button"
