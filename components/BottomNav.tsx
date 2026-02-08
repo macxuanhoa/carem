@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Motorcycle, DollarSign, BarChart2, Plus } from 'lucide-react';
+import { Home, Bike, DollarSign, BarChart2, Plus } from 'lucide-react';
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function BottomNav() {
 
   const navItems = [
     { label: 'Trang chủ', path: '/', icon: Home },
-    { label: 'Kho Xe', path: '/cars', icon: Motorcycle },
+    { label: 'Kho Xe', path: '/cars', icon: Bike },
     // Center Action Button
     { label: 'Nhập Xe', path: '/cars/new', icon: Plus, isPrimary: true }, 
     { label: 'Chi phí', path: '/expenses', icon: DollarSign },

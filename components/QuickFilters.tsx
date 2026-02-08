@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { FileText, Clock, TrendingUp, AlertTriangle, CheckCircle, Motorcycle } from 'lucide-react';
+import { FileText, Clock, TrendingUp, AlertTriangle, CheckCircle, Bike } from 'lucide-react';
 
 export default function QuickFilters() {
   const searchParams = useSearchParams();
@@ -11,7 +11,7 @@ export default function QuickFilters() {
   const currentStatus = searchParams.get('status') || 'all';
 
   const mainFilters = [
-    { label: 'Tất Cả', value: 'all', icon: Motorcycle, color: 'text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800' },
+    { label: 'Tất Cả', value: 'all', icon: Bike, color: 'text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800' },
     { label: 'Đang Bán', value: 'selling', icon: TrendingUp, color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-900/30' },
     { label: 'Đã Cọc', value: 'deposited', icon: CheckCircle, color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-900/30' },
     { label: 'Đã Bán', value: 'sold', icon: CheckCircle, color: 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border-purple-100 dark:border-purple-900/30' },
