@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Car, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Motorcycle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatTimeAgo, formatStatus } from '@/lib/utils';
 
 export default function CarCard({ car }: { car: any }) {
@@ -111,7 +111,7 @@ export default function CarCard({ car }: { car: any }) {
                         </>
                     ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-gray-700">
-                            <Car size={48} strokeWidth={1.5} />
+                            <Motorcycle size={48} strokeWidth={1.5} />
                             <span className="text-[10px] font-bold uppercase mt-2">Chưa có ảnh</span>
                         </div>
                     )}

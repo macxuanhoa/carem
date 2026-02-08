@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Plus, Car } from 'lucide-react';
+import { Plus, Motorcycle } from 'lucide-react';
 import { Suspense } from 'react';
 import SearchInput from './SearchInput';
 import QuickFilters from '@/components/QuickFilters';
@@ -86,7 +86,7 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
         return (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
                 <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4 shadow-inner">
-                    <Car size={40} className="text-gray-300 dark:text-gray-600" />
+                    <Motorcycle size={40} className="text-gray-300 dark:text-gray-600" />
                 </div>
                 <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Chưa có xe nào trong danh mục này.</p>
                 <Link href="/cars/new" className="mt-4 text-blue-600 dark:text-blue-400 font-bold hover:underline">Nhập xe ngay</Link>
