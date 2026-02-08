@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { logAudit, AUDIT_ACTIONS } from '@/lib/audit';
 import { sendTelegramNotification } from '@/lib/telegram';
 import { carSchema } from '@/lib/schemas';
+import { revalidateTag } from 'next/cache';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -116,6 +117,9 @@ export async function POST(request: Request) {
 <i>Trạng thái: ${car.trangThai}</i>
 `;
     await sendTelegramNotification(message);
+
+    // Force revalidate dashboard cache
+    revalidateTag('dashboard');
 
     return NextResponse.json(car);
   } catch (error) {
