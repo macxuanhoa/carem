@@ -65,7 +65,14 @@ export default function ActivitiesPage() {
   };
 
   const getActionLabel = (action: string) => {
-      // Map generic codes to user friendly labels if needed, or just return action
+      // Map generic codes to user friendly labels
+      const lower = action.toLowerCase();
+      if (lower.includes('create') || lower.includes('thêm')) return 'Thêm mới';
+      if (lower.includes('update') || lower.includes('sửa') || lower.includes('cập nhật')) return 'Cập nhật';
+      if (lower.includes('delete') || lower.includes('xóa')) return 'Đã xóa';
+      if (lower.includes('sell') || lower.includes('bán')) return 'Bán xe';
+      if (lower.includes('docs') || lower.includes('hồ sơ')) return 'Hồ sơ';
+      if (lower.includes('expense') || lower.includes('chi phí')) return 'Chi phí';
       return action;
   };
 
@@ -124,10 +131,14 @@ export default function ActivitiesPage() {
                                     {/* Dot */}
                                     <div className={`absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 border-white dark:border-gray-950 ${getColor(item.hanhDong)} shadow-sm z-10`}></div>
                                     
-                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 group-hover:shadow-md transition-shadow">
+                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 group-hover:shadow-md transition-shadow cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50" onClick={() => {
+                                        if (item.xeMuaVao?.bienSo || item.xeMuaVao?.dongXe) {
+                                            // Redirect logic or expand detail modal could be here
+                                        }
+                                    }}>
                                         <div className="flex justify-between items-start mb-2">
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${getColor(item.hanhDong)}`}>
-                                                {item.hanhDong}
+                                                {getActionLabel(item.hanhDong)}
                                             </span>
                                             <span className="text-[10px] text-gray-400 flex items-center">
                                                 <Clock size={10} className="mr-1" />

@@ -160,7 +160,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
                                 <select 
                                     value={formData.loaiChiPhi}
                                     onChange={(e) => setFormData({...formData, loaiChiPhi: e.target.value})}
-                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 font-medium outline-none focus:border-blue-500 dark:text-white"
+                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 font-medium outline-none focus:border-blue-600 dark:text-white"
                                 >
                                     <option>Sửa chữa chung</option>
                                     <option>Sơn / Gò hàn</option>
@@ -180,7 +180,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
                                         inputMode="numeric"
                                         value={formData.giaThucTe}
                                         onChange={(e) => setFormData({...formData, giaThucTe: formatMoneyInput(e.target.value)})}
-                                        className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 pl-10 font-bold text-lg outline-none focus:border-blue-500 dark:text-white"
+                                        className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 pl-10 font-bold text-lg outline-none focus:border-blue-600 dark:text-white"
                                         placeholder="0"
                                         autoFocus
                                     />
@@ -194,7 +194,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
                                     type="text"
                                     value={formData.ghiChu}
                                     onChange={(e) => setFormData({...formData, ghiChu: e.target.value})}
-                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 outline-none focus:border-blue-500 dark:text-white"
+                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 outline-none focus:border-blue-600 dark:text-white"
                                     placeholder="Chi tiết..."
                                 />
                             </div>
