@@ -5,68 +5,67 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 98%; /* Ultra light gray */
+    --foreground: 240 10% 3.9%;
     
-    /* Custom Blue - Light */
+    /* Automotive Blue - Electric & Deep */
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 10% 3.9%;
  
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
  
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
  
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
     --ring: 221.2 83.2% 53.3%;
  
-    --radius: 0.5rem;
+    --radius: 1rem; /* More rounded, modern */
   }
  
   .dark {
-    /* Refined Dark Mode - Deep Blue/Black */
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
+    /* "Midnight Showroom" Theme */
+    --background: 240 10% 3.9%; /* Deepest Black/Gray */
+    --foreground: 0 0% 98%;
  
-    --card: 224 71% 6%;
-    --card-foreground: 210 40% 98%;
+    --card: 240 10% 6%; /* Slightly lighter than bg */
+    --card-foreground: 0 0% 98%;
  
-    --popover: 224 71% 6%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
  
-    /* Primary Blue - Dark Mode (More Vibrant) */
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
  
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
  
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
  
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
  
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
  
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 
@@ -78,21 +77,60 @@
 
 /* Base Styles */
 body {
-    @apply bg-gray-50 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-50;
+    @apply bg-background text-foreground antialiased selection:bg-blue-500/30 selection:text-blue-200;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom Utilities */
-.glass-effect {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg shadow-black/5 supports-backdrop-filter:bg-white/60 dark:bg-gray-900/80 dark:border-gray-800 dark:shadow-black/20;
+/* --- "Aero" Design Language --- */
+
+/* 1. Glass Panel (Frosted Glass) */
+.glass-panel {
+    @apply bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-white/40 dark:border-white/5 shadow-xl;
 }
 
-.input-primary {
-    @apply w-full bg-white border border-gray-200 rounded-2xl p-3.5 text-sm outline-none transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-gray-400 dark:bg-gray-900 dark:border-gray-800 dark:text-white dark:focus:ring-blue-500/20;
+/* 2. Metallic Gradient Text */
+.text-metallic {
+    @apply bg-clip-text text-transparent bg-linear-to-b from-gray-700 to-gray-900 dark:from-gray-100 dark:to-gray-400;
 }
 
-.btn-primary {
-    @apply bg-blue-600 text-white p-4 rounded-2xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/40 active:scale-[0.98] transition-all duration-200 flex items-center justify-center dark:shadow-blue-900/20;
+/* 3. "Light Ray" Glow */
+.glow-effect {
+    @apply relative overflow-hidden;
+}
+.glow-effect::before {
+    content: '';
+    @apply absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 pointer-events-none;
+}
+.glow-effect:hover::before {
+    @apply opacity-100;
+}
+
+/* 4. Premium Card (Dashboard Instrument Style) */
+.card-instrument {
+    @apply relative overflow-hidden rounded-[24px] border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 transition-all duration-300;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5); /* Inner highlight */
+}
+.dark .card-instrument {
+    box-shadow: 
+        0 4px 20px -5px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.card-instrument:hover {
+    @apply transform -translate-y-1 shadow-lg dark:shadow-blue-900/20 border-blue-200 dark:border-blue-800;
+}
+
+/* 5. Spotlight Background (The "Rays") */
+.bg-spotlight {
+    background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.1) 0%, transparent 30%);
+}
+.dark .bg-spotlight {
+    background: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 100% 30%, rgba(147, 51, 234, 0.15) 0%, transparent 40%);
 }
 
 @layer utilities {
@@ -102,38 +140,13 @@ body {
   .pt-safe-top {
     padding-top: max(env(safe-area-inset-top), 1rem);
   }
-  .pb-safe-bottom {
-      padding-bottom: max(env(safe-area-inset-bottom), 5rem); /* Bottom nav height + safe area */
-  }
   
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar {
       display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
   }
-}
-
-/* Performance Optimized Animations */
-@keyframes fade-in {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-    animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Premium Card Surface */
-.card-premium {
-    @apply bg-white rounded-3xl border border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 dark:bg-gray-900 dark:border-gray-800 dark:shadow-none;
-}
-
-/* Text Gradients */
-.text-gradient-blue {
-    @apply bg-clip-text text-transparent from-blue-600 to-indigo-600;
-    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
 }

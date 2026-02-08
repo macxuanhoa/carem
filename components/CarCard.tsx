@@ -71,105 +71,103 @@ export default function CarCard({ car }: { car: any }) {
     
     return (
         <Link href={`/cars/${car.id}`} className="block group h-full">
-            <div className={`bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-all duration-300 relative overflow-hidden h-full flex flex-col
-                group-hover:shadow-md group-hover:translate-y-[-2px] group-hover:border-blue-200 dark:group-hover:border-blue-800
+            <div className={`card-instrument h-full flex flex-col relative
+                group-hover:translate-y-[-4px] group-hover:shadow-[0_12px_32px_-8px_rgba(59,130,246,0.2)] dark:group-hover:shadow-[0_12px_32px_-8px_rgba(59,130,246,0.1)]
                 ${isOverdue ? 'ring-2 ring-red-500/50' : ''}
             `}>
                 {/* Header Badge & Image */}
                 <div 
-                    className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800 group/image touch-pan-y"
+                    className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800 group/image touch-pan-y overflow-hidden"
                     onTouchStart={onTouchStart}
                     onTouchMove={onTouchMove}
                     onTouchEnd={onTouchEnd}
                 >
+                    {/* Dark Gradient Overlay for text readability */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10 opacity-60"></div>
+
                     {images.length > 0 ? (
                         <>
                             <img 
                                 src={images[currentImageIndex]} 
                                 alt={`${car.dongXe} - Image ${currentImageIndex + 1}`} 
-                                className="w-full h-full object-cover transition-transform duration-500"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             
-                            {/* Navigation Arrows - Removed as per request */}
                             {hasMultipleImages && (
-                                <>
-                                    {/* Image Indicator Dots */}
-                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-100 transition-opacity">
-                                        {images.map((_, idx) => (
-                                            <div 
-                                                key={idx} 
-                                                className={`w-1.5 h-1.5 rounded-full shadow-sm transition-all ${
-                                                    idx === currentImageIndex 
-                                                        ? 'bg-white scale-125' 
-                                                        : 'bg-white/50'
-                                                }`} 
-                                            />
-                                        ))}
-                                    </div>
-                                </>
+                                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+                                    {images.map((_, idx) => (
+                                        <div 
+                                            key={idx} 
+                                            className={`h-1 rounded-full shadow-sm transition-all duration-300 ${
+                                                idx === currentImageIndex 
+                                                    ? 'w-4 bg-white' 
+                                                    : 'w-1 bg-white/40'
+                                            }`} 
+                                        />
+                                    ))}
+                                </div>
                             )}
                         </>
                     ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-gray-700">
-                            <Bike size={48} strokeWidth={1.5} />
-                            <span className="text-[10px] font-bold uppercase mt-2">Chưa có ảnh</span>
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-gray-700 bg-gray-50 dark:bg-gray-800">
+                            <Bike size={48} strokeWidth={1} className="opacity-50" />
+                            <span className="text-[10px] font-bold uppercase mt-2 tracking-widest opacity-50">No Image</span>
                         </div>
                     )}
 
-                    <div className="absolute top-3 left-3 flex gap-1 pointer-events-none">
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg shadow-sm backdrop-blur-md ${status.color}`}>
+                    <div className="absolute top-3 left-3 flex gap-1 z-20">
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-lg backdrop-blur-md border border-white/10 ${status.color}`}>
                             {status.label}
                         </span>
                     </div>
 
-                    <div className="absolute top-3 right-3 pointer-events-none">
-                        <span className="text-[10px] text-gray-600 dark:text-gray-300 font-bold bg-white/90 dark:bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg shadow-sm border border-white/20">
+                    <div className="absolute top-3 right-3 z-20">
+                        <span className="text-[9px] text-white/90 font-bold bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full shadow-lg border border-white/10 tracking-wide">
                             {formatTimeAgo(new Date(car.createdAt))}
                         </span>
                     </div>
                 </div>
 
                 {/* Main Info */}
-                <div className="px-4 pt-4 mb-2 flex-1">
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2 line-clamp-2">
+                <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2 line-clamp-2">
                         {car.dongXe}
                     </h3>
-                    <div className="flex flex-wrap gap-2 text-xs text-gray-600 dark:text-gray-400">
-                         <span className="bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-md border border-gray-100 dark:border-gray-700 font-medium">Đời {car.namSanXuat}</span>
-                         <span className="bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-md border border-gray-100 dark:border-gray-700">{car.mauXe}</span>
+                    
+                    <div className="flex flex-wrap gap-2 text-[11px] font-medium text-gray-500 dark:text-gray-400 mb-4">
+                         <span className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">{car.namSanXuat}</span>
+                         <span className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">{car.mauXe}</span>
                          {car.bienSo && (
-                             <span className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400 px-2 py-1 rounded-md border border-yellow-100 dark:border-yellow-900/30 font-mono font-medium">
+                             <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md font-mono border border-blue-100 dark:border-blue-900/30">
                                 {car.bienSo}
                              </span>
                          )}
                     </div>
-                    <p className="text-[10px] text-gray-400 mt-3 flex items-center">
-                        <span className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mr-1.5"></span>
-                        Nhập: {new Date(car.createdAt).toLocaleDateString('vi-VN')}
-                    </p>
-                </div>
 
-                {/* Footer: Price */}
-                <div className="mt-auto bg-gray-50/50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 p-4 flex justify-between items-end">
-                     <div>
-                        <p className="text-[10px] text-gray-400 uppercase font-bold mb-0.5 tracking-wide">Giá vốn</p>
-                        <p className="font-bold text-gray-900 dark:text-white text-xl tracking-tight">{car.tongGiaMua.toLocaleString()} <span className="text-xs font-normal text-gray-500">đ</span></p>
-                     </div>
-                     {car.soTienCoc > 0 && (
-                         <div className="text-right">
-                             <p className="text-[10px] text-gray-400 uppercase font-bold mb-0.5">Đã cọc</p>
-                             <p className="font-bold text-green-600 dark:text-green-400 text-sm bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-md border border-green-100 dark:border-green-900/30">
-                                +{car.soTienCoc.toLocaleString()}
-                             </p>
-                         </div>
-                     )}
+                    <div className="mt-auto pt-4 border-t border-dashed border-gray-100 dark:border-gray-800 flex justify-between items-end">
+                        <div>
+                            <p className="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-wider">Giá vốn</p>
+                            <p className="font-black text-gray-900 dark:text-white text-xl tracking-tight flex items-baseline gap-0.5">
+                                {car.tongGiaMua.toLocaleString()} 
+                                <span className="text-[10px] font-normal text-gray-400">₫</span>
+                            </p>
+                        </div>
+                         {car.soTienCoc > 0 && (
+                             <div className="text-right">
+                                 <p className="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-wider">Đã cọc</p>
+                                 <p className="font-bold text-green-600 dark:text-green-400 text-sm">
+                                    +{car.soTienCoc.toLocaleString()}
+                                 </p>
+                             </div>
+                         )}
+                    </div>
                 </div>
 
                 {/* Overdue Warning Overlay */}
                 {isOverdue && (
-                    <div className="absolute top-0 right-0 pointer-events-none">
-                        <div className="bg-red-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-lg shadow-sm">
-                            HỒ SƠ QUÁ HẠN
+                    <div className="absolute inset-0 border-2 border-red-500/50 rounded-[24px] pointer-events-none z-30 flex items-center justify-center bg-red-500/5 backdrop-blur-[1px]">
+                        <div className="bg-red-600 text-white text-xs font-bold px-4 py-2 rounded-full shadow-xl animate-pulse tracking-widest">
+                            QUÁ HẠN
                         </div>
                     </div>
                 )}
