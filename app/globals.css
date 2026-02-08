@@ -5,18 +5,18 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 210 40% 98%; /* Soft cool white */
+    --foreground: 222.2 47.4% 11.2%; /* Deep Slate */
     
-    /* Custom Blue - Light */
+    /* Modern Blue - Softer & Brighter */
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222.2 47.4% 11.2%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222.2 47.4% 11.2%;
  
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -34,18 +34,18 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
  
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
  
   .dark {
     /* Refined Dark Mode - Deep Blue/Black */
-    --background: 224 71% 4%;
+    --background: 222.2 47.4% 11.2%;
     --foreground: 210 40% 98%;
  
-    --card: 224 71% 6%;
+    --card: 222.2 47.4% 11.2%;
     --card-foreground: 210 40% 98%;
  
-    --popover: 224 71% 6%;
+    --popover: 222.2 47.4% 11.2%;
     --popover-foreground: 210 40% 98%;
  
     /* Primary Blue - Dark Mode (More Vibrant) */
@@ -78,21 +78,22 @@
 
 /* Base Styles */
 body {
-    @apply bg-gray-50 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-50;
+    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50;
     -webkit-tap-highlight-color: transparent;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
 }
 
 /* Custom Utilities */
 .glass-effect {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg shadow-black/5 supports-backdrop-filter:bg-white/60 dark:bg-gray-900/80 dark:border-gray-800 dark:shadow-black/20;
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm supports-backdrop-filter:bg-white/60 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-black/20;
 }
 
 .input-primary {
-    @apply w-full bg-white border border-gray-200 rounded-2xl p-3.5 text-sm outline-none transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-gray-400 dark:bg-gray-900 dark:border-gray-800 dark:text-white dark:focus:ring-blue-500/20;
+    @apply w-full bg-white border border-slate-200 rounded-2xl p-4 text-sm font-medium outline-none transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400 dark:bg-slate-900 dark:border-slate-800 dark:text-white dark:focus:ring-blue-500/20 shadow-sm hover:border-blue-300 dark:hover:border-blue-700;
 }
 
 .btn-primary {
-    @apply bg-blue-600 text-white p-4 rounded-2xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/40 active:scale-[0.98] transition-all duration-200 flex items-center justify-center dark:shadow-blue-900/20;
+    @apply bg-blue-600 text-white p-4 rounded-2xl font-bold shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:bg-blue-700 hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 flex items-center justify-center dark:shadow-blue-900/20;
 }
 
 @layer utilities {
@@ -119,21 +120,20 @@ body {
 
 /* Performance Optimized Animations */
 @keyframes fade-in {
-    from { opacity: 0; transform: translateY(5px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-    animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Premium Card Surface */
 .card-premium {
-    @apply bg-white rounded-3xl border border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 dark:bg-gray-900 dark:border-gray-800 dark:shadow-none;
+    @apply bg-white rounded-3xl border border-slate-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_30px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 dark:bg-slate-900 dark:border-slate-800 dark:shadow-none hover:-translate-y-1;
 }
 
 /* Text Gradients */
 .text-gradient-blue {
-    @apply bg-clip-text text-transparent from-blue-600 to-indigo-600;
-    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400;
 }

@@ -27,20 +27,20 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 pb-safe pt-1 z-50 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-      <div className="grid grid-cols-5 h-[60px]">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-800 pb-safe pt-2 z-50 md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.05)] transition-all duration-300">
+      <div className="grid grid-cols-5 h-[60px] items-center">
         {navItems.map((item) => {
             const active = isActive(item.path);
             const Icon = item.icon;
             
             if (item.isPrimary) {
                 return (
-                    <div key={item.path} className="relative -top-6 flex justify-center">
+                    <div key={item.path} className="relative -top-8 flex justify-center">
                         <Link 
                             href={item.path}
-                            className="flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg shadow-blue-500/40 border-4 border-gray-50 dark:border-gray-950 transition-transform active:scale-95"
+                            className="flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-blue-500/30 border-[4px] border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
                         >
-                             <Icon size={28} strokeWidth={3} />
+                             <Icon size={26} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                         </Link>
                     </div>
                 );
@@ -50,14 +50,18 @@ export default function BottomNav() {
                 <Link 
                     key={item.path} 
                     href={item.path}
-                    className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
+                    className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 ${
                         active 
-                        ? 'text-blue-600 dark:text-blue-400 font-bold' 
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 font-medium'
+                        ? 'text-blue-600 dark:text-blue-400' 
+                        : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
                     }`}
                 >
-                    <Icon size={24} strokeWidth={active ? 2.5 : 2} />
-                    <span className="text-[10px]">{item.label}</span>
+                    <div className={`p-1.5 rounded-xl transition-all duration-300 ${active ? 'bg-blue-50 dark:bg-blue-900/20 translate-y-[-2px]' : ''}`}>
+                        <Icon size={22} strokeWidth={active ? 2.5 : 2} />
+                    </div>
+                    <span className={`text-[10px] font-medium transition-all duration-300 ${active ? 'font-bold opacity-100' : 'opacity-80'}`}>
+                        {item.label}
+                    </span>
                 </Link>
             );
         })}
