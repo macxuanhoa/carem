@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
-  Car, FileText, DollarSign, Wallet, TrendingUp, ArrowRight
+  Bike, FileText, DollarSign, Wallet, TrendingUp, ArrowRight
 } from 'lucide-react';
 import DashboardChart from './components/DashboardChart';
 import DashboardSearch from '@/components/DashboardSearch';
@@ -139,35 +139,38 @@ export default async function DashboardPage() {
             </div>
         </Link>
 
-        {/* 3. Stat Widgets - Clean Style */}
+        {/* 3. Stat Widgets - Premium Design */}
         <div className="grid grid-cols-3 gap-3">
-            <Link href="/cars?group=inventory" className="card-premium p-4 flex flex-col justify-between h-32 group hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
-                <div className="bg-blue-50 dark:bg-blue-900/20 w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <Car size={20} strokeWidth={2.5} className="text-blue-600 dark:text-blue-400" />
+            <Link href="/cars?group=inventory" className="relative p-4 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-36 group overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-900/20 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-125 duration-500"></div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 w-10 h-10 rounded-2xl flex items-center justify-center mb-3 z-10 group-hover:rotate-12 transition-transform duration-300">
+                    <Bike size={22} strokeWidth={2.5} className="text-blue-600 dark:text-blue-400" />
                 </div>
-                <div>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{carsInStock}</p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Xe Tồn Kho</p>
-                </div>
-            </Link>
-
-            <Link href="/expenses" className="card-premium p-4 flex flex-col justify-between h-32 group hover:border-purple-200 dark:hover:border-purple-900 transition-colors">
-                <div className="bg-purple-50 dark:bg-purple-900/20 w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <Wallet size={20} strokeWidth={2.5} className="text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{pendingExpenses}</p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Cần Duyệt</p>
+                <div className="z-10">
+                    <p className="text-3xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{carsInStock}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Xe Tồn Kho</p>
                 </div>
             </Link>
 
-            <Link href="/cars?sort=overdue" className="card-premium p-4 flex flex-col justify-between h-32 group hover:border-red-200 dark:hover:border-red-900 transition-colors">
-                 <div className="bg-red-50 dark:bg-red-900/20 w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <FileText size={20} strokeWidth={2.5} className="text-red-600 dark:text-red-400" />
+            <Link href="/expenses" className="relative p-4 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-36 group overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-50 dark:bg-purple-900/20 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-125 duration-500"></div>
+                <div className="bg-purple-50 dark:bg-purple-900/20 w-10 h-10 rounded-2xl flex items-center justify-center mb-3 z-10 group-hover:rotate-12 transition-transform duration-300">
+                    <Wallet size={22} strokeWidth={2.5} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{overdueDocs}</p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Hồ Sơ Lỗi</p>
+                <div className="z-10">
+                    <p className="text-3xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{pendingExpenses}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Cần Duyệt</p>
+                </div>
+            </Link>
+
+            <Link href="/cars?sort=overdue" className="relative p-4 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-36 group overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-red-900/20 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-125 duration-500"></div>
+                 <div className="bg-red-50 dark:bg-red-900/20 w-10 h-10 rounded-2xl flex items-center justify-center mb-3 z-10 group-hover:rotate-12 transition-transform duration-300">
+                    <FileText size={22} strokeWidth={2.5} className="text-red-600 dark:text-red-400" />
+                </div>
+                <div className="z-10">
+                    <p className="text-3xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{overdueDocs}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">Hồ Sơ Lỗi</p>
                 </div>
             </Link>
         </div>
