@@ -14,12 +14,12 @@ async function main() {
   await prisma.user.deleteMany();
 
   // --- 0. USERS ---
-  // Default Admin User
+  // Secure Admin User
   await prisma.user.create({
       data: {
-          username: 'admin',
-          password: '123', // In production, hash this!
-          name: 'Administrator',
+          username: 'carem92',
+          password: '@', 
+          name: 'Quản Trị Viên',
           role: 'ADMIN'
       }
   });

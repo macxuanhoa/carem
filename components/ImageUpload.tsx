@@ -87,15 +87,18 @@ export default function ImageUpload({
 
   return (
     <div className="space-y-4">
-      {/* Gallery Grid - Mobile: Horizontal Scroll, Desktop: Grid */}
-      <div className="flex overflow-x-auto pb-4 gap-3 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide snap-x">
+      {/* Gallery Grid - Responsive Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         
-        {/* Custom Upload Button - Always First */}
-        <label className={`shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group snap-start ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="p-3 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
-                <CloudUpload size={24} strokeWidth={2.5} />
+        {/* Custom Upload Button - Modern Design */}
+        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 bg-gray-50 dark:bg-gray-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+                <CloudUpload size={24} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
             </div>
-            <span className="text-xs font-bold text-blue-700 group-hover:text-blue-800 text-center px-2">Thêm Ảnh</span>
+            <div className="text-center px-2">
+                <span className="text-sm font-semibold text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 block">Thêm Ảnh</span>
+                <span className="text-[10px] text-gray-400 mt-1 block">Tối đa 10MB</span>
+            </div>
             <input 
                 type="file" 
                 multiple 
@@ -108,39 +111,37 @@ export default function ImageUpload({
 
         {/* Loading State */}
         {isUploading && (
-            <div className="shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center animate-pulse snap-start">
-                <Loader2 className="animate-spin text-blue-500 mb-2" size={24} />
-                <span className="text-xs text-gray-500 font-medium">Đang tải...</span>
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex flex-col items-center justify-center animate-pulse">
+                <Loader2 className="animate-spin text-blue-500 mb-2" size={28} />
+                <span className="text-xs text-gray-500 font-medium">Đang xử lý...</span>
             </div>
         )}
 
         {/* Images */}
         {value.map((url) => (
-          <div key={url} className="shrink-0 w-32 md:w-auto relative aspect-4/3 rounded-2xl overflow-hidden border border-gray-200 group bg-gray-100 snap-start shadow-sm">
-            <div className="absolute top-1.5 right-1.5 z-10 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-              <button
-                type="button"
-                onClick={() => onRemove(url)}
-                className="bg-white/90 text-red-500 p-1.5 rounded-full shadow-sm hover:bg-red-50 transition-colors"
-              >
-                <X size={14} strokeWidth={2.5} />
-              </button>
+            <div key={url} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 group bg-gray-100 dark:bg-gray-800 shadow-sm hover:shadow-md transition-all">
+                <div className="absolute top-2 right-2 z-10">
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onRemove(url);
+                        }}
+                        className="bg-white/90 dark:bg-black/70 text-gray-500 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 p-1.5 rounded-full shadow-sm backdrop-blur-sm transition-all hover:scale-110"
+                    >
+                        <X size={16} strokeWidth={2.5} />
+                    </button>
+                </div>
+                <Image
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    alt="Car Image"
+                    src={url}
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                />
             </div>
-            <Image
-              fill
-              className="object-cover"
-              alt="Car Image"
-              src={url}
-            />
-          </div>
         ))}
       </div>
-      
-      {value.length === 0 && !isUploading && (
-          <p className="text-xs text-gray-400 text-center italic md:hidden">
-              Trượt ngang để xem thêm
-          </p>
-      )}
     </div>
   );
 }
