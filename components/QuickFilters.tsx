@@ -23,15 +23,12 @@ export default function QuickFilters() {
 
   const handleStatus = (value: string) => {
       const params = new URLSearchParams(searchParams);
-      // Toggle logic: If clicking the active filter
+      // Prevent toggle back to 'all' - Always set the clicked value
       if (params.get('status') === value) {
-          // If it's 'all', do nothing (always keep one active)
-          if (value === 'all') return;
-          // Otherwise, switch back to 'all'
-          params.set('status', 'all');
-      } else {
-          params.set('status', value);
+          return; // Do nothing if already active
       }
+      
+      params.set('status', value);
       router.replace(`/cars?${params.toString()}`);
   };
 
