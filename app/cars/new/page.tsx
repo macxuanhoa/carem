@@ -159,7 +159,11 @@ export default function NewCarPage() {
 
     const handleRestoreDraft = () => {
         if (pendingDraftData) {
-            setFormData(pendingDraftData);
+            // Restore data but ensure hinhAnh is initialized as empty array if missing (since we don't save images to draft)
+            setFormData({
+                ...pendingDraftData,
+                hinhAnh: pendingDraftData.hinhAnh || []
+            });
             setShowDraftPrompt(false);
         }
     };

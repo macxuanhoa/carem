@@ -87,17 +87,43 @@ export default function ImageUpload({
 
   return (
     <div className="space-y-4">
-      {/* Gallery Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {/* Gallery Grid - Mobile: Horizontal Scroll, Desktop: Grid */}
+      <div className="flex overflow-x-auto pb-4 gap-3 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide snap-x">
+        
+        {/* Custom Upload Button - Always First */}
+        <label className={`shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group snap-start ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="p-3 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
+                <CloudUpload size={24} strokeWidth={2.5} />
+            </div>
+            <span className="text-xs font-bold text-blue-700 group-hover:text-blue-800 text-center px-2">Thêm Ảnh</span>
+            <input 
+                type="file" 
+                multiple 
+                accept="image/*" 
+                className="hidden" 
+                onChange={onUpload}
+                disabled={isUploading}
+            />
+        </label>
+
+        {/* Loading State */}
+        {isUploading && (
+            <div className="shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center animate-pulse snap-start">
+                <Loader2 className="animate-spin text-blue-500 mb-2" size={24} />
+                <span className="text-xs text-gray-500 font-medium">Đang tải...</span>
+            </div>
+        )}
+
+        {/* Images */}
         {value.map((url) => (
-          <div key={url} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 group bg-gray-100">
-            <div className="absolute top-2 right-2 z-10">
+          <div key={url} className="shrink-0 w-32 md:w-auto relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 group bg-gray-100 snap-start shadow-sm">
+            <div className="absolute top-1.5 right-1.5 z-10 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 type="button"
                 onClick={() => onRemove(url)}
-                className="bg-black/50 hover:bg-red-500 text-white p-1.5 rounded-full backdrop-blur-sm transition-colors"
+                className="bg-white/90 text-red-500 p-1.5 rounded-full shadow-sm hover:bg-red-50 transition-colors"
               >
-                <X size={14} />
+                <X size={14} strokeWidth={2.5} />
               </button>
             </div>
             <Image
@@ -108,35 +134,11 @@ export default function ImageUpload({
             />
           </div>
         ))}
-
-        {/* Loading State */}
-        {isUploading && (
-            <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50 flex flex-col items-center justify-center animate-pulse">
-                <Loader2 className="animate-spin text-blue-500 mb-2" size={24} />
-                <span className="text-xs text-gray-500 font-medium">Đang tải lên...</span>
-            </div>
-        )}
-
-        {/* Custom Upload Button */}
-        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="p-4 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
-                <CloudUpload size={32} strokeWidth={2.5} />
-            </div>
-            <span className="text-sm font-bold text-blue-700 group-hover:text-blue-800 text-center px-2">Thêm Ảnh</span>
-            <input 
-                type="file" 
-                multiple 
-                accept="image/*" 
-                className="hidden" 
-                onChange={onUpload}
-                disabled={isUploading}
-            />
-        </label>
       </div>
       
       {value.length === 0 && !isUploading && (
-          <p className="text-xs text-gray-400 text-center italic">
-              Chưa có ảnh nào. Bấm vào ô trên để tải ảnh lên.
+          <p className="text-xs text-gray-400 text-center italic md:hidden">
+              Trượt ngang để xem thêm
           </p>
       )}
     </div>
