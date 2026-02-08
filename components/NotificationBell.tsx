@@ -127,7 +127,7 @@ export default function NotificationBell() {
             </div>
             
             <div className="p-2 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 text-center">
-                <Link href="/reports" className="text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                <Link href="/activities" className="text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 block py-1">
                     Xem tất cả hoạt động
                 </Link>
             </div>
