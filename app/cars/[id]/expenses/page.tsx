@@ -152,7 +152,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
                 {showForm && (
                     <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 mb-6 animate-in fade-in slide-in-from-top-4">
                         <h3 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                            <Wrench size={18} className="mr-2 text-blue-500" /> Nhập chi phí
+                            <Wrench size={18} className="mr-2 text-blue-600" /> Nhập chi phí
                         </h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -194,7 +194,7 @@ function ExpenseManager({ params }: { params: Promise<{ id: string }> }) {
                                     type="text"
                                     value={formData.ghiChu}
                                     onChange={(e) => setFormData({...formData, ghiChu: e.target.value})}
-                                    className="input-primary"
+                                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 outline-none focus:border-blue-500 dark:text-white"
                                     placeholder="Chi tiết..."
                                 />
                             </div>

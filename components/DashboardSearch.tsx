@@ -17,7 +17,9 @@ export default function DashboardSearch() {
 
   return (
     <form onSubmit={handleSearch} className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
+        <button type="submit" className="absolute left-0 top-0 bottom-0 px-4 text-gray-400 group-focus-within:text-blue-600 transition-colors z-10 flex items-center">
+            <Search size={18} />
+        </button>
         <input 
           type="text" 
           value={query}
