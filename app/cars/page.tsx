@@ -7,6 +7,7 @@ import QuickFilters from '@/components/QuickFilters';
 import ViewOptions from '@/components/ViewOptions';
 import CarListSkeleton from '@/components/skeletons/CarListSkeleton';
 import CarCard from '@/components/CarCard';
+import { Button } from '@/components/ui/button';
 
 const CAR_STATUS_GROUPS = [
     { label: 'Kho Xe (Đang bán)', statuses: ['TIM_THAY', 'DA_COC', 'DA_CHUYEN_TIEN', 'CHO_GIAO_XE', 'XE_DA_VE', 'DANG_BAN'] },
@@ -89,7 +90,9 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
                     <Bike size={40} className="text-gray-300 dark:text-gray-600" />
                 </div>
                 <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Chưa có xe nào trong danh mục này.</p>
-                <Link href="/cars/new" className="mt-4 text-blue-600 dark:text-blue-400 font-bold hover:underline">Nhập xe ngay</Link>
+                <Button variant="link" asChild className="mt-2 text-blue-600 dark:text-blue-400 font-bold">
+                    <Link href="/cars/new">Nhập xe ngay</Link>
+                </Button>
             </div>
         );
     }
@@ -111,27 +114,41 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
 
         return (
             <div className="flex justify-center items-center gap-4 mt-8 pb-8">
-                <Link
-                    href={createPageUrl(page > 1 ? page - 1 : 1)}
-                    className={`p-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm transition-all ${
-                        page <= 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
-                    }`}
+                <Button
+                    variant="outline"
+                    size="icon"
+                    disabled={page <= 1}
+                    className="rounded-full shadow-sm"
+                    asChild={page > 1}
                 >
-                    <ChevronLeft size={20} className="text-gray-600 dark:text-gray-400" />
-                </Link>
+                    {page > 1 ? (
+                        <Link href={createPageUrl(page - 1)}>
+                            <ChevronLeft size={20} className="text-gray-600 dark:text-gray-400" />
+                        </Link>
+                    ) : (
+                         <ChevronLeft size={20} className="text-gray-300 dark:text-gray-600" />
+                    )}
+                </Button>
                 
                 <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
                     Trang {page} / {totalPages}
                 </span>
 
-                <Link
-                    href={createPageUrl(page < totalPages ? page + 1 : totalPages)}
-                    className={`p-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm transition-all ${
-                        page >= totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
-                    }`}
+                <Button
+                    variant="outline"
+                    size="icon"
+                    disabled={page >= totalPages}
+                    className="rounded-full shadow-sm"
+                    asChild={page < totalPages}
                 >
-                    <ChevronRight size={20} className="text-gray-600 dark:text-gray-400" />
-                </Link>
+                    {page < totalPages ? (
+                        <Link href={createPageUrl(page + 1)}>
+                            <ChevronRight size={20} className="text-gray-600 dark:text-gray-400" />
+                        </Link>
+                    ) : (
+                        <ChevronRight size={20} className="text-gray-300 dark:text-gray-600" />
+                    )}
+                </Button>
             </div>
         );
     };
@@ -225,13 +242,12 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
             
             {/* Group By Dropdown - Moved to ViewOptions */}
             <ViewOptions models={availableModels} />
-            <Link 
-                href="/cars/new" 
-                className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors shadow-sm ml-4"
-            >
-                <Plus size={18} strokeWidth={2.5} />
-                Nhập Xe
-            </Link>
+            <Button asChild className="hidden md:flex gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm ml-4">
+                <Link href="/cars/new">
+                    <Plus size={18} strokeWidth={2.5} />
+                    Nhập Xe
+                </Link>
+            </Button>
         </div>
         
         <SearchInput />
