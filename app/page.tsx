@@ -50,7 +50,7 @@ const getDashboardStats = unstable_cache(
         };
     },
     ['dashboard-stats'],
-    { revalidate: 1, tags: ['dashboard'] } // Reduce revalidate to 1s and add tag for on-demand revalidation
+    { revalidate: 60, tags: ['dashboard'] } // Increased revalidate to 60s for better performance
 );
 
 export default async function DashboardPage() {

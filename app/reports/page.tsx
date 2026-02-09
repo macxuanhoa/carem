@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
-  PieChart, Pie, Cell 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
-import ROIChart from '@/components/ROIChart';
-import CashFlowChart from '@/components/CashFlowChart';
 import ExcelExport from '@/components/ExcelExport';
 import { TrendingUp, DollarSign, Clock, AlertTriangle, ArrowUpRight, ArrowDownRight, Filter, Wallet } from 'lucide-react';
+
+// Lazy Load Charts
+const ROIChart = dynamic(() => import('@/components/ROIChart'), { ssr: false, loading: () => <div className="h-48 w-full bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /> });
+const CashFlowChart = dynamic(() => import('@/components/CashFlowChart'), { ssr: false, loading: () => <div className="h-48 w-full bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /> });
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 

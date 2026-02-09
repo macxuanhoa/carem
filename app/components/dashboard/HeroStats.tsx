@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
-import DashboardChart from '../DashboardChart';
+import dynamic from 'next/dynamic';
+
+const DashboardChart = dynamic(() => import('../DashboardChart'), { 
+    ssr: false,
+    loading: () => <div className="h-24 w-full bg-white/10 rounded-xl animate-pulse" />
+});
 
 interface HeroStatsProps {
   totalRevenue: number;
