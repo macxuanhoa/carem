@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { logAudit, AUDIT_ACTIONS } from '@/lib/audit';
 import { sendTelegramNotification } from '@/lib/telegram';
 import { carSchema } from '@/lib/schemas';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     await sendTelegramNotification(message);
 
     // Force revalidate dashboard cache
-    // revalidateTag('dashboard'); // Commented out due to build error (Type error: Expected 2 arguments)
+    revalidatePath('/'); 
 
     return NextResponse.json(car);
   } catch (error) {

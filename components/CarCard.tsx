@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Bike, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatTimeAgo, formatStatus } from '@/lib/utils';
+import { CarWithRelations } from '@/lib/types';
 
-export default function CarCard({ car }: { car: any }) {
+export default function CarCard({ car }: { car: CarWithRelations }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // Touch handling for swipe
