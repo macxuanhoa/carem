@@ -9,27 +9,36 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export default function ExpensesClient({ car }: { car: any }) {
+import { CarWithRelations } from '@/lib/types';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { expenseSchema, ExpenseFormData } from '@/lib/schemas';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+export default function ExpensesClient({ car }: { car: CarWithRelations }) {
   const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  const [formData, setFormData] = useState({
-    loaiChiPhi: 'Sửa chữa',
-    giaDuKien: 0,
-    nguoiBaoGia: '',
-    ghiChu: ''
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<ExpenseFormData>({
+    resolver: zodResolver(expenseSchema),
+    defaultValues: {
+        loaiChiPhi: 'Sửa chữa',
+        giaDuKien: 0,
+        nguoiBaoGia: '',
+        ghiChu: ''
+    }
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ExpenseFormData) => {
     setLoading(true);
     
     try {
       const res = await fetch(`/api/cars/${car.id}/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) throw new Error('Failed to create expense');
@@ -38,7 +47,7 @@ export default function ExpensesClient({ car }: { car: any }) {
           description: 'Vui lòng chờ quản lý duyệt.'
       });
       
-      setFormData({ loaiChiPhi: 'Sửa chữa', giaDuKien: 0, nguoiBaoGia: '', ghiChu: '' });
+      reset();
       setIsAdding(false);
       router.refresh();
     } catch (error) {
@@ -48,8 +57,8 @@ export default function ExpensesClient({ car }: { car: any }) {
     }
   };
 
-  const totalCost = car.chiPhi.reduce((sum: number, c: any) => sum + (c.giaThucTe || 0), 0);
-  const pendingCount = car.chiPhi.filter((c: any) => c.trangThai === 'CHO_DUYET').length;
+  const totalCost = car.chiPhi.reduce((sum, c) => sum + (c.giaThucTe || 0), 0);
+  const pendingCount = car.chiPhi.filter(c => c.trangThai === 'CHO_DUYET').length;
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
@@ -94,15 +103,14 @@ export default function ExpensesClient({ car }: { car: any }) {
 
         {/* Add Form */}
         {isAdding && (
-            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-2xl shadow-sm border border-blue-100 animate-in slide-in-from-top-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-4 rounded-2xl shadow-sm border border-blue-100 animate-in slide-in-from-top-4">
                 <h3 className="font-bold text-gray-800 mb-3 text-sm uppercase">Thêm Chi Phí Mới</h3>
                 <div className="space-y-3">
                     <div>
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Loại Chi Phí</label>
                         <select 
                             className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none"
-                            value={formData.loaiChiPhi}
-                            onChange={e => setFormData({...formData, loaiChiPhi: e.target.value})}
+                            {...register('loaiChiPhi')}
                         >
                             <option value="Sửa chữa">Sửa chữa / Bảo dưỡng</option>
                             <option value="Xăng xe">Xăng xe / Đi lại</option>
@@ -110,50 +118,46 @@ export default function ExpensesClient({ car }: { car: any }) {
                             <option value="Giấy tờ">Phí giấy tờ / Công chứng</option>
                             <option value="Khác">Khác</option>
                         </select>
+                        {errors.loaiChiPhi && <p className="text-red-500 text-xs mt-1">{errors.loaiChiPhi.message}</p>}
                     </div>
                     <div>
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Giá Dự Kiến</label>
-                        <input 
+                        <Input 
                             type="number" 
-                            required
-                            className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none"
-                            value={formData.giaDuKien}
-                            onChange={e => setFormData({...formData, giaDuKien: Number(e.target.value)})}
+                            {...register('giaDuKien')}
                         />
+                        {errors.giaDuKien && <p className="text-red-500 text-xs mt-1">{errors.giaDuKien.message}</p>}
                     </div>
                     <div>
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Người Đề Xuất</label>
-                        <input 
+                        <Input 
                             type="text" 
-                            required
                             placeholder="Tên của bạn"
-                            className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none"
-                            value={formData.nguoiBaoGia}
-                            onChange={e => setFormData({...formData, nguoiBaoGia: e.target.value})}
+                            {...register('nguoiBaoGia')}
                         />
+                        {errors.nguoiBaoGia && <p className="text-red-500 text-xs mt-1">{errors.nguoiBaoGia.message}</p>}
                     </div>
                     <div>
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Ghi Chú</label>
                         <textarea 
                             rows={2}
                             className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none"
-                            value={formData.ghiChu}
-                            onChange={e => setFormData({...formData, ghiChu: e.target.value})}
+                            {...register('ghiChu')}
                         />
                     </div>
-                    <button 
+                    <Button 
                         disabled={loading}
-                        className="w-full bg-blue-600 text-white p-3 rounded-xl font-bold shadow-md hover:bg-blue-700 disabled:opacity-50"
+                        className="w-full"
                     >
                         {loading ? 'Đang gửi...' : 'Gửi Đề Xuất'}
-                    </button>
+                    </Button>
                 </div>
             </form>
         )}
 
         {/* List */}
         <div className="space-y-3">
-            {car.chiPhi.map((exp: any) => (
+            {car.chiPhi.map((exp) => (
                 <div key={exp.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex justify-between items-start">
                     <div className="flex items-start">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 mt-1 ${

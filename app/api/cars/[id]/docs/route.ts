@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { logAudit } from '@/lib/audit';
+import { auth } from '@/auth';
+import { updateCarDocs } from '@/lib/services/car.service';
 
 // PUT: Cập nhật trạng thái hồ sơ
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const session = await auth();
+  if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { id } = await params;
   const carId = parseInt(id);
   
@@ -14,29 +19,12 @@ export async function PUT(
     const body = await request.json();
     const { trangThai, noiGiuHoSo, ngayHenRut, nguoiChiuTrachNhiem } = body;
 
-    const updated = await prisma.hoSoXe.upsert({
-      where: { xeMuaVaoId: carId },
-      update: {
+    const updated = await updateCarDocs(carId, {
         trangThai,
         noiGiuHoSo,
         ngayHenRut: ngayHenRut ? new Date(ngayHenRut) : null,
         nguoiChiuTrachNhiem
-      },
-      create: {
-        xeMuaVaoId: carId,
-        trangThai: trangThai || 'CHUA_CAN',
-        noiGiuHoSo: noiGiuHoSo || 'CHU_CU',
-        ngayHenRut: ngayHenRut ? new Date(ngayHenRut) : null,
-        nguoiChiuTrachNhiem
-      }
     });
-
-    await logAudit(
-        carId,
-        'System',
-        'UPDATE_DOCS',
-        `Cập nhật hồ sơ: ${trangThai} - Giữ tại: ${noiGiuHoSo}`
-    );
 
     return NextResponse.json(updated);
   } catch (error) {

@@ -1,4 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+import { auth } from "@/auth";
 
 const f = createUploadthing();
 
@@ -9,8 +10,10 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async () => {
       // This code runs on your server before upload
-      // If you throw, the user will not be able to upload
-      return { userId: "user" };
+      const session = await auth();
+      if (!session?.user) throw new Error("Unauthorized");
+      
+      return { userId: session.user.id || "unknown" };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload

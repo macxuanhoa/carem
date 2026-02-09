@@ -10,6 +10,8 @@ export const carSchema = z.object({
   tongGiaMua: z.coerce.number().min(0, "Giá mua không được âm"),
   soTienCoc: z.coerce.number().min(0).optional().default(0),
   nguoiBan: z.string().optional().or(z.literal('')),
+  soDienThoai: z.string().optional().or(z.literal('')),
+  nguonGoc: z.string().optional().default('MUA_DAN'),
   nguoiGiuTien: z.string().optional().or(z.literal('')),
   tinhThanh: z.string().optional().or(z.literal('')),
   facebookLink: z.string().optional().or(z.literal('')),
@@ -29,3 +31,22 @@ export const carSchema = z.object({
 });
 
 export type CarFormData = z.infer<typeof carSchema>;
+
+export const expenseSchema = z.object({
+  loaiChiPhi: z.string().min(1, "Loại chi phí là bắt buộc"),
+  giaDuKien: z.coerce.number().min(0, "Giá dự kiến không được âm"),
+  nguoiBaoGia: z.string().min(1, "Người đề xuất là bắt buộc"),
+  ghiChu: z.string().optional().or(z.literal(''))
+});
+
+export type ExpenseFormData = z.infer<typeof expenseSchema>;
+
+export const investorSchema = z.object({
+  nguoiGop: z.string().min(1, "Tên người góp là bắt buộc"),
+  soTienGop: z.coerce.number().min(1000, "Số tiền góp phải lớn hơn 0"),
+  tyLeGop: z.coerce.number().min(0).max(100).optional(),
+  ngayBatDau: z.string().optional().default(new Date().toISOString().split('T')[0]),
+  ghiChu: z.string().optional().or(z.literal(''))
+});
+
+export type InvestorFormData = z.infer<typeof investorSchema>;

@@ -5,8 +5,28 @@ import { ArrowLeft } from 'lucide-react';
 import CarDetailTabs from './CarDetailTabs';
 import CarHeaderActions from './CarHeaderActions';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const car = await prisma.xeMuaVao.findUnique({
+    where: { id: parseInt(id) },
+    select: { dongXe: true, bienSo: true }
+  });
+
+  if (!car) {
+    return {
+      title: 'Không tìm thấy xe',
+    };
+  }
+
+  return {
+    title: `${car.dongXe} - ${car.bienSo || 'Chưa biển'} | Quản lý xe`,
+    description: `Chi tiết xe ${car.dongXe} biển số ${car.bienSo}`,
+  };
+}
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

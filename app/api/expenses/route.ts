@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
+import { createExpense, getExpensesByCarId } from '@/lib/services/expense.service';
 
 export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const { 
@@ -14,31 +20,14 @@ export async function POST(request: Request) {
         trangThai
     } = body;
 
-    const expense = await prisma.$transaction(async (tx) => {
-        // 1. Create Expense
-        const newExpense = await tx.chiPhiXe.create({
-            data: {
-                xeMuaVaoId: Number(xeMuaVaoId),
-                loaiChiPhi,
-                giaDuKien: Number(giaDuKien),
-                giaThucTe: Number(giaThucTe || giaDuKien), // Default to estimate if not provided
-                nguoiBaoGia,
-                trangThai: trangThai || 'DA_DUYET', // Auto-approve for now for simplicity
-                ghiChu
-            }
-        });
-
-        // 2. Log History
-        await tx.lichSuThayDoi.create({
-            data: {
-                xeMuaVaoId: Number(xeMuaVaoId),
-                nguoiThucHien: nguoiBaoGia,
-                hanhDong: 'ADD_EXPENSE',
-                chiTiet: `Thêm chi phí: ${loaiChiPhi} - ${Number(giaThucTe || giaDuKien).toLocaleString()}đ`
-            }
-        });
-
-        return newExpense;
+    const expense = await createExpense({
+        xeMuaVaoId: Number(xeMuaVaoId),
+        loaiChiPhi,
+        giaDuKien: Number(giaDuKien),
+        giaThucTe: Number(giaThucTe),
+        nguoiBaoGia,
+        ghiChu,
+        trangThai
     });
 
     return NextResponse.json(expense);
@@ -49,6 +38,11 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+    const session = await auth();
+    if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const carId = searchParams.get('carId');
 
@@ -56,10 +50,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Car ID required' }, { status: 400 });
     }
 
-    const expenses = await prisma.chiPhiXe.findMany({
-        where: { xeMuaVaoId: Number(carId) },
-        orderBy: { createdAt: 'desc' }
-    });
+    const expenses = await getExpensesByCarId(Number(carId));
 
     return NextResponse.json(expenses);
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Bike, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -19,13 +20,8 @@ export default function CarCard({ car }: { car: CarWithRelations }) {
     const isDeposited = car.soTienCoc > 0 && !isSold;
     const isSelling = !isSold && !isDeposited && (car.trangThai === 'DANG_BAN' || !!car.facebookLink);
     
-    // Parse Images
-    let images: string[] = [];
-    try {
-        images = JSON.parse(car.hinhAnh || '[]');
-    } catch (e) {
-        images = [];
-    }
+    // Images are now String[]
+    const images = car.hinhAnh || [];
 
     const hasMultipleImages = images.length > 1;
 
@@ -85,10 +81,12 @@ export default function CarCard({ car }: { car: CarWithRelations }) {
                 >
                     {images.length > 0 ? (
                         <>
-                            <img 
+                            <Image 
                                 src={images[currentImageIndex]} 
                                 alt={`${car.dongXe} - Image ${currentImageIndex + 1}`} 
-                                className="w-full h-full object-cover transition-transform duration-500"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-500"
                             />
                             
                             {/* Navigation Arrows - Removed as per request */}

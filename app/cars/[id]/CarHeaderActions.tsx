@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Edit, Trash2, MoreVertical, Printer, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -27,18 +28,20 @@ export default function CarHeaderActions({ id }: { id: number }) {
 
   return (
     <div className="relative">
-        <button 
+        <Button 
+            variant="ghost" 
+            size="icon" 
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 -mr-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+            className="-mr-2 rounded-full"
         >
-            <MoreVertical size={20} />
-        </button>
+            <MoreVertical size={20} className="text-gray-600 dark:text-gray-400" />
+        </Button>
 
         {/* Dropdown Menu */}
         {isOpen && (
             <>
                 <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 py-1 z-100 animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 py-1 z-50 animate-in fade-in zoom-in-95 duration-200">
                     <div className="px-3 py-1.5 text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 tracking-wider">Tác vụ</div>
                     
                     <Link 
@@ -91,7 +94,7 @@ export default function CarHeaderActions({ id }: { id: number }) {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
-            <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
                 <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-gray-800">
                     <div className="flex items-center justify-center w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full mx-auto mb-4">
                         <Trash2 size={24} className="text-red-600 dark:text-red-500" />
@@ -103,18 +106,20 @@ export default function CarHeaderActions({ id }: { id: number }) {
                     </p>
                     
                     <div className="flex gap-3">
-                        <button 
+                        <Button 
+                            variant="secondary"
                             onClick={() => setShowDeleteConfirm(false)}
-                            className="flex-1 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            className="flex-1"
                         >
                             Hủy
-                        </button>
-                        <button 
+                        </Button>
+                        <Button 
+                            variant="destructive"
                             onClick={handleDelete}
-                            className="flex-1 px-4 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-lg shadow-red-200 dark:shadow-red-900/20 transition-colors"
+                            className="flex-1 shadow-lg shadow-red-200 dark:shadow-red-900/20"
                         >
                             Xóa Ngay
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

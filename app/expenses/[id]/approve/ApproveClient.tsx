@@ -8,7 +8,15 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export default function ApproveExpenseClient({ expense }: { expense: any }) {
+import { Prisma } from '@prisma/client';
+
+type ExpenseWithRelations = Prisma.ChiPhiXeGetPayload<{
+  include: {
+    xeMuaVao: true;
+  }
+}>;
+
+export default function ApproveExpenseClient({ expense }: { expense: ExpenseWithRelations }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [actionType, setActionType] = useState<'APPROVE' | 'REJECT' | null>(null);

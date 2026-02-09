@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
+import { getCarById, updateCar } from '@/lib/services/car.service';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    const session = await auth();
+    if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const resolvedParams = await params;
         const id = Number(resolvedParams.id);
@@ -10,18 +16,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
         }
 
-        const car = await prisma.xeMuaVao.findUnique({
-            where: { id },
-            include: {
-                hoSo: true,
-                banRa: true,
-                gopVon: true,
-                chiPhi: true,
-                lichSu: {
-                    orderBy: { createdAt: 'desc' }
-                }
-            }
-        });
+        const car = await getCarById(id);
 
         if (!car) {
             return NextResponse.json({ error: 'Car not found' }, { status: 404 });
@@ -35,6 +30,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    const session = await auth();
+    if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const resolvedParams = await params;
         const id = Number(resolvedParams.id);
@@ -63,45 +63,23 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         if (carData.ngayHenGiao) carData.ngayHenGiao = new Date(carData.ngayHenGiao);
         if (carData.ngayCoc) carData.ngayCoc = new Date(carData.ngayCoc);
 
-        const updatedCar = await prisma.$transaction(async (tx) => {
-            // Update Car Info
-            const car = await tx.xeMuaVao.update({
-                where: { id },
-                data: carData,
-            });
-
-            // Update Docs Info if provided
-            if (hoSo_trangThai || hoSo_noiGiu || hoSo_ngayHen || hoSo_nguoiPhuTrach) {
-                // Check if hoSo exists
-                const existingHoSo = await tx.hoSoXe.findUnique({
-                    where: { xeMuaVaoId: id }
-                });
-
-                const hoSoData = {
-                    trangThai: hoSo_trangThai,
-                    noiGiuHoSo: hoSo_noiGiu,
-                    ngayHenRut: hoSo_ngayHen ? new Date(hoSo_ngayHen) : null,
-                    nguoiChiuTrachNhiem: hoSo_nguoiPhuTrach
-                };
-
-                if (existingHoSo) {
-                    await tx.hoSoXe.update({
-                        where: { xeMuaVaoId: id },
-                        data: hoSoData
-                    });
-                } else {
-                    await tx.hoSoXe.create({
-                        data: {
-                            xeMuaVaoId: id,
-                            ...hoSoData,
-                            trangThai: hoSoData.trangThai || 'CHUA_CAN',
-                            noiGiuHoSo: hoSoData.noiGiuHoSo || 'CHU_CU'
-                        }
-                    });
-                }
-            }
-
-            return car;
+        // We can reuse updateCar from service but it expects CarFormData which is stricter
+        // Or we can create a more flexible update function in service.
+        // For now, let's move the flexible update logic to service as `updateCarFlexible` or similar.
+        // But wait, `updateCar` in service is already doing complex transaction logic.
+        // The PATCH here seems to be handling partial updates which might not fit perfectly with `updateCar` (which takes full FormData).
+        
+        // Let's create a partial update function in service.
+        
+        // REFACTOR PLAN:
+        // 1. Move the transaction logic to service as `updateCarPartial`.
+        // 2. Call it here.
+        
+        const updatedCar = await updateCarPartial(id, carData, {
+            hoSo_trangThai,
+            hoSo_noiGiu,
+            hoSo_ngayHen,
+            hoSo_nguoiPhuTrach
         });
 
         return NextResponse.json(updatedCar);

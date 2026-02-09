@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { logAudit } from '@/lib/audit';
+import { auth } from '@/auth';
+import { createInvestor } from '@/lib/services/investor.service';
 
 // POST: Thêm nhà đầu tư mới vào xe
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const session = await auth();
+  if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { id } = await params;
   const carId = parseInt(id);
   
@@ -14,23 +19,13 @@ export async function POST(
     const body = await request.json();
     const { nguoiGop, tyLeGop, soTienGop, giayToLienQuan } = body;
 
-    const investor = await prisma.xeGopDauTu.create({
-      data: {
+    const investor = await createInvestor({
         xeMuaVaoId: carId,
         nguoiGop,
         tyLeGop: Number(tyLeGop),
         soTienGop: Number(soTienGop),
-        giayToLienQuan,
-        trangThai: 'DANG_GOP'
-      }
+        giayToLienQuan
     });
-
-    await logAudit(
-        carId,
-        'System',
-        'ADD_INVESTOR',
-        `Thêm NĐT ${nguoiGop} - Tỷ lệ ${tyLeGop}% - Cam kết góp ${Number(soTienGop).toLocaleString()}`
-    );
 
     return NextResponse.json(investor);
   } catch (error) {

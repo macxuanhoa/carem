@@ -1,29 +1,21 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
+import { getNotifications } from '@/lib/services/car.service';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+  const session = await auth();
+  if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '20');
+  const page = parseInt(searchParams.get('page') || '1');
 
   try {
-    const notifications = await prisma.lichSuThayDoi.findMany({
-      take: limit,
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: {
-        xeMuaVao: {
-          select: {
-            bienSo: true,
-            dongXe: true,
-            mauXe: true
-          }
-        }
-      }
-    });
-
+    const notifications = await getNotifications(limit, page);
     return NextResponse.json(notifications);
   } catch (error) {
     console.error('Error fetching notifications:', error);

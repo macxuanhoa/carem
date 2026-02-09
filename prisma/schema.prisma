@@ -30,11 +30,13 @@ model XeMuaVao {
 
   // Nguồn gốc & Facebook
   nguoiBan        String
+  soDienThoai     String?  // NEW
+  nguonGoc        String?  @default("MUA_DAN") // NEW
   tinhThanh       String
   facebookLink    String
   
-  // NEW: Hình ảnh (Lưu dạng JSON String: ["url1", "url2"])
-  hinhAnh         String   @default("[]")
+  // NEW: Hình ảnh
+  hinhAnh         String[] @default([])
   
   // Tài chính & Thời gian
   ngayThoaThuan   DateTime @default(now())
@@ -51,7 +53,7 @@ model XeMuaVao {
   daNhanXe        Boolean  @default(false)
 
   // Trạng thái xe 
-  trangThai       String @default("TIM_THAY") 
+  trangThai       String @default("TIM_THAY") // TIM_THAY, DA_COC, DANG_BAN, DA_BAN
   
   // Timestamps
   createdAt       DateTime @default(now())

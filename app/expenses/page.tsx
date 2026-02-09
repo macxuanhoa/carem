@@ -1,11 +1,14 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { CheckCircle, XCircle, Clock, DollarSign, Filter, Search, MoreHorizontal, Wallet } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, DollarSign, Filter, Search, MoreHorizontal, Wallet, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Suspense } from 'react';
 import { formatCurrency, formatShortDate, formatStatus } from '@/lib/utils';
 import ExpenseHeader from './ExpenseHeader';
 
-async function ExpenseList({ currentTab, query }: { currentTab: string, query?: string }) {
+async function ExpenseList({ currentTab, query, page }: { currentTab: string, query?: string, page: number }) {
+    const ITEMS_PER_PAGE = 20;
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+
     const whereClause: any = currentTab === 'PENDING' 
     ? { trangThai: 'CHO_DUYET' } 
     : { trangThai: { in: ['DA_DUYET', 'TU_CHOI'] } };
@@ -20,16 +23,24 @@ async function ExpenseList({ currentTab, query }: { currentTab: string, query?: 
     }
 
     let expenses = [];
+    let totalCount = 0;
+
     try {
-        expenses = await prisma.chiPhiXe.findMany({
-            where: whereClause,
-            include: { xeMuaVao: true },
-            orderBy: { createdAt: 'desc' },
-            take: 50
-        });
+        [expenses, totalCount] = await Promise.all([
+            prisma.chiPhiXe.findMany({
+                where: whereClause,
+                include: { xeMuaVao: true },
+                orderBy: { createdAt: 'desc' },
+                take: ITEMS_PER_PAGE,
+                skip: skip
+            }),
+            prisma.chiPhiXe.count({ where: whereClause })
+        ]);
     } catch (error) {
         return <div className="p-10 text-center text-red-500 text-sm">Lỗi tải dữ liệu. Vui lòng thử lại.</div>;
     }
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
     if (expenses.length === 0) {
         return (
@@ -112,6 +123,27 @@ async function ExpenseList({ currentTab, query }: { currentTab: string, query?: 
                     )}
                 </div>
             ))}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center items-center space-x-4 pt-6 pb-2">
+                    <Link
+                        href={`/expenses?tab=${currentTab}&page=${page > 1 ? page - 1 : 1}${query ? `&q=${query}` : ''}`}
+                        className={`p-2 rounded-xl border ${page <= 1 ? 'border-gray-100 text-gray-300 pointer-events-none' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <ChevronLeft size={20} />
+                    </Link>
+                    <span className="text-xs font-bold text-gray-500">
+                        Trang {page} / {totalPages}
+                    </span>
+                    <Link
+                        href={`/expenses?tab=${currentTab}&page=${page < totalPages ? page + 1 : totalPages}${query ? `&q=${query}` : ''}`}
+                        className={`p-2 rounded-xl border ${page >= totalPages ? 'border-gray-100 text-gray-300 pointer-events-none' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <ChevronRight size={20} />
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }
@@ -141,10 +173,11 @@ function ExpensesSkeleton() {
     );
 }
 
-export default async function ExpensesPage({ searchParams }: { searchParams: Promise<{ tab?: string, q?: string }> }) {
-  const { tab, q } = await searchParams;
+export default async function ExpensesPage({ searchParams }: { searchParams: Promise<{ tab?: string, q?: string, page?: string }> }) {
+  const { tab, q, page } = await searchParams;
   const currentTab = tab || 'PENDING';
   const currentQuery = q || '';
+  const currentPage = Number(page) || 1;
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 font-sans">
@@ -155,7 +188,7 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
          {/* Modern Segmented Tabs */}
          <div className="flex bg-gray-100/80 dark:bg-gray-800 p-1.5 rounded-2xl mx-auto max-w-md mt-2">
              <Link 
-                href="/expenses?tab=PENDING" 
+                href={`/expenses?tab=PENDING${currentQuery ? `&q=${currentQuery}` : ''}`}
                 className={`flex-1 flex items-center justify-center py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
                     currentTab === 'PENDING' 
                     ? 'bg-white dark:bg-gray-700 text-purple-700 dark:text-purple-400 shadow-sm ring-1 ring-black/5 dark:ring-white/5' 
@@ -165,7 +198,7 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
                  Cần Duyệt
              </Link>
              <Link 
-                href="/expenses?tab=HISTORY" 
+                href={`/expenses?tab=HISTORY${currentQuery ? `&q=${currentQuery}` : ''}`} 
                 className={`flex-1 flex items-center justify-center py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
                     currentTab === 'HISTORY' 
                     ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/5' 
@@ -179,7 +212,7 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
 
       <div className="p-4">
         <Suspense fallback={<ExpensesSkeleton />}>
-            <ExpenseList currentTab={currentTab} query={currentQuery} />
+            <ExpenseList currentTab={currentTab} query={currentQuery} page={currentPage} />
         </Suspense>
       </div>
     </div>

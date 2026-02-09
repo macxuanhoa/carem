@@ -8,18 +8,26 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { investorSchema, InvestorFormData } from '@/lib/schemas';
+
 export default function NewInvestorPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    nguoiGop: '',
-    tyLeGop: 50,
-    soTienGop: 0,
-    giayToLienQuan: '' // URL ảnh nếu có (feature sau)
+  
+  const { register, handleSubmit, formState: { errors } } = useForm<InvestorFormData>({
+    resolver: zodResolver(investorSchema),
+    defaultValues: {
+        nguoiGop: '',
+        tyLeGop: 50,
+        soTienGop: 0,
+        ghiChu: '',
+        ngayBatDau: new Date().toISOString().split('T')[0]
+    }
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: InvestorFormData) => {
     setLoading(true);
     
     const resolvedParams = await params;
@@ -28,7 +36,10 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
       const res = await fetch(`/api/cars/${resolvedParams.id}/investors`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+            ...data,
+            giayToLienQuan: data.ghiChu // Map ghiChu to giayToLienQuan as per original logic or update schema
+        }),
       });
 
       if (!res.ok) throw new Error('Failed to add investor');
@@ -53,7 +64,7 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
          <h1 className="font-bold text-lg text-gray-800 ml-2">Thêm Nhà Đầu Tư</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-4 max-w-lg mx-auto space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="p-4 max-w-lg mx-auto space-y-4">
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
             <h3 className="font-bold text-gray-800 mb-4 flex items-center text-sm uppercase">
                 <User size={16} className="mr-2 text-blue-600"/> Thông Tin Người Góp
@@ -63,12 +74,11 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
                     <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Họ & Tên</label>
                     <input
                         type="text"
-                        required
                         className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-blue-100"
                         placeholder="Nguyễn Văn A"
-                        value={formData.nguoiGop}
-                        onChange={e => setFormData({...formData, nguoiGop: e.target.value})}
+                        {...register('nguoiGop')}
                     />
+                    {errors.nguoiGop && <p className="text-red-500 text-xs mt-1">{errors.nguoiGop.message}</p>}
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
@@ -76,23 +86,21 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Tỷ Lệ Góp (%)</label>
                         <input
                             type="number"
-                            required
                             min="0"
                             max="100"
                             className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            value={formData.tyLeGop}
-                            onChange={e => setFormData({...formData, tyLeGop: Number(e.target.value)})}
+                            {...register('tyLeGop')}
                         />
+                        {errors.tyLeGop && <p className="text-red-500 text-xs mt-1">{errors.tyLeGop.message}</p>}
                     </div>
                     <div>
                         <label className="text-xs font-bold text-gray-500 uppercase block mb-1">Số Tiền (VNĐ)</label>
                         <input
                             type="number"
-                            required
                             className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-blue-100"
-                            value={formData.soTienGop}
-                            onChange={e => setFormData({...formData, soTienGop: Number(e.target.value)})}
+                            {...register('soTienGop')}
                         />
+                        {errors.soTienGop && <p className="text-red-500 text-xs mt-1">{errors.soTienGop.message}</p>}
                     </div>
                 </div>
 
@@ -102,8 +110,7 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
                         type="text"
                         className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-blue-100"
                         placeholder="Link ảnh chuyển khoản hoặc ghi chú..."
-                        value={formData.giayToLienQuan}
-                        onChange={e => setFormData({...formData, giayToLienQuan: e.target.value})}
+                        {...register('ghiChu')}
                     />
                 </div>
             </div>

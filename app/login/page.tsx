@@ -1,5 +1,7 @@
 'use client';
 
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useActionState, useState, useEffect } from 'react';
 import { authenticate } from '@/app/lib/actions';
 import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck, Phone, MapPin } from 'lucide-react';
@@ -76,20 +78,18 @@ export default function LoginPage() {
                     <div>
                         <label className="block text-[13px] font-bold text-blue-900 mb-2 uppercase tracking-wide ml-1">Tài khoản</label>
                         <div className={`relative group transition-all duration-300 ${focusedInput === 'username' ? 'scale-[1.01]' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors duration-300 ${focusedInput === 'username' ? 'text-blue-600' : 'text-slate-400'}`}>
+                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'username' ? 'text-blue-600' : 'text-slate-400'}`}>
                                 <User size={18} strokeWidth={2.5} />
                             </div>
-                            <input
+                            <Input
                                 name="username"
                                 type="text"
                                 required
                                 placeholder="Nhập tài khoản"
                                 onFocus={() => setFocusedInput('username')}
                                 onBlur={() => setFocusedInput(null)}
-                                className={`w-full pl-10 pr-4 py-2.5 rounded-lg bg-white border transition-all duration-300 text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none ${
-                                    focusedInput === 'username' 
-                                    ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' 
-                                    : 'border-gray-200 hover:border-gray-300'
+                                className={`pl-10 h-12 bg-white border-gray-200 focus-visible:ring-blue-500/20 ${
+                                    focusedInput === 'username' ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' : ''
                                 }`}
                             />
                         </div>
@@ -99,26 +99,24 @@ export default function LoginPage() {
                     <div>
                         <label className="block text-[13px] font-bold text-blue-900 mb-2 uppercase tracking-wide ml-1">Mật khẩu</label>
                         <div className={`relative group transition-all duration-300 ${focusedInput === 'password' ? 'scale-[1.01]' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors duration-300 ${focusedInput === 'password' ? 'text-blue-600' : 'text-slate-400'}`}>
+                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'password' ? 'text-blue-600' : 'text-slate-400'}`}>
                                 <Lock size={18} strokeWidth={2.5} />
                             </div>
-                            <input
+                            <Input
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 required
                                 placeholder="••••••••"
                                 onFocus={() => setFocusedInput('password')}
                                 onBlur={() => setFocusedInput(null)}
-                                className={`w-full pl-10 pr-10 py-2.5 rounded-lg bg-white border transition-all duration-300 text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none ${
-                                    focusedInput === 'password' 
-                                    ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' 
-                                    : 'border-gray-200 hover:border-gray-300'
+                                className={`pl-10 pr-10 h-12 bg-white border-gray-200 focus-visible:ring-blue-500/20 ${
+                                    focusedInput === 'password' ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' : ''
                                 }`}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-600 transition-colors"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-600 transition-colors z-10"
                                 tabIndex={-1}
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -141,14 +139,14 @@ export default function LoginPage() {
                     )}
                 </AnimatePresence>
 
-                <button
+                <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full mt-2 sm:mt-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 sm:py-3 rounded-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wider group"
+                    className="w-full h-12 mt-2 sm:mt-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 text-sm uppercase tracking-wider group"
                 >
                     {isPending ? (
                         <>
-                            <Loader2 size={20} className="animate-spin text-white/90" />
+                            <Loader2 size={20} className="animate-spin text-white/90 mr-2" />
                             <span>Đang xử lý...</span>
                         </>
                     ) : (
@@ -158,11 +156,11 @@ export default function LoginPage() {
                                 animate={{ x: [0, 4, 0] }}
                                 transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 3 }}
                             >
-                                <ShieldCheck size={18} className="text-white/80 group-hover:text-white transition-colors" />
+                                <ShieldCheck size={18} className="ml-2 text-white/80 group-hover:text-white transition-colors" />
                             </m.div>
                         </>
                     )}
-                </button>
+                </Button>
             </form>
             
             {/* Footer - Technical */}

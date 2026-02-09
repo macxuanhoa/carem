@@ -7,18 +7,21 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname === '/'; // Protect home
-      const isOnCars = nextUrl.pathname.startsWith('/cars'); // Protect cars
       const isOnLogin = nextUrl.pathname.startsWith('/login');
+      const isPublicApi = nextUrl.pathname.startsWith('/api/auth'); // Allow auth endpoints
+      const isCron = nextUrl.pathname.startsWith('/api/cron'); // Handled by cron secret
 
-      // 1. Redirect to /login if not logged in and trying to access protected routes
-      if ((isOnDashboard || isOnCars) && !isLoggedIn) {
-        return false; // Redirect to login
+      // 1. Allow login page and public APIs
+      if (isOnLogin || isPublicApi || isCron) {
+        if (isOnLogin && isLoggedIn) {
+          return Response.redirect(new URL('/', nextUrl));
+        }
+        return true;
       }
 
-      // 2. Redirect to / if logged in and trying to access login
-      if (isOnLogin && isLoggedIn) {
-        return Response.redirect(new URL('/', nextUrl));
+      // 2. Protect ALL other routes
+      if (!isLoggedIn) {
+        return false; // Redirect to login
       }
 
       return true;

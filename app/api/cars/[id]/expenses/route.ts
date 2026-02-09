@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { sendTelegramNotification } from '@/lib/telegram';
+import { auth } from '@/auth';
+import { createExpense } from '@/lib/services/expense.service';
 
 // POST: Tạo đề xuất chi phí mới (Mặc định: CHO_DUYET)
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const session = await auth();
+  if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { id } = await params;
   const carId = parseInt(id);
   
@@ -14,35 +19,15 @@ export async function POST(
     const body = await request.json();
     const { loaiChiPhi, giaDuKien, nguoiBaoGia, ghiChu } = body;
 
-    const expense = await prisma.chiPhiXe.create({
-      data: {
+    const expense = await createExpense({
         xeMuaVaoId: carId,
         loaiChiPhi,
         giaDuKien: Number(giaDuKien),
-        giaThucTe: 0, // Chưa duyệt nên chưa có giá thực
+        giaThucTe: 0,
         nguoiBaoGia,
         ghiChu,
         trangThai: 'CHO_DUYET'
-      },
-      include: {
-        xeMuaVao: true
-      }
     });
-
-    // Notify Telegram
-    const message = `
-⚠️ <b>DUYỆT CHI PHÍ MỚI</b>
--------------------------
-Xe: <b>${expense.xeMuaVao?.dongXe}</b>
-Biển số: ${expense.xeMuaVao?.bienSo}
--------------------------
-📝 <b>Nội dung:</b> ${expense.loaiChiPhi}
-💰 <b>Số tiền:</b> ${expense.giaDuKien.toLocaleString()} đ
-👤 <b>Người báo:</b> ${expense.nguoiBaoGia}
--------------------------
-<i>Vui lòng vào app để duyệt!</i>
-`;
-    await sendTelegramNotification(message);
 
     return NextResponse.json(expense);
   } catch (error) {

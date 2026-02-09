@@ -7,5 +7,6 @@ export type CarWithRelations = Prisma.XeMuaVaoGetPayload<{
     hoSo: true;
     chiPhi: true;
     gopVon: true;
+    lichSu: true;
   }
 }>;
