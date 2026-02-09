@@ -38,7 +38,7 @@ export default function BottomNav() {
                     <div key={item.path} className="relative -top-8 flex justify-center">
                         <Link 
                             href={item.path}
-                            className="flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-blue-500/30 border-[4px] border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
+                            className="flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-blue-500/30 border-4 border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
                         >
                              <Icon size={26} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                         </Link>

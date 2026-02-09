@@ -108,9 +108,9 @@ export default async function DashboardPage() {
       <div className="px-4 md:px-8 space-y-8 mt-8 max-w-7xl mx-auto w-full">
         
         {/* 2. Hero Card: Modern Glassmorphism Gradient */}
-        <Link href="/reports" className="block relative overflow-hidden rounded-[2.5rem] p-8 group transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.99]">
+        <Link href="/reports" className="block relative overflow-hidden rounded-4xl p-8 group transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.99]">
             {/* Background with Modern Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 dark:from-blue-900 dark:via-indigo-900 dark:to-slate-900 transition-all duration-500"></div>
+            <div className="absolute inset-0 bg-linear-to-br from-blue-600 via-indigo-600 to-violet-700 dark:from-blue-900 dark:via-indigo-900 dark:to-slate-900 transition-all duration-500"></div>
             
             {/* Abstract Shapes */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
 
         {/* 3. Stat Widgets - Clean & Airy */}
         <div className="grid grid-cols-3 gap-4 sm:gap-6">
-            <Link href="/cars?group=inventory" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(37,99,235,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
+            <Link href="/cars?group=inventory" className="group bg-white dark:bg-slate-900 rounded-4xl p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(37,99,235,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-blue-50/50 dark:bg-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300 z-10">
                     <Bike size={28} strokeWidth={2} />
@@ -161,7 +161,7 @@ export default async function DashboardPage() {
                 </div>
             </Link>
 
-            <Link href="/expenses" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(168,85,247,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
+            <Link href="/expenses" className="group bg-white dark:bg-slate-900 rounded-4xl p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(168,85,247,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-purple-50/50 dark:bg-purple-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300 z-10">
                     <Wallet size={28} strokeWidth={2} />
@@ -172,7 +172,7 @@ export default async function DashboardPage() {
                 </div>
             </Link>
 
-            <Link href="/cars?sort=overdue" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(239,68,68,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
+            <Link href="/cars?sort=overdue" className="group bg-white dark:bg-slate-900 rounded-4xl p-5 border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-4px_rgba(239,68,68,0.1)] transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center justify-center gap-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-red-50/50 dark:bg-red-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300 z-10">
                     <FileText size={28} strokeWidth={2} />
@@ -208,7 +208,7 @@ export default async function DashboardPage() {
                     <Link key={car.id} href={`/cars/${car.id}`} className="block bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none transition-all duration-300 group hover:-translate-y-0.5">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center gap-5">
-                                <div className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center font-bold text-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600 overflow-hidden relative shadow-inner">
+                                <div className="w-16 h-16 rounded-2xl shrink-0 flex items-center justify-center font-bold text-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600 overflow-hidden relative shadow-inner">
                                     {image ? (
                                         <img src={image} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={car.dongXe} />
                                     ) : (

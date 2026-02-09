@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { prisma } from "@/lib/prisma"
 import { authConfig } from "./auth.config"
+import bcrypt from "bcryptjs"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -17,35 +18,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.username || !credentials?.password) return null;
 
         try {
-            let user = await prisma.user.findUnique({
+            const user = await prisma.user.findUnique({
                 where: { username: credentials.username as string }
             });
-
-            // --- AUTO-FIX: Create Admin if missing (for Vercel/New Deployments) ---
-            if (!user && credentials.username === 'carem92' && credentials.password === '@') {
-                console.log('User not found. Auto-creating default Admin account...');
-                try {
-                    user = await prisma.user.create({
-                        data: {
-                            username: 'carem92',
-                            password: '@', // In real app, hash this!
-                            name: 'Administrator',
-                            role: 'ADMIN'
-                        }
-                    });
-                    console.log('Default Admin created successfully.');
-                } catch (createError) {
-                    console.error('Failed to create admin:', createError);
-                }
-            }
-            // ----------------------------------------------------------------------
 
             console.log('User found:', user ? 'Yes' : 'No');
 
             if (!user) return null;
 
-            // In production, compare hashed password!
-            if (user.password === credentials.password) {
+            // Check if password is hashed (starts with $2a$ or $2b$)
+            const isHashed = user.password.startsWith('$2a$') || user.password.startsWith('$2b$');
+
+            let isValid = false;
+            
+            if (isHashed) {
+                // Compare with hash
+                isValid = await bcrypt.compare(credentials.password as string, user.password);
+            } else {
+                // Fallback for old plain text passwords (and auto-migrate)
+                if (user.password === credentials.password) {
+                    isValid = true;
+                    // Auto-hash password for next time
+                    const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
+                    await prisma.user.update({
+                        where: { id: user.id },
+                        data: { password: hashedPassword }
+                    });
+                    console.log('Migrated plain text password to hash for user:', user.username);
+                }
+            }
+
+            if (isValid) {
                 console.log('Password match!');
                 return { 
                     id: user.id, 
