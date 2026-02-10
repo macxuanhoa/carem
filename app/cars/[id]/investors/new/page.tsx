@@ -17,7 +17,7 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
   const [loading, setLoading] = useState(false);
   
   const { register, handleSubmit, formState: { errors } } = useForm<InvestorFormData>({
-    resolver: zodResolver(investorSchema),
+    resolver: zodResolver(investorSchema) as any,
     defaultValues: {
         nguoiGop: '',
         tyLeGop: 50,
