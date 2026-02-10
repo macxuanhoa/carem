@@ -84,7 +84,7 @@ export default async function DashboardPage() {
   const totalExpense7Days = chartData.reduce((sum, d) => sum + (d.expense || 0), 0);
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-32 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-32 font-sans selection:bg-red-100 selection:text-red-900">
       {/* 1. Ultra Clean Sticky Header */}
       <div className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800 px-6 pt-12 pb-6 transition-all duration-300">
           <div className="flex justify-between items-center mb-6 max-w-7xl mx-auto w-full">
@@ -119,21 +119,21 @@ export default async function DashboardPage() {
                 icon={Bike}
                 value={carsInStock}
                 label="Tồn Kho"
-                color="blue"
+                color="red"
             />
             <StatCard 
                 href="/expenses"
                 icon={Wallet}
                 value={pendingExpenses}
                 label="Cần Duyệt"
-                color="purple"
+                color="orange"
             />
             <StatCard 
                 href="/cars?sort=overdue"
                 icon={FileText}
                 value={overdueDocs}
                 label="Hồ Sơ Lỗi"
-                color="red"
+                color="blue"
             />
         </div>
 
