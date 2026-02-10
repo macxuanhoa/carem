@@ -49,12 +49,15 @@ export default function LoginPage() {
                 <m.div 
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="relative mb-3 sm:mb-5 w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center bg-white rounded-full shadow-lg border-4 border-white overflow-hidden"
+                    className="relative mb-3 sm:mb-5 w-20 h-20 sm:w-24 sm:h-24 rounded-full shadow-xl ring-4 ring-white overflow-hidden"
                 >
-                     <img 
+                     <Image 
                         src="/avtcarem.jpg" 
                         alt="Logo Cà Rem" 
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 80px, 96px"
+                        priority
                     />
                 </m.div>
                 <h1 className="text-xl font-black text-red-950 uppercase tracking-tight text-center leading-snug max-w-[300px]">
