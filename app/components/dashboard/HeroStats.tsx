@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
-const DashboardChart = dynamic(() => import('../DashboardChart'), { 
+const DashboardChart = dynamic<any>(() => import('../DashboardChart').then(mod => mod.default), { 
     ssr: false,
     loading: () => <div className="h-24 w-full bg-white/10 rounded-xl animate-pulse" />
 });
