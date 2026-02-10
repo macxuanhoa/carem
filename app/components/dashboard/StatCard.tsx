@@ -6,7 +6,7 @@ interface StatCardProps {
   icon: LucideIcon;
   value: number;
   label: string;
-  color: 'blue' | 'purple' | 'red';
+  color: 'blue' | 'purple' | 'red' | 'orange';
 }
 
 export default function StatCard({ href, icon: Icon, value, label, color }: StatCardProps) {
@@ -31,6 +31,13 @@ export default function StatCard({ href, icon: Icon, value, label, color }: Stat
       hover: 'group-hover:text-red-500 dark:group-hover:text-red-400',
       shadow: 'hover:shadow-[0_10px_30px_-4px_rgba(239,68,68,0.1)]',
       overlay: 'bg-red-50/50 dark:bg-red-900/10',
+    },
+    orange: {
+        bg: 'bg-orange-50 dark:bg-orange-900/20',
+        text: 'text-orange-500 dark:text-orange-400',
+        hover: 'group-hover:text-orange-500 dark:group-hover:text-orange-400',
+        shadow: 'hover:shadow-[0_10px_30px_-4px_rgba(249,115,22,0.1)]',
+        overlay: 'bg-orange-50/50 dark:bg-orange-900/10',
     },
   };
 
