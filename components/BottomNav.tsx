@@ -38,7 +38,7 @@ export default function BottomNav() {
                     <div key={item.path} className="relative -top-8 flex justify-center">
                         <Link 
                             href={item.path}
-                            className="flex flex-col items-center justify-center bg-red-600 hover:bg-red-700 text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-red-500/30 border-4 border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
+                            className="flex flex-col items-center justify-center bg-galaxy-gradient text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-purple-500/30 border-4 border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
                         >
                              <Icon size={26} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                         </Link>
@@ -52,11 +52,11 @@ export default function BottomNav() {
                     href={item.path}
                     className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 ${
                         active 
-                        ? 'text-red-600 dark:text-red-400' 
+                        ? 'text-violet-600 dark:text-violet-400' 
                         : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
                     }`}
                 >
-                    <div className={`p-1.5 rounded-xl transition-all duration-300 ${active ? 'bg-red-50 dark:bg-red-900/20 translate-y-[-2px]' : ''}`}>
+                    <div className={`p-1.5 rounded-xl transition-all duration-300 ${active ? 'bg-violet-50 dark:bg-violet-900/20 translate-y-[-2px]' : ''}`}>
                         <Icon size={22} strokeWidth={active ? 2.5 : 2} />
                     </div>
                     <span className={`text-[10px] font-medium transition-all duration-300 ${active ? 'font-bold opacity-100' : 'opacity-80'}`}>

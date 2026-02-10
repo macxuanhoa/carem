@@ -103,41 +103,54 @@ export default async function DashboardPage() {
           </div>
       </div>
 
-      <div className="px-4 md:px-8 space-y-8 mt-8 max-w-7xl mx-auto w-full">
+      <div className="px-4 md:px-6 space-y-4 mt-6 max-w-7xl mx-auto w-full">
         
-        {/* 2. Hero Card: Modern Glassmorphism Gradient */}
-        <HeroStats 
-            totalRevenue={totalRevenue7Days}
-            totalExpense={totalExpense7Days}
-            chartData={chartData}
-        />
+        {/* Bento Grid Layout - Compact & Modern */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Main Hero Card - Takes 2 columns on desktop */}
+            <div className="md:col-span-2">
+                <HeroStats 
+                    totalRevenue={totalRevenue7Days}
+                    totalExpense={totalExpense7Days}
+                    chartData={chartData}
+                />
+            </div>
 
-        {/* 3. Stat Widgets - Clean & Airy */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <StatCard 
-                href="/cars?group=inventory"
-                icon={Bike}
-                value={carsInStock}
-                label="Tồn Kho"
-                color="red"
-            />
-            <StatCard 
-                href="/expenses"
-                icon={Wallet}
-                value={pendingExpenses}
-                label="Cần Duyệt"
-                color="orange"
-            />
-            <StatCard 
+            {/* Quick Stats - Vertical Stack in 3rd column */}
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
+                 <StatCard 
+                    href="/cars?group=inventory"
+                    icon={Bike}
+                    value={carsInStock}
+                    label="Tồn Kho"
+                    color="violet"
+                />
+                <StatCard 
+                    href="/expenses"
+                    icon={Wallet}
+                    value={pendingExpenses}
+                    label="Cần Duyệt"
+                    color="fuchsia"
+                />
+            </div>
+        </div>
+
+        {/* Secondary Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+             <StatCard 
                 href="/cars?sort=overdue"
                 icon={FileText}
                 value={overdueDocs}
                 label="Hồ Sơ Lỗi"
-                color="blue"
+                color="indigo"
             />
+             {/* Add more stats here if needed, or placeholders */}
+             <div className="hidden md:block md:col-span-3 bg-white/50 dark:bg-slate-900/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 text-xs font-medium">
+                Khu vực mở rộng (Báo cáo nhanh)
+             </div>
         </div>
 
-        {/* Recent Activity - Minimal List */}
+        {/* Recent Activity - Compact List */}
         <RecentImports cars={recentImports} />
 
       </div>

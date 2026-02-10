@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#DC2626", // Red-600
+  themeColor: "#7c3aed", // Galaxy Purple
 };
 
 export default function RootLayout({
@@ -43,10 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 selection:bg-blue-100 selection:text-blue-900`}>
+      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 selection:bg-purple-100 selection:text-purple-900`}>
         <Providers>
         <NextTopLoader 
-          color="#DC2626"
+          color="#a855f7" // Purple-500
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}
@@ -54,7 +54,7 @@ export default function RootLayout({
           showSpinner={false}
           easing="ease"
           speed={200}
-          shadow="0 0 10px #DC2626,0 0 5px #DC2626"
+          shadow="0 0 10px #a855f7,0 0 5px #a855f7"
         />
         <AppShell>
             {children}

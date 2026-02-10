@@ -5,69 +5,79 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Soft cool white */
-    --foreground: 222.2 47.4% 11.2%; /* Deep Slate */
+    /* Galaxy Light Mode (Clean & Modern) */
+    --background: 260 20% 98%; /* Very light purple tint white */
+    --foreground: 260 40% 10%; /* Deep purple black */
     
-    /* Modern Red - Strong & Energetic (Matching avtcarem) */
-    --primary: 0 84.2% 60.2%; /* Red-600 */
+    /* Galaxy Purple - Primary */
+    --primary: 265 89% 60%; /* Vivid Purple */
     --primary-foreground: 210 40% 98%;
     
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 260 40% 10%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 260 40% 10%;
  
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 260 20% 96%;
+    --secondary-foreground: 260 40% 10%;
  
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 260 20% 96%;
+    --muted-foreground: 260 10% 45%;
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 260 20% 96%;
+    --accent-foreground: 260 40% 10%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 0 84.2% 60.2%; /* Red Ring */
+    --border: 260 20% 90%;
+    --input: 260 20% 90%;
+    --ring: 265 89% 60%;
  
-    --radius: 1rem;
+    --radius: 0.75rem; /* Tighter radius for modern look */
   }
  
   .dark {
-    /* Refined Dark Mode - Deep Blue/Black */
-    --background: 222.2 47.4% 11.2%;
-    --foreground: 210 40% 98%;
+    /* Galaxy Dark Mode (Deep Space) */
+    --background: 260 40% 4%; /* #090513 - Deepest Purple Black */
+    --foreground: 260 20% 98%;
  
-    --card: 222.2 47.4% 11.2%;
-    --card-foreground: 210 40% 98%;
+    --card: 260 35% 7%; /* Slightly lighter deep space */
+    --card-foreground: 260 20% 98%;
  
-    --popover: 222.2 47.4% 11.2%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 260 35% 7%;
+    --popover-foreground: 260 20% 98%;
  
-    /* Primary Red - Dark Mode (Vibrant Red) */
-    --primary: 0 72.2% 50.6%; /* Red-500 */
-    --primary-foreground: 210 40% 98%;
+    /* Primary Galaxy Purple - Neon Glow */
+    --primary: 265 89% 66%; /* Bright Neon Purple */
+    --primary-foreground: 260 40% 10%;
  
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 260 30% 15%;
+    --secondary-foreground: 260 20% 98%;
  
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 260 30% 15%;
+    --muted-foreground: 260 15% 65%;
  
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 260 30% 15%;
+    --accent-foreground: 260 20% 98%;
  
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
  
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 0 72.2% 50.6%;
+    --border: 260 30% 15%;
+    --input: 260 30% 15%;
+    --ring: 265 89% 66%;
   }
+}
+
+/* Custom Utilities for Galaxy Theme */
+.bg-galaxy-gradient {
+    @apply bg-linear-to-br from-violet-600 via-purple-600 to-indigo-600 dark:from-violet-900 dark:via-purple-900 dark:to-indigo-950;
+}
+
+.text-galaxy-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-violet-600 to-fuchsia-600 dark:from-violet-400 dark:to-fuchsia-400;
 }
 
 @theme inline {

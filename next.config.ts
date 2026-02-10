@@ -20,9 +20,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', 'date-fns'],
     staleTimes: {
-      dynamic: 30,
-      static: 180,
+      dynamic: 60, // Increase dynamic cache time
+      static: 300, // Increase static cache time
     },
+    scrollRestoration: true,
   },
   turbopack: {},
   images: {
