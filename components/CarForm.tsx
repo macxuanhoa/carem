@@ -30,7 +30,7 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
     const [dealStatus, setDealStatus] = useState<'PENDING' | 'DEPOSITED' | 'BOUGHT_NOW'>('PENDING');
 
     const form = useForm<CarFormData>({
-        resolver: zodResolver(carSchema),
+        resolver: zodResolver(carSchema) as any,
         defaultValues: {
             tinhTrang: 95,
             namSanXuat: new Date().getFullYear(),
