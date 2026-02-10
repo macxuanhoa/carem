@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "Quản Lý Xe",
   description: "Hệ thống quản lý xe chuyên nghiệp",
   manifest: "/manifest.json",
+  icons: {
+    icon: '/avtcarem.jpg',
+    apple: '/avtcarem.jpg',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

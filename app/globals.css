@@ -8,8 +8,8 @@
     --background: 210 40% 98%; /* Soft cool white */
     --foreground: 222.2 47.4% 11.2%; /* Deep Slate */
     
-    /* Modern Blue - Softer & Brighter */
-    --primary: 221.2 83.2% 53.3%;
+    /* Modern Red - Strong & Energetic (Matching avtcarem) */
+    --primary: 0 84.2% 60.2%; /* Red-600 */
     --primary-foreground: 210 40% 98%;
     
     --card: 0 0% 100%;
@@ -32,7 +32,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --ring: 0 84.2% 60.2%; /* Red Ring */
  
     --radius: 1rem;
   }
@@ -48,9 +48,9 @@
     --popover: 222.2 47.4% 11.2%;
     --popover-foreground: 210 40% 98%;
  
-    /* Primary Blue - Dark Mode (More Vibrant) */
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Primary Red - Dark Mode (Vibrant Red) */
+    --primary: 0 72.2% 50.6%; /* Red-500 */
+    --primary-foreground: 210 40% 98%;
  
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -66,7 +66,7 @@
  
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --ring: 0 72.2% 50.6%;
   }
 }
 
@@ -81,6 +81,12 @@ body {
     @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50;
     -webkit-tap-highlight-color: transparent;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    touch-action: manipulation; /* Fix click lag on mobile */
+}
+
+/* Optimize click targets */
+button, a {
+    @apply cursor-pointer touch-manipulation;
 }
 
 /* Custom Utilities */
