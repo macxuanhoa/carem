@@ -5,7 +5,7 @@ export default function DashboardChart({
     data, 
     type = 'area' 
 }: { 
-    data: { date: string, value: number, expense?: number }[],
+    data: any[],
     type?: 'area' | 'bar'
 }) {
     // 1. Simple Mini Chart (For Header)
