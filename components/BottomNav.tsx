@@ -11,10 +11,10 @@ export default function BottomNav() {
   if (pathname === '/login') return null;
 
   const isActive = (path: string) => {
-      // Default hover state for home
-      if (path === '/') return pathname === '/' || pathname === '/dashboard';
-      if (path === '/cars') return pathname.startsWith('/cars') && pathname !== '/cars/new';
-      return pathname.startsWith(path);
+    // Default hover state for home
+    if (path === '/') return pathname === '/' || pathname === '/dashboard';
+    if (path === '/cars') return pathname.startsWith('/cars') && pathname !== '/cars/new';
+    return pathname.startsWith(path);
   };
 
   const navItems = [

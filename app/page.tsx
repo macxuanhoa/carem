@@ -145,7 +145,7 @@ export default async function DashboardPage() {
                 color="indigo"
             />
              {/* Add more stats here if needed, or placeholders */}
-             <div className="hidden md:block md:col-span-3 bg-white/50 dark:bg-slate-900/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 text-xs font-medium">
+             <div className="hidden md:flex md:col-span-3 bg-white/50 dark:bg-slate-900/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 items-center justify-center text-slate-400 text-xs font-medium">
                 Khu vực mở rộng (Báo cáo nhanh)
              </div>
         </div>

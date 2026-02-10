@@ -57,19 +57,19 @@ export default function CarCard({ car }: { car: CarWithRelations }) {
     
     // Helper for status badge
     const getStatusBadge = () => {
-        if (isSold) return { label: 'Đã Bán', color: 'bg-green-100 text-green-700 ring-1 ring-green-600/20' };
-        if (isDeposited) return { label: 'Đã Cọc', color: 'bg-amber-100 text-amber-700 ring-1 ring-amber-600/20' };
-        if (isOverdue) return { label: 'Quá Hạn', color: 'bg-red-100 text-red-700 ring-1 ring-red-600/20' };
-        if (isSelling) return { label: 'Đang Bán', color: 'bg-blue-100 text-blue-700 ring-1 ring-blue-600/20' };
-        return { label: formatStatus(car.trangThai), color: 'bg-gray-100 text-gray-600 ring-1 ring-gray-600/20' };
+        if (isSold) return { label: 'Đã Bán', color: 'bg-fuchsia-100 text-fuchsia-700 ring-1 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-300' };
+        if (isDeposited) return { label: 'Đã Cọc', color: 'bg-cyan-100 text-cyan-700 ring-1 ring-cyan-600/20 dark:bg-cyan-900/30 dark:text-cyan-300' };
+        if (isOverdue) return { label: 'Quá Hạn', color: 'bg-red-100 text-red-700 ring-1 ring-red-600/20 dark:bg-red-900/30 dark:text-red-300' };
+        if (isSelling) return { label: 'Đang Bán', color: 'bg-violet-100 text-violet-700 ring-1 ring-violet-600/20 dark:bg-violet-900/30 dark:text-violet-300' };
+        return { label: formatStatus(car.trangThai), color: 'bg-gray-100 text-gray-600 ring-1 ring-gray-600/20 dark:bg-gray-800 dark:text-gray-400' };
     };
 
     const status = getStatusBadge();
     
     return (
         <Link href={`/cars/${car.id}`} className="block group h-full">
-            <div className={`bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-all duration-300 relative overflow-hidden h-full flex flex-col
-                group-hover:shadow-md group-hover:translate-y-[-2px] group-hover:border-blue-200 dark:group-hover:border-blue-800
+            <div className={`bg-white dark:bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800/50 transition-all duration-300 relative overflow-hidden h-full flex flex-col
+                group-hover:shadow-md group-hover:translate-y-[-2px] group-hover:border-violet-200 dark:group-hover:border-violet-800/50
                 ${isOverdue ? 'ring-2 ring-red-500/50' : ''}
             `}>
                 {/* Header Badge & Image */}

@@ -11,14 +11,14 @@ export default function QuickFilters() {
   const currentStatus = searchParams.get('status') || 'all';
 
   const mainFilters = [
-    { label: 'Tất Cả', value: 'all', icon: Bike, color: 'text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800' },
-    { label: 'Đang Bán', value: 'selling', icon: TrendingUp, color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-900/30' },
-    { label: 'Đã Cọc', value: 'deposited', icon: CheckCircle, color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-900/30' },
-    { label: 'Đã Bán', value: 'sold', icon: CheckCircle, color: 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border-purple-100 dark:border-purple-900/30' },
+    { label: 'Tất Cả', value: 'all', icon: Bike, color: 'text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800' },
+    { label: 'Đang Bán', value: 'selling', icon: TrendingUp, color: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 border-violet-100 dark:border-violet-900/30' },
+    { label: 'Đã Cọc', value: 'deposited', icon: CheckCircle, color: 'text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 border-cyan-100 dark:border-cyan-900/30' },
+    { label: 'Đã Bán', value: 'sold', icon: CheckCircle, color: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-900/20 border-fuchsia-100 dark:border-fuchsia-900/30' },
   ];
 
   const docFilters = [
-    { label: 'Hồ Sơ', value: 'overdue', icon: FileText, color: 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-900/30' },
+    { label: 'Hồ Sơ', value: 'overdue', icon: FileText, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 border-indigo-100 dark:border-indigo-900/30' },
   ];
 
   const handleStatus = (value: string) => {
@@ -45,8 +45,8 @@ export default function QuickFilters() {
                     onClick={() => handleStatus(f.value)}
                     className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap shrink-0 snap-start
                         ${isActive 
-                            ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-gray-900 dark:border-white shadow-md' 
-                            : f.color || 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+                            ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-500/30' 
+                            : f.color || 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
                         }
                     `}
                 >
@@ -67,8 +67,8 @@ export default function QuickFilters() {
                     onClick={() => handleStatus(f.value)}
                     className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap shrink-0 snap-start
                         ${isActive 
-                            ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-gray-900 dark:border-white shadow-md' 
-                            : f.color || 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/30' 
+                            : f.color || 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
                         }
                     `}
                 >
