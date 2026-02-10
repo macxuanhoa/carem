@@ -7,6 +7,7 @@ import { authenticate } from '@/app/lib/actions';
 import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck, Phone, MapPin } from 'lucide-react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import logoImg from '../assets/logo.jpg';
 
 export default function LoginPage() {
   const [errorMessage, formAction, isPending] = useActionState(
@@ -52,12 +53,13 @@ export default function LoginPage() {
                     className="relative mb-3 sm:mb-5 w-20 h-20 sm:w-24 sm:h-24 rounded-full shadow-xl ring-4 ring-white overflow-hidden"
                 >
                      <Image 
-                        src="/avtcarem.jpg" 
+                        src={logoImg}
                         alt="Logo Cà Rem" 
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 80px, 96px"
                         priority
+                        placeholder="blur"
                     />
                 </m.div>
                 <h1 className="text-xl font-black text-red-950 uppercase tracking-tight text-center leading-snug max-w-[300px]">
