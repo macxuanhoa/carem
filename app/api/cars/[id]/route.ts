@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { getCarById, updateCar } from '@/lib/services/car.service';
+import { getCarById, updateCar, updateCarPartial } from '@/lib/services/car.service';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const session = await auth();
