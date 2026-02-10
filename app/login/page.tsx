@@ -61,11 +61,11 @@ export default function LoginPage() {
                         quality={90}
                     />
                 </m.div>
-                <h1 className="text-xl font-black text-blue-950 uppercase tracking-tight text-center leading-snug max-w-[300px]">
-                    CỬA HÀNG XE MÁY <br className="hidden sm:block" /> <span className="text-blue-600">CÀ REM</span>
+                <h1 className="text-xl font-black text-red-950 uppercase tracking-tight text-center leading-snug max-w-[300px]">
+                    CỬA HÀNG XE MÁY <br className="hidden sm:block" /> <span className="text-red-600">CÀ REM</span>
                 </h1>
                 <div className="mt-3 flex flex-col items-center gap-1">
-                    <span className="bg-linear-to-r from-blue-50 to-indigo-50 text-blue-700 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider border border-blue-100 shadow-sm">
+                    <span className="bg-linear-to-r from-red-50 to-orange-50 text-red-700 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider border border-red-100 shadow-sm">
                         Chuyên Tay Ga Cao Cấp
                     </span>
                 </div>
@@ -76,9 +76,9 @@ export default function LoginPage() {
                 <div className="space-y-3 sm:space-y-4">
                     {/* Username */}
                     <div>
-                        <label className="block text-[13px] font-bold text-blue-900 mb-2 uppercase tracking-wide ml-1">Tài khoản</label>
+                        <label className="block text-[13px] font-bold text-red-900 mb-2 uppercase tracking-wide ml-1">Tài khoản</label>
                         <div className={`relative group transition-all duration-300 ${focusedInput === 'username' ? 'scale-[1.01]' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'username' ? 'text-blue-600' : 'text-slate-400'}`}>
+                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'username' ? 'text-red-600' : 'text-slate-400'}`}>
                                 <User size={18} strokeWidth={2.5} />
                             </div>
                             <Input
@@ -88,8 +88,8 @@ export default function LoginPage() {
                                 placeholder="Nhập tài khoản"
                                 onFocus={() => setFocusedInput('username')}
                                 onBlur={() => setFocusedInput(null)}
-                                className={`pl-10 h-12 bg-white border-gray-200 focus-visible:ring-blue-500/20 ${
-                                    focusedInput === 'username' ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' : ''
+                                className={`pl-10 h-12 bg-white border-gray-200 focus-visible:ring-red-500/20 ${
+                                    focusedInput === 'username' ? 'border-red-500 shadow-[0_0_0_3px_rgba(239,68,68,0.1)]' : ''
                                 }`}
                             />
                         </div>
@@ -97,9 +97,9 @@ export default function LoginPage() {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-[13px] font-bold text-blue-900 mb-2 uppercase tracking-wide ml-1">Mật khẩu</label>
+                        <label className="block text-[13px] font-bold text-red-900 mb-2 uppercase tracking-wide ml-1">Mật khẩu</label>
                         <div className={`relative group transition-all duration-300 ${focusedInput === 'password' ? 'scale-[1.01]' : ''}`}>
-                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'password' ? 'text-blue-600' : 'text-slate-400'}`}>
+                            <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 transition-colors duration-300 ${focusedInput === 'password' ? 'text-red-600' : 'text-slate-400'}`}>
                                 <Lock size={18} strokeWidth={2.5} />
                             </div>
                             <Input
@@ -109,14 +109,14 @@ export default function LoginPage() {
                                 placeholder="••••••••"
                                 onFocus={() => setFocusedInput('password')}
                                 onBlur={() => setFocusedInput(null)}
-                                className={`pl-10 pr-10 h-12 bg-white border-gray-200 focus-visible:ring-blue-500/20 ${
-                                    focusedInput === 'password' ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]' : ''
+                                className={`pl-10 pr-10 h-12 bg-white border-gray-200 focus-visible:ring-red-500/20 ${
+                                    focusedInput === 'password' ? 'border-red-500 shadow-[0_0_0_3px_rgba(239,68,68,0.1)]' : ''
                                 }`}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-600 transition-colors z-10"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-red-600 transition-colors z-10"
                                 tabIndex={-1}
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -142,7 +142,7 @@ export default function LoginPage() {
                 <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full h-12 mt-2 sm:mt-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 text-sm uppercase tracking-wider group"
+                    className="w-full h-12 mt-2 sm:mt-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold shadow-lg shadow-red-500/30 hover:shadow-red-500/40 text-sm uppercase tracking-wider group"
                 >
                     {isPending ? (
                         <>
@@ -166,15 +166,15 @@ export default function LoginPage() {
             {/* Footer - Technical */}
             <div className="mt-5 sm:mt-8 pt-5 sm:pt-6 border-t border-gray-100 w-full">
                  <div className="flex flex-col gap-2.5 sm:gap-3">
-                    <div className="flex items-center justify-center gap-2 text-sm font-medium bg-blue-50/50 px-4 py-2.5 rounded-xl border border-blue-100 text-blue-700">
-                        <Phone size={16} className="text-blue-600" />
+                    <div className="flex items-center justify-center gap-2 text-sm font-medium bg-red-50/50 px-4 py-2.5 rounded-xl border border-red-100 text-red-700">
+                        <Phone size={16} className="text-red-600" />
                         <span>Hotline: <span className="font-bold">0914.92.92.92</span></span>
                     </div>
                     
                     <div className="flex items-start justify-center gap-1.5 text-xs text-slate-500 font-medium px-4 py-2 rounded-xl bg-gray-50 border border-gray-100">
                         <MapPin size={14} className="shrink-0 text-red-500 mt-0.5" />
                         <span className="text-center leading-relaxed">
-                            <span className="font-bold text-blue-900">Cửa hàng xe máy Cà Rem</span>
+                            <span className="font-bold text-red-900">Cửa hàng xe máy Cà Rem</span>
                             <br />
                             107 Nguyễn Tất Thành, Thanh Hà, Hội An
                         </span>
