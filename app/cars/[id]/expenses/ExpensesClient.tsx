@@ -22,7 +22,7 @@ export default function ExpensesClient({ car }: { car: CarWithRelations }) {
   const [loading, setLoading] = useState(false);
   
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ExpenseFormData>({
-    resolver: zodResolver(expenseSchema),
+    resolver: zodResolver(expenseSchema) as any,
     defaultValues: {
         loaiChiPhi: 'Sửa chữa',
         giaDuKien: 0,
