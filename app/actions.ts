@@ -11,7 +11,8 @@ export async function logout() {
 
 export async function deleteCar(id: number) {
   const session = await auth();
-  if (session?.user?.role !== 'ADMIN') {
+  const user = session?.user as any; // Temporary workaround for TS error until module augmentation is fully picked up
+  if (user?.role !== 'ADMIN') {
       throw new Error('Unauthorized: Chỉ có Admin mới được xóa xe.');
   }
 
