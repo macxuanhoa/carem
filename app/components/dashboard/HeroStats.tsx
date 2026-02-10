@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 const DashboardChart = dynamic(() => import('../DashboardChart'), { 
     ssr: false,
     loading: () => <div className="h-24 w-full bg-white/10 rounded-xl animate-pulse" />
-});
+}) as any;
 
 interface HeroStatsProps {
   totalRevenue: number;
