@@ -70,16 +70,34 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
     }
 
     // Parallel Fetching: Get Data + Total Count for Pagination
-    const [cars, totalCount] = await Promise.all([
-        prisma.xeMuaVao.findMany({
-            where: whereClause,
-            orderBy,
-            include: { banRa: true, hoSo: true },
-            skip,
-            take: ITEMS_PER_PAGE,
-        }),
-        prisma.xeMuaVao.count({ where: whereClause })
-    ]);
+    let cars: any[] = [];
+    let totalCount = 0;
+
+    try {
+        [cars, totalCount] = await Promise.all([
+            prisma.xeMuaVao.findMany({
+                where: whereClause,
+                orderBy,
+                include: { banRa: true, hoSo: true },
+                skip,
+                take: ITEMS_PER_PAGE,
+            }),
+            prisma.xeMuaVao.count({ where: whereClause })
+        ]);
+    } catch (error) {
+        console.error("Database Error:", error);
+        // Fallback to empty state but don't crash the page
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-red-500">
+                <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-full mb-4">
+                    <Bike size={40} className="text-red-400" />
+                </div>
+                <p className="text-lg font-bold">Lỗi tải dữ liệu xe.</p>
+                <p className="text-sm text-gray-500 mb-4">Vui lòng thử lại sau.</p>
+                <Button onClick={() => window.location.reload()}>Tải lại trang</Button>
+            </div>
+        );
+    }
 
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 

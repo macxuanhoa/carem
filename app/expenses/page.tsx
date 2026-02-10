@@ -4,6 +4,7 @@ import { CheckCircle, XCircle, Clock, DollarSign, Filter, Search, MoreHorizontal
 import { Suspense } from 'react';
 import { formatCurrency, formatShortDate, formatStatus } from '@/lib/utils';
 import ExpenseHeader from './ExpenseHeader';
+import { Button } from '@/components/ui/button';
 
 async function ExpenseList({ currentTab, query, page }: { currentTab: string, query?: string, page: number }) {
     const ITEMS_PER_PAGE = 20;
@@ -37,7 +38,17 @@ async function ExpenseList({ currentTab, query, page }: { currentTab: string, qu
             prisma.chiPhiXe.count({ where: whereClause })
         ]);
     } catch (error) {
-        return <div className="p-10 text-center text-red-500 text-sm">Lỗi tải dữ liệu. Vui lòng thử lại.</div>;
+        console.error("Expense Fetch Error:", error);
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-red-500">
+                <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-full mb-4">
+                    <Wallet size={40} className="text-red-400" />
+                </div>
+                <p className="text-lg font-bold">Lỗi tải dữ liệu chi phí.</p>
+                <p className="text-sm text-gray-500 mb-4">Vui lòng thử lại sau.</p>
+                <Button onClick={() => window.location.reload()}>Tải lại trang</Button>
+            </div>
+        );
     }
 
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);

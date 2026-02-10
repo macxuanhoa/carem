@@ -20,12 +20,21 @@ export default function ReportPage() {
 
   useEffect(() => {
     fetch('/api/reports/analytics')
-      .then(res => res.json())
+      .then(async (res) => {
+          if (!res.ok) {
+              const text = await res.text();
+              throw new Error(`API Error: ${res.status} ${text}`);
+          }
+          return res.json();
+      })
       .then(data => {
           setData(data);
           setLoading(false);
       })
-      .catch(err => setLoading(false));
+      .catch(err => {
+          console.error("Report Fetch Error:", err);
+          setLoading(false);
+      });
   }, []);
 
   if (loading) return (
