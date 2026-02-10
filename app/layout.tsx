@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#2563EB",
+  themeColor: "#DC2626", // Red-600
 };
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen pb-20 md:pb-0 selection:bg-blue-100 selection:text-blue-900`}>
         <Providers>
         <NextTopLoader 
-          color="#2563eb"
+          color="#DC2626"
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}
@@ -54,7 +54,7 @@ export default function RootLayout({
           showSpinner={false}
           easing="ease"
           speed={200}
-          shadow="0 0 10px #2563eb,0 0 5px #2563eb"
+          shadow="0 0 10px #DC2626,0 0 5px #DC2626"
         />
         <AppShell>
             {children}
