@@ -10,20 +10,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isLoginPage = pathname === '/login';
 
   return (
-    <div className="mx-auto max-w-7xl min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
+    <div className="mx-auto max-w-7xl min-h-screen flex flex-col bg-background">
         {!isLoginPage && (
-            <header className="hidden md:flex bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800 px-8 py-4 justify-between items-center sticky top-0 z-50 transition-all duration-300">
+            <header className="hidden md:flex bg-slate-900/80 backdrop-blur-xl border-b border-white/5 px-8 py-4 justify-between items-center sticky top-0 z-50 transition-all duration-300">
                 <div className="flex flex-col">
                     <div className="font-black text-2xl text-transparent bg-clip-text bg-galaxy-gradient uppercase tracking-tighter leading-none flex items-center gap-2">
-                        <span className="bg-galaxy-gradient text-white w-8 h-8 rounded-lg flex items-center justify-center text-lg">C</span>
+                        <span className="bg-galaxy-gradient text-white w-8 h-8 rounded-lg flex items-center justify-center text-lg shadow-lg shadow-violet-500/20">C</span>
                         XE MÁY CÀ REM
                     </div>
-                    <div className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-widest mt-1.5 pl-10">
+                    <div className="text-[11px] text-slate-400 font-semibold uppercase tracking-widest mt-1.5 pl-10">
                         107 Nguyễn Tất Thành, Hội An
                     </div>
                 </div>
                 <div className="flex items-center gap-10">
-                    <nav className="flex gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1.5 rounded-2xl">
+                    <nav className="flex gap-1 bg-white/5 p-1.5 rounded-2xl border border-white/5">
                         {[
                             { href: '/', label: 'Dashboard' },
                             { href: '/cars', label: 'Kho Xe' },
@@ -35,15 +35,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                                 href={link.href} 
                                 className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
                                     (link.href === '/' && pathname === '/') || (link.href !== '/' && pathname?.startsWith(link.href))
-                                    ? 'bg-white dark:bg-slate-900 text-violet-600 dark:text-violet-400 shadow-sm' 
-                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800'
+                                    ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' 
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                             >
                                 {link.label}
                             </Link>
                         ))}
                     </nav>
-                    <div className="pl-6 border-l border-slate-200 dark:border-slate-700">
+                    <div className="pl-6 border-l border-white/10">
                         <ThemeToggle />
                     </div>
                 </div>

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#7c3aed", // Galaxy Purple
+  themeColor: "#090513", // Galaxy Deep Black
 };
 
 export default function RootLayout({
@@ -42,8 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 selection:bg-purple-100 selection:text-purple-900`}>
+    <html lang="vi" suppressHydrationWarning className="dark">
+      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 bg-background text-foreground`}>
         <Providers>
         <NextTopLoader 
           color="#a855f7" // Purple-500
@@ -61,15 +61,16 @@ export default function RootLayout({
             <ScrollToTop />
             <Toaster 
               position="top-right" 
+              theme="dark"
               richColors 
               closeButton
               toastOptions={{
                 classNames: {
-                  toast: 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-100 dark:border-gray-800 shadow-2xl rounded-2xl p-4',
-                  title: 'text-gray-800 dark:text-white font-bold text-sm',
-                  description: 'text-gray-500 dark:text-gray-400 text-xs font-medium',
-                  actionButton: 'bg-blue-600 text-white font-bold rounded-xl text-xs',
-                  cancelButton: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold rounded-xl text-xs',
+                  toast: 'bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-4',
+                  title: 'text-white font-bold text-sm',
+                  description: 'text-slate-400 text-xs font-medium',
+                  actionButton: 'bg-violet-600 text-white font-bold rounded-xl text-xs',
+                  cancelButton: 'bg-slate-800 text-slate-300 font-bold rounded-xl text-xs',
                 },
                 style: {
                   borderRadius: '16px',

@@ -88,7 +88,7 @@
 
 /* Base Styles */
 body {
-    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50;
+    @apply bg-background text-foreground antialiased selection:bg-purple-500/30 selection:text-purple-200;
     -webkit-tap-highlight-color: transparent;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     touch-action: manipulation; /* Fix click lag on mobile */
@@ -101,15 +101,15 @@ button, a {
 
 /* Custom Utilities */
 .glass-effect {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm supports-backdrop-filter:bg-white/60 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-black/20;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-sm supports-backdrop-filter:bg-white/5;
 }
 
 .input-primary {
-    @apply w-full bg-white border border-slate-200 rounded-2xl p-4 text-sm font-medium outline-none transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400 dark:bg-slate-900 dark:border-slate-800 dark:text-white dark:focus:ring-blue-500/20 shadow-sm hover:border-blue-300 dark:hover:border-blue-700;
+    @apply w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm font-medium outline-none transition-all duration-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 placeholder:text-slate-500 text-white shadow-sm hover:border-white/20;
 }
 
 .btn-primary {
-    @apply bg-blue-600 text-white p-4 rounded-2xl font-bold shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:bg-blue-700 hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 flex items-center justify-center dark:shadow-blue-900/20;
+    @apply bg-violet-600 text-white p-4 rounded-2xl font-bold shadow-[0_4px_14px_0_rgba(124,58,237,0.39)] hover:bg-violet-700 hover:shadow-[0_6px_20px_rgba(124,58,237,0.23)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 flex items-center justify-center;
 }
 
 @layer utilities {
@@ -146,10 +146,10 @@ button, a {
 
 /* Premium Card Surface */
 .card-premium {
-    @apply bg-white rounded-3xl border border-slate-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_30px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 dark:bg-slate-900 dark:border-slate-800 dark:shadow-none hover:-translate-y-1;
+    @apply bg-slate-900/50 backdrop-blur-md rounded-3xl border border-white/5 shadow-xl transition-all duration-300 hover:border-white/10 hover:-translate-y-1;
 }
 
 /* Text Gradients */
-.text-gradient-blue {
-    @apply bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400;
+.text-gradient-galaxy {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-violet-400 to-fuchsia-400;
 }
