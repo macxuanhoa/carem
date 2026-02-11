@@ -103,15 +103,15 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
 
     if (cars.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">
-            <div className="bg-white/5 p-6 rounded-full mb-4 shadow-inner ring-1 ring-white/10">
-                <Bike size={40} className="text-slate-300 dark:text-slate-600" />
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
+                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4 shadow-inner">
+                    <Bike size={40} className="text-gray-300 dark:text-gray-600" />
+                </div>
+                <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Chưa có xe nào trong danh mục này.</p>
+                <Button variant="link" asChild className="mt-2 text-blue-600 dark:text-blue-400 font-bold">
+                    <Link href="/cars/new">Nhập xe ngay</Link>
+                </Button>
             </div>
-            <p className="text-lg font-medium text-slate-500 dark:text-slate-400">Chưa có xe nào trong danh mục này.</p>
-            <Button variant="link" asChild className="mt-2 text-violet-600 dark:text-violet-400 font-bold hover:text-violet-500">
-                <Link href="/cars/new">Nhập xe ngay</Link>
-            </Button>
-        </div>
         );
     }
 
@@ -252,15 +252,15 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
   };
 
   return (
-    <div className="pb-20 md:pb-6 bg-background min-h-screen font-sans">
+    <div className="pb-20 md:pb-6 bg-gray-50 dark:bg-gray-950 min-h-screen font-sans">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-30 bg-slate-900/80 backdrop-blur-xl pt-safe-top px-4 pb-3 border-b border-white/5 shadow-sm transition-all">
+      <div className="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl pt-safe-top px-4 pb-3 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all">
         <div className="flex justify-between items-center mb-3 pt-2">
-            <h1 className="text-xl font-bold text-white">Kho Xe</h1>
+            <h1 className="text-xl font-bold text-gray-800 dark:text-white">Kho Xe</h1>
             
             {/* Group By Dropdown - Moved to ViewOptions */}
             <ViewOptions models={availableModels} />
-            <Button asChild className="hidden md:flex gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-lg shadow-violet-500/20 ml-4 border border-white/5">
+            <Button asChild className="hidden md:flex gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm ml-4">
                 <Link href="/cars/new">
                     <Plus size={18} strokeWidth={2.5} />
                     Nhập Xe

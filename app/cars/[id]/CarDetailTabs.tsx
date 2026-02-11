@@ -16,10 +16,10 @@ function DealTimeline({ status, deposit, isSold }: DealTimelineProps) {
     ];
 
     return (
-        <div className="bg-white dark:bg-gray-900 px-4 py-4 shadow-sm border-b border-gray-100 dark:border-gray-800">
+        <div className="bg-slate-900/50 backdrop-blur-sm px-4 py-4 shadow-sm border-b border-white/5">
              <div className="flex items-center justify-between relative max-w-sm mx-auto">
-                <div className="absolute left-0 top-[11px] w-full h-1 bg-gray-100 dark:bg-gray-800 z-0 rounded-full"></div>
-                <div className="absolute left-0 top-[11px] h-1 bg-green-500 z-0 rounded-full transition-all duration-1000 ease-out shadow-sm"
+                <div className="absolute left-0 top-[11px] w-full h-1 bg-white/10 z-0 rounded-full"></div>
+                <div className="absolute left-0 top-[11px] h-1 bg-violet-500 z-0 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-violet-500/50"
                      style={{ 
                          width: isSold ? '100%' : deposit > 0 ? '66%' : status !== 'TIM_THAY' ? '33%' : '0%' 
                      }}
@@ -27,15 +27,15 @@ function DealTimeline({ status, deposit, isSold }: DealTimelineProps) {
 
                 {steps.map((step, idx) => (
                     <div key={idx} className="flex flex-col items-center relative z-10">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-white dark:bg-gray-900 ${
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-slate-900 ${
                             step.active 
-                            ? 'border-green-500 scale-110' 
-                            : 'border-gray-200 dark:border-gray-700'
+                            ? 'border-violet-500 scale-110 shadow-lg shadow-violet-500/30' 
+                            : 'border-slate-700'
                         }`}>
-                            {step.active && <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>}
+                            {step.active && <div className="w-2.5 h-2.5 bg-violet-500 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.8)]"></div>}
                         </div>
                         <span className={`text-[9px] font-bold mt-1.5 uppercase tracking-wide ${
-                            step.active ? 'text-green-600 dark:text-green-500' : 'text-gray-300 dark:text-gray-600'
+                            step.active ? 'text-violet-400' : 'text-slate-600'
                         }`}>
                             {step.label}
                         </span>
@@ -67,19 +67,19 @@ export default function CarDetailTabs({ car, totalGop, totalChiPhi, isOverdue, u
   ];
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-950 min-h-screen font-sans pb-20">
+    <div className="bg-background min-h-screen font-sans pb-20">
         <DealTimeline status={car.trangThai} deposit={car.soTienCoc} isSold={car.trangThai === 'DA_BAN'} />
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-[57px] z-20 shadow-sm">
+        <div className="flex border-b border-white/5 bg-slate-900/80 backdrop-blur-md sticky top-[57px] z-20 shadow-sm">
             {tabs.map(tab => (
                 <button 
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex-1 py-3 text-sm font-bold border-b-2 transition-all ${
                         activeTab === tab.id 
-                        ? 'border-red-600 text-red-600' 
-                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                        ? 'border-violet-600 text-violet-500' 
+                        : 'border-transparent text-slate-500 hover:text-slate-300'
                     }`}
                 >
                     {tab.label}

@@ -56,13 +56,13 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
   const isOverdue = car.hoSo?.trangThai === 'QUA_HAN';
 
   return (
-    <div className="bg-background min-h-screen pb-safe-bottom">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-safe-bottom">
       {/* 1. Navbar / Header */}
-      <div className="bg-slate-900/80 backdrop-blur-xl sticky top-0 z-30 px-4 py-3 shadow-sm flex items-center justify-between border-b border-white/5 transition-all duration-300">
-         <Link href="/cars" className="p-2 -ml-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors">
+      <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-30 px-4 py-3 shadow-sm flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800 transition-all duration-300">
+         <Link href="/cars" className="p-2 -ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
             <ArrowLeft size={20} />
          </Link>
-         <h1 className="font-bold text-lg text-white truncate max-w-[200px]">{car.dongXe}</h1>
+         <h1 className="font-bold text-lg text-slate-800 dark:text-white truncate max-w-[200px]">{car.dongXe}</h1>
          <CarHeaderActions id={car.id} />
       </div>
 
