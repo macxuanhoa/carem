@@ -53,7 +53,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" suppressHydrationWarning className="dark">
-      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 bg-background text-foreground`}>
+      <body className={`${inter.className} min-h-screen pb-20 md:pb-0 bg-background text-foreground antialiased`}>
         <Providers>
         <NextTopLoader 
           color="#a855f7" // Purple-500
@@ -65,6 +65,9 @@ export default function RootLayout({
           easing="ease"
           speed={200}
           shadow="0 0 10px #a855f7,0 0 5px #a855f7"
+          template='<div class="bar" role="bar"><div class="peg"></div></div>'
+          zIndex={1600}
+          showAtBottom={false}
         />
         <AppShell>
             {children}

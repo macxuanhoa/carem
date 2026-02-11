@@ -38,7 +38,8 @@ export default function BottomNav() {
                     <div key={item.path} className="relative -top-8 flex justify-center">
                         <Link 
                             href={item.path}
-                            className="flex flex-col items-center justify-center bg-galaxy-gradient text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-purple-500/30 border-4 border-slate-50 dark:border-slate-950 transition-all active:scale-95 group"
+                            prefetch={true}
+                            className="flex flex-col items-center justify-center bg-galaxy-gradient text-white w-14 h-14 rounded-[1.2rem] shadow-xl shadow-purple-500/30 border-4 border-slate-50 dark:border-slate-950 transition-all active:scale-95 group touch-manipulation"
                         >
                              <Icon size={26} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                         </Link>
@@ -50,7 +51,8 @@ export default function BottomNav() {
                 <Link 
                     key={item.path} 
                     href={item.path}
-                    className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 ${
+                    prefetch={true}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 touch-manipulation ${
                         active 
                         ? 'text-violet-600 dark:text-violet-400' 
                         : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'

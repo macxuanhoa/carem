@@ -33,6 +33,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                             <Link 
                                 key={link.href}
                                 href={link.href} 
+                                prefetch={true}
                                 className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
                                     (link.href === '/' && pathname === '/') || (link.href !== '/' && pathname?.startsWith(link.href))
                                     ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' 
