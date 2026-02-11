@@ -14,15 +14,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        console.log('Authorizing user:', credentials?.username);
         if (!credentials?.username || !credentials?.password) return null;
 
         try {
             const user = await prisma.user.findUnique({
                 where: { username: credentials.username as string }
             });
-
-            console.log('User found:', user ? 'Yes' : 'No');
 
             if (!user) return null;
 
@@ -44,19 +41,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         where: { id: user.id },
                         data: { password: hashedPassword }
                     });
-                    console.log('Migrated plain text password to hash for user:', user.username);
                 }
             }
 
             if (isValid) {
-                console.log('Password match!');
                 return { 
                     id: user.id, 
                     name: user.name, 
                     role: user.role
                 }
-            } else {
-                console.log('Password mismatch');
             }
         } catch (error) {
             console.error('Auth Error:', error);

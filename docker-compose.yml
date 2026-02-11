@@ -6,32 +6,44 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: webxe-app
+    container_name: carem92-web
     restart: always
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=file:./dev.db
-      - AUTH_SECRET=supersecretkey123
-      - ADMIN_PASSWORD=admin123
+      - DATABASE_URL=postgresql://carem_user:carem_password@db:5432/carem_db
+      - AUTH_SECRET=${AUTH_SECRET:-supersecret_production_key_change_me}
+      - AUTH_URL=http://localhost:3000
+      - NODE_ENV=production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - carem-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: carem92-db
+    restart: always
+    environment:
+      - POSTGRES_USER=carem_user
+      - POSTGRES_PASSWORD=carem_password
+      - POSTGRES_DB=carem_db
     volumes:
-      # Mount the sqlite db file to persist data
-      - ./prisma/dev.db:/app/prisma/dev.db
-      # Mount public/uploads if you store local files (optional)
-      # - ./public/uploads:/app/public/uploads
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carem_user -d carem_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - carem-network
 
-  # Optional: If you switch to Postgres later, uncomment this block
-  # db:
-  #   image: postgres:15-alpine
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=myuser
-  #     - POSTGRES_PASSWORD=mypassword
-  #     - POSTGRES_DB=webxe
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+volumes:
+  postgres_data:
 
-# volumes:
-#   db_data:
+networks:
+  carem-network:
+    driver: bridge

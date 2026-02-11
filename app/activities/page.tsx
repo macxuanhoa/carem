@@ -1,58 +1,21 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Activity, Calendar, Clock, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Activity, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { formatTimeAgo } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { getNotifications } from '@/lib/services/car.service';
+import ActivitySearch from './ActivitySearch';
 
-interface Notification {
-  id: number;
-  hanhDong: string;
-  chiTiet: string;
-  nguoiThucHien: string;
-  createdAt: string;
-  xeMuaVao?: {
-    bienSo: string | null;
-    dongXe: string;
-    mauXe: string;
-  };
+export const dynamic = 'force-dynamic';
+
+interface PageProps {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-interface NotificationResponse {
-    data: Notification[];
-    metadata: {
-        total: number;
-        page: number;
-        limit: number;
-        totalPages: number;
-    }
-}
+export default async function ActivitiesPage({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams;
+  const page = Number(resolvedParams.page) || 1;
+  const query = resolvedParams.q?.toString() || '';
+  const limit = 20;
 
-export default function ActivitiesPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
-  
-  // Reset page when searching
-  useEffect(() => {
-      setPage(1);
-  }, [searchTerm]);
-
-  const { data, isLoading, isError } = useQuery<NotificationResponse>({
-    queryKey: ['all-activities', page], // Include page in key
-    queryFn: async () => {
-      const res = await fetch(`/api/notifications?limit=20&page=${page}`);
-      if (!res.ok) throw new Error('Failed to fetch');
-      return res.json();
-    },
-    placeholderData: (previousData) => previousData // Keep previous data while fetching new
-  });
-
-  const notifications = data?.data || [];
-  const metadata = data?.metadata;
-
-  // ... (pagination logic)
+  const { data: notifications, metadata } = await getNotifications(limit, page, query);
 
   const groupedNotifications = notifications.reduce((groups, notif) => {
     try {
@@ -70,7 +33,7 @@ export default function ActivitiesPage() {
         console.error("Invalid date", notif.createdAt);
     }
     return groups;
-  }, {} as Record<string, Notification[]>);
+  }, {} as Record<string, typeof notifications>);
 
   const getColor = (action: string) => {
     const lower = action.toLowerCase();
@@ -83,7 +46,6 @@ export default function ActivitiesPage() {
   };
 
   const getActionLabel = (action: string) => {
-      // Map generic codes to user friendly labels
       const lower = action.toLowerCase();
       if (lower.includes('create') || lower.includes('thêm')) return 'Thêm mới';
       if (lower.includes('update') || lower.includes('sửa') || lower.includes('cập nhật')) return 'Cập nhật';
@@ -112,36 +74,17 @@ export default function ActivitiesPage() {
       <div className="p-4 max-w-2xl mx-auto space-y-6">
         
         {/* Search */}
-        <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-            <input 
-                type="text" 
-                placeholder="Tìm kiếm hoạt động..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-2xl py-3 pl-11 pr-4 outline-none text-white placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all shadow-sm"
-            />
-        </div>
+        <ActivitySearch />
 
         {/* Content */}
-        {isLoading ? (
-            <div className="flex justify-center py-10">
-                <LoadingSpinner />
-            </div>
-        ) : isError ? (
-            <div className="text-center py-12 text-slate-400">
-                <Activity size={48} className="mx-auto mb-4 text-rose-500/50" />
-                <p className="text-rose-400 font-bold">Không thể tải dữ liệu</p>
-                <p className="text-xs mt-1 text-slate-500">Vui lòng thử lại sau</p>
-            </div>
-        ) : !notifications || notifications.length === 0 ? (
+        {!notifications || notifications.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
                 <Activity size={48} className="mx-auto mb-4 opacity-20" />
                 <p>Không tìm thấy hoạt động nào</p>
             </div>
         ) : (
             <div className="space-y-8">
-                {Object.entries(groupedNotifications || {}).map(([date, items]) => (
+                {Object.entries(groupedNotifications).map(([date, items]) => (
                     <div key={date} className="relative">
                         <div className="sticky top-16 z-10 flex justify-center mb-4">
                             <span className="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full shadow-sm border border-slate-700 uppercase tracking-wide">
@@ -155,11 +98,7 @@ export default function ActivitiesPage() {
                                     {/* Dot */}
                                     <div className={`absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 border-slate-950 ${getColor(item.hanhDong)} shadow-sm z-10`}></div>
                                     
-                                    <div className="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-800 group-hover:border-violet-500/30 transition-all cursor-pointer hover:bg-slate-800/50" onClick={() => {
-                                        if (item.xeMuaVao?.bienSo || item.xeMuaVao?.dongXe) {
-                                            // Redirect logic or expand detail modal could be here
-                                        }
-                                    }}>
+                                    <div className="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-800 hover:border-violet-500/30 transition-all cursor-pointer hover:bg-slate-800/50">
                                         <div className="flex justify-between items-start mb-2">
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${getColor(item.hanhDong)}`}>
                                                 {getActionLabel(item.hanhDong)}
@@ -194,23 +133,21 @@ export default function ActivitiesPage() {
                 {/* Pagination Controls */}
                 {metadata && metadata.totalPages > 1 && (
                     <div className="flex justify-center items-center space-x-4 pt-4 pb-8">
-                        <button
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                            disabled={page <= 1}
-                            className={`p-2 rounded-xl border ${page <= 1 ? 'border-slate-800 text-slate-600' : 'border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+                        <Link
+                            href={`/activities?page=${Math.max(1, page - 1)}&q=${query}`}
+                            className={`p-2 rounded-xl border ${page <= 1 ? 'pointer-events-none border-slate-800 text-slate-600' : 'border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white'}`}
                         >
                             <ChevronLeft size={20} />
-                        </button>
+                        </Link>
                         <span className="text-xs font-bold text-slate-500">
                             Trang {page} / {metadata.totalPages}
                         </span>
-                        <button
-                            onClick={() => setPage(p => Math.min(metadata.totalPages, p + 1))}
-                            disabled={page >= metadata.totalPages}
-                            className={`p-2 rounded-xl border ${page >= metadata.totalPages ? 'border-slate-800 text-slate-600' : 'border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+                        <Link
+                            href={`/activities?page=${Math.min(metadata.totalPages, page + 1)}&q=${query}`}
+                            className={`p-2 rounded-xl border ${page >= metadata.totalPages ? 'pointer-events-none border-slate-800 text-slate-600' : 'border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white'}`}
                         >
                             <ChevronRight size={20} />
-                        </button>
+                        </Link>
                     </div>
                 )}
             </div>

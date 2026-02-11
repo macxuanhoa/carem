@@ -1,24 +1,24 @@
 {
-  "name": "Webxe2",
-  "short_name": "Webxe2",
+  "name": "Carem92 - Quản Lý Xe",
+  "short_name": "Carem92",
   "description": "Hệ thống quản lý xe chuyên nghiệp",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563EB",
+  "background_color": "#090513",
+  "theme_color": "#090513",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
+      "src": "/avtcarem.jpg",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512x512.png",
+      "src": "/avtcarem.jpg",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }

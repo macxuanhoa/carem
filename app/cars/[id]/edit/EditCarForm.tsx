@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { updateCar } from '@/app/actions';
@@ -9,6 +10,7 @@ import CarForm from '@/components/CarForm';
 import { type CarFormData } from '@/lib/schemas';
 
 export default function EditCarForm({ car }: { car: any }) {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     // Prepare default values
@@ -48,8 +50,16 @@ export default function EditCarForm({ car }: { car: any }) {
     const handleSave = async (data: CarFormData) => {
         setLoading(true);
         try {
-            await updateCar(car.id, data);
-            toast.success('Đã cập nhật thông tin xe!');
+            const result = await updateCar(car.id, data);
+            
+            if (result.success) {
+                toast.success('Đã cập nhật thông tin xe!');
+                router.push(`/cars/${car.id}`);
+                router.refresh();
+            } else {
+                toast.error(result.error || 'Có lỗi xảy ra khi cập nhật');
+                setLoading(false);
+            }
         } catch (error) {
             console.error(error);
             toast.error('Có lỗi xảy ra khi cập nhật');

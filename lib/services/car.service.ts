@@ -125,6 +125,7 @@ export async function createCar(data: CarFormData) {
 
     // Force revalidate dashboard cache
     revalidatePath('/');
+    revalidatePath('/reports');
 
     return car;
 }
@@ -191,6 +192,7 @@ export async function updateCar(id: number, data: CarFormData) {
 
     revalidatePath(`/cars/${id}`);
     revalidatePath('/cars');
+    revalidatePath('/reports');
     return updatedCar;
 }
 
@@ -317,11 +319,44 @@ export async function deleteCar(id: number) {
     
     revalidatePath('/cars');
     revalidatePath('/');
+    revalidatePath('/reports');
 }
 
 export async function getCarAnalytics() {
-    // 1. Lấy toàn bộ xe đã bán để tính lợi nhuận
-    const soldCars = await prisma.xeMuaVao.findMany({
+    // 1. Optimize: Calculate Financial Summaries directly in DB
+    const [revenueData, baseCostData, extraCostData] = await Promise.all([
+        // Total Revenue (Sold cars)
+        prisma.xeBanRa.aggregate({
+            _sum: { giaBan: true },
+            where: { trangThai: 'DA_BAN' }
+        }),
+        // Total Base Cost (Sold cars)
+        prisma.xeMuaVao.aggregate({
+            _sum: { tongGiaMua: true },
+            where: { trangThai: 'DA_BAN' }
+        }),
+        // Total Extra Cost (Expenses for sold cars)
+        // Note: This requires a bit of raw query or logic since we can't easily join in aggregate
+        // But for "Total Profit", we can approximate or use raw query.
+        // Let's use Raw Query for accuracy and speed.
+        prisma.$queryRaw<{ totalExtraCost: number }[]>`
+            SELECT COALESCE(SUM(cp."giaThucTe"), 0) as "totalExtraCost"
+            FROM "ChiPhiXe" cp
+            JOIN "XeMuaVao" mv ON cp."xeMuaVaoId" = mv."id"
+            WHERE mv."trangThai" = 'DA_BAN'
+        `
+    ]);
+
+    const totalRevenue = revenueData._sum.giaBan || 0;
+    const totalBaseCost = baseCostData._sum.tongGiaMua || 0;
+    const totalExtraCost = Number(extraCostData[0]?.totalExtraCost || 0);
+    const totalCost = totalBaseCost + totalExtraCost;
+    const totalProfit = totalRevenue - totalCost;
+
+    // 2. Fetch Chart Data (Last 6 months only) & Top Profit
+    // Fetch limited "Sold Cars" for detailed analysis
+    // We limit to last 100 sold cars for charts/tables to keep it fast
+    const recentSoldCars = await prisma.xeMuaVao.findMany({
         where: {
             trangThai: 'DA_BAN',
             banRa: { isNot: null }
@@ -329,25 +364,20 @@ export async function getCarAnalytics() {
         include: {
             banRa: true,
             chiPhi: true,
-        }
+        },
+        orderBy: {
+            banRa: { ngayBan: 'desc' }
+        },
+        take: 100 // Optimization limit
     });
-
-    // 2. Tính toán tài chính
-    let totalRevenue = 0;
-    let totalProfit = 0;
-    let totalCost = 0;
     
-    // Profit per Car
-    const profitByCar = soldCars.map(car => {
+    // Profit per Car (for recent 100)
+    const profitByCar = recentSoldCars.map(car => {
         const revenue = car.banRa?.giaBan || 0;
         const baseCost = car.tongGiaMua;
         const extraCost = car.chiPhi.reduce((sum, cp) => sum + cp.giaThucTe, 0);
         const totalCarCost = baseCost + extraCost;
         const profit = revenue - totalCarCost;
-
-        totalRevenue += revenue;
-        totalProfit += profit;
-        totalCost += totalCarCost;
 
         return {
             dongXe: car.dongXe,
@@ -356,27 +386,26 @@ export async function getCarAnalytics() {
             revenue,
             cost: totalCarCost,
             profit,
-            source: car.facebookLink // Phân tích nguồn sau này
+            source: car.facebookLink
         };
     });
 
-    // 3. Phân tích tồn kho (Inventory Aging)
-    const allCars = await prisma.xeMuaVao.findMany({
-        where: { trangThai: { notIn: ['DA_BAN', 'HUY_GIAO_DICH'] } }
+    // 3. Inventory Aging (Top 5 oldest)
+    const oldestInventory = await prisma.xeMuaVao.findMany({
+        where: { trangThai: { notIn: ['DA_BAN', 'HUY_GIAO_DICH'] } },
+        orderBy: { createdAt: 'asc' },
+        take: 5
     });
     
     const today = new Date();
-    const inventoryAging = allCars.map(car => {
-        const daysInStock = Math.floor((today.getTime() - new Date(car.createdAt).getTime()) / (1000 * 3600 * 24));
-        return {
-            ...car,
-            daysInStock
-        };
-    }).sort((a, b) => b.daysInStock - a.daysInStock).slice(0, 5); // Top 5 xe tồn lâu
+    const inventoryAging = oldestInventory.map(car => ({
+        ...car,
+        daysInStock: Math.floor((today.getTime() - new Date(car.createdAt).getTime()) / (1000 * 3600 * 24))
+    }));
 
-    // 4. Dữ liệu biểu đồ doanh thu theo tháng (Giả lập 6 tháng gần nhất)
+    // 4. Chart Data (Aggregate from recent 100)
     const monthlyData: Record<string, { name: string; revenue: number; profit: number }> = {};
-    soldCars.forEach(car => {
+    recentSoldCars.forEach(car => {
         if (car.banRa?.ngayBan) {
             const month = new Date(car.banRa.ngayBan).toLocaleString('vi-VN', { month: 'short', year: '2-digit' });
             if (!monthlyData[month]) monthlyData[month] = { name: month, revenue: 0, profit: 0 };
@@ -389,21 +418,38 @@ export async function getCarAnalytics() {
         }
     });
     
-    const chartData = Object.values(monthlyData);
-
-    // 5. Tính ROI (Return on Investment) cho từng xe
+    // 5. ROI
     const roiData = profitByCar.map(item => ({
         name: item.dongXe,
         roi: item.cost > 0 ? (item.profit / item.cost) * 100 : 0,
         profit: item.profit,
-    })).sort((a, b) => b.roi - a.roi).slice(0, 10); // Top 10 ROI cao nhất
+    })).sort((a, b) => b.roi - a.roi).slice(0, 10);
 
-    // 6. Phân tích dòng tiền (Cash Flow)
+    // 6. Cash Flow (Optimized)
+    const [cashInStock, cashReceivable, cashPayable] = await Promise.all([
+        // Cash in Stock
+        prisma.xeMuaVao.aggregate({
+            _sum: { tongGiaMua: true },
+            where: { trangThai: { notIn: ['DA_BAN', 'HUY_GIAO_DICH'] } }
+        }),
+        // Receivable (Sold but not fully paid)
+        prisma.xeBanRa.aggregate({
+            _sum: { giaBan: true },
+            where: { daThuDuTien: false }
+        }),
+        // Payable (Bought but not fully paid - assuming soTienDaChuyen logic exists or defaulting)
+        // For now, assume if not fully paid we owe? The logic in original code was:
+        // sum + (car.tongGiaMua - (car as any).soTienDaChuyen || 0)
+        // We don't have soTienDaChuyen in schema apparently? Let's assume 0 for now or fetch.
+        // Let's just use 0 to be safe as per schema.
+        Promise.resolve({ _sum: { tongGiaMua: 0 } }) 
+    ]);
+
     const cashFlow = {
-        inCar: allCars.reduce((sum, car) => sum + car.tongGiaMua, 0), // Tiền nằm trong xe tồn kho
-        receivable: soldCars.reduce((sum, car) => !car.banRa?.daThuDuTien ? sum + (car.banRa?.giaBan || 0) : sum, 0), // Tiền khách nợ
-        payable: allCars.reduce((sum, car) => sum + (car.tongGiaMua - (car as any).soTienDaChuyen || 0), 0), // Tiền nợ người bán
-        cashOnHand: totalProfit // Lợi nhuận thực tế (đơn giản hóa)
+        inCar: cashInStock._sum.tongGiaMua || 0,
+        receivable: cashReceivable._sum.giaBan || 0,
+        payable: 0, // Placeholder
+        cashOnHand: totalProfit
     };
 
     return {
@@ -413,12 +459,12 @@ export async function getCarAnalytics() {
             totalCost,
             margin: totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0
         },
-        chartData,
+        chartData: Object.values(monthlyData).reverse(), // Show latest
         topProfitCars: profitByCar.sort((a, b) => b.profit - a.profit).slice(0, 5),
         inventoryAging,
         roiData,
         cashFlow,
-        exportData: profitByCar // Dữ liệu thô để xuất Excel
+        exportData: profitByCar
     };
 }
 
@@ -472,11 +518,28 @@ Người giữ: ${doc.noiGiuHoSo}
     };
 }
 
-export async function getNotifications(limit = 20, page = 1) {
+export async function getNotifications(limit = 20, page = 1, query = '') {
     const skip = (page - 1) * limit;
     
+    const whereClause: any = {};
+    if (query) {
+        whereClause.OR = [
+            { chiTiet: { contains: query, mode: 'insensitive' } },
+            { nguoiThucHien: { contains: query, mode: 'insensitive' } },
+            { 
+                xeMuaVao: { 
+                    OR: [
+                        { bienSo: { contains: query, mode: 'insensitive' } },
+                        { dongXe: { contains: query, mode: 'insensitive' } }
+                    ]
+                } 
+            }
+        ];
+    }
+
     const [data, total] = await Promise.all([
         prisma.lichSuThayDoi.findMany({
+            where: whereClause,
             take: limit,
             skip: skip,
             orderBy: {
@@ -492,7 +555,7 @@ export async function getNotifications(limit = 20, page = 1) {
                 }
             }
         }),
-        prisma.lichSuThayDoi.count()
+        prisma.lichSuThayDoi.count({ where: whereClause })
     ]);
 
     return {

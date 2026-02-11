@@ -1,52 +1,14 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
-} from 'recharts';
+import { Suspense } from 'react';
 import ExcelExport from '@/components/ExcelExport';
-import { TrendingUp, DollarSign, Clock, AlertTriangle, ArrowUpRight, ArrowDownRight, Filter, Wallet } from 'lucide-react';
+import { TrendingUp, Wallet, AlertTriangle, Filter } from 'lucide-react';
+import { getCarAnalytics } from '@/lib/services/car.service';
+import { ROIChart, CashFlowChart, GrowthChart } from '@/components/ClientCharts';
 
-// Lazy Load Charts
-const ROIChart = dynamic(() => import('@/components/ROIChart'), { ssr: false, loading: () => <div className="h-48 w-full bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /> });
-const CashFlowChart = dynamic(() => import('@/components/CashFlowChart'), { ssr: false, loading: () => <div className="h-48 w-full bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /> });
+export const revalidate = 0; // Disable static generation
+export const dynamic = 'force-dynamic'; // Force dynamic rendering
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
-
-export default function ReportPage() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/reports/analytics')
-      .then(async (res) => {
-          if (!res.ok) {
-              const text = await res.text();
-              throw new Error(`API Error: ${res.status} ${text}`);
-          }
-          return res.json();
-      })
-      .then(data => {
-          setData(data);
-          setLoading(false);
-      })
-      .catch(err => {
-          console.error("Report Fetch Error:", err);
-          setLoading(false);
-      });
-  }, []);
-
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950">
-        <div className="flex flex-col items-center">
-            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <div className="text-gray-400 font-medium text-sm">Đang phân tích dữ liệu...</div>
-        </div>
-    </div>
-  );
-  
-  if (!data) return <div className="p-10 text-center text-red-500">Lỗi tải dữ liệu</div>;
+export default async function ReportPage() {
+  const data = await getCarAnalytics();
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 font-sans">
@@ -118,21 +80,7 @@ export default function ReportPage() {
              <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-slate-800 dark:text-white text-sm uppercase">Biểu đồ tăng trưởng</h3>
              </div>
-             <div className="h-64 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={data.chartData} barSize={32}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" className="dark:stroke-slate-800"/>
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#9ca3af'}} dy={10}/>
-                        <Tooltip 
-                            cursor={{fill: '#f9fafb'}}
-                            contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px'}}
-                            labelStyle={{color: '#6b7280', fontSize: '12px', marginBottom: '4px'}}
-                        />
-                        <Bar dataKey="revenue" name="Doanh Thu" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
-                        <Bar dataKey="profit" name="Lợi Nhuận" fill="#10b981" radius={[6, 6, 0, 0]} />
-                    </BarChart>
-                </ResponsiveContainer>
-             </div>
+             <GrowthChart data={data.chartData} />
         </div>
 
         {/* 3. Top Performers & Inventory Risk Grid */}

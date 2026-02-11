@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { expenseSchema, ExpenseFormData } from '@/lib/schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { addExpense } from '@/app/actions';
 
 export default function ExpensesClient({ car }: { car: CarWithRelations }) {
   const router = useRouter();
@@ -35,13 +36,11 @@ export default function ExpensesClient({ car }: { car: CarWithRelations }) {
     setLoading(true);
     
     try {
-      const res = await fetch(`/api/cars/${car.id}/expenses`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      const result = await addExpense(car.id, data);
 
-      if (!res.ok) throw new Error('Failed to create expense');
+      if (!result.success) {
+          throw new Error(result.error || 'Failed to create expense');
+      }
 
       toast.success('Đã gửi đề xuất chi phí!', {
           description: 'Vui lòng chờ quản lý duyệt.'
@@ -51,7 +50,7 @@ export default function ExpensesClient({ car }: { car: CarWithRelations }) {
       setIsAdding(false);
       router.refresh();
     } catch (error) {
-      toast.error('Lỗi', { description: 'Không thể tạo chi phí.' });
+      toast.error('Lỗi', { description: (error as Error).message });
     } finally {
       setLoading(false);
     }

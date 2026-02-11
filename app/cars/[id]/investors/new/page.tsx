@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   ArrowLeft, CheckCircle, User, DollarSign, FileText 
@@ -11,10 +11,16 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { investorSchema, InvestorFormData } from '@/lib/schemas';
+import { addInvestor } from '@/app/actions';
 
 export default function NewInvestorPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [carId, setCarId] = useState<number | null>(null);
+
+  useEffect(() => {
+    params.then(p => setCarId(parseInt(p.id)));
+  }, [params]);
   
   const { register, handleSubmit, formState: { errors } } = useForm<InvestorFormData>({
     resolver: zodResolver(investorSchema) as any,
@@ -28,28 +34,22 @@ export default function NewInvestorPage({ params }: { params: Promise<{ id: stri
   });
 
   const onSubmit = async (data: InvestorFormData) => {
+    if (!carId) return;
     setLoading(true);
     
-    const resolvedParams = await params;
-
     try {
-      const res = await fetch(`/api/cars/${resolvedParams.id}/investors`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            ...data,
-            giayToLienQuan: data.ghiChu // Map ghiChu to giayToLienQuan as per original logic or update schema
-        }),
-      });
+      const result = await addInvestor(carId, data);
 
-      if (!res.ok) throw new Error('Failed to add investor');
+      if (!result.success) {
+          throw new Error(result.error || 'Failed to add investor');
+      }
 
       toast.success('Đã thêm nhà đầu tư thành công!');
       
-      router.push(`/cars/${resolvedParams.id}`);
+      router.push(`/cars/${carId}`);
       router.refresh();
     } catch (error) {
-      toast.error('Lỗi', { description: 'Không thể thêm nhà đầu tư.' });
+      toast.error('Lỗi', { description: (error as Error).message });
     } finally {
       setLoading(false);
     }

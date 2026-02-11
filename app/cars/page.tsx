@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Plus, Bike } from 'lucide-react';
+import { Plus, Bike, FileSpreadsheet } from 'lucide-react';
 import { Suspense } from 'react';
 import SearchInput from './SearchInput';
 import QuickFilters from '@/components/QuickFilters';
@@ -8,6 +8,7 @@ import ViewOptions from '@/components/ViewOptions';
 import CarListSkeleton from '@/components/skeletons/CarListSkeleton';
 import CarCard from '@/components/CarCard';
 import { Button } from '@/components/ui/button';
+import ExcelExport from '@/components/ExcelExport';
 
 const CAR_STATUS_GROUPS = [
     { label: 'Kho Xe (Đang bán)', statuses: ['TIM_THAY', 'DA_COC', 'DA_CHUYEN_TIEN', 'CHO_GIAO_XE', 'XE_DA_VE', 'DANG_BAN'] },
@@ -101,6 +102,19 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
 
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
+    // Export Data (Full List for current filter, max 1000 to avoid crash)
+    // Note: This is separate from pagination
+    // Ideally we fetch this on demand, but for simplicity we can pass a server action or API link to the export button.
+    // However, the ExcelExport component expects data prop.
+    // Let's just export the CURRENT PAGE for now or fetch all client side?
+    // Client side fetching for export is better. 
+    // Actually, passing data to Client Component for export is fine if data is small.
+    // But here we are paginating. 
+    // Let's leave Excel Export on the Reports page for full dumps, 
+    // or add a specific "Export All" button that calls an API.
+    // For now, let's add the button to the header but maybe disable it or make it export current page.
+    
+    // ... render logic ...
     if (cars.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">
@@ -209,6 +223,9 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
 
     return (
         <div>
+            <div className="flex justify-end mb-4">
+                 <ExcelExport data={cars} fileName={`danh-sach-xe-trang-${page}`} />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
                 {cars.map((car) => <CarCard key={car.id} car={car} />)}
             </div>

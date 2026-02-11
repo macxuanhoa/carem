@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Clock, FileText, ArrowRight, User } from 'lucide-react';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { updateCarDocsAction } from '@/app/actions';
 
 const DOC_STEPS = [
   { key: 'CHUA_CAN', label: 'Chưa Cần', desc: 'Hồ sơ chưa cần rút hoặc chưa xử lý' },
@@ -49,17 +50,13 @@ export default function DocsPage({ params }: { params: Promise<{ id: string }> }
     const resolvedParams = await params;
     
     try {
-        const res = await fetch(`/api/cars/${resolvedParams.id}/docs`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
+        const result = await updateCarDocsAction(parseInt(resolvedParams.id), formData);
 
-        if (!res.ok) throw new Error('Failed');
+        if (!result.success) throw new Error(result.error || 'Failed');
         router.push(`/cars/${resolvedParams.id}`);
         router.refresh();
     } catch (err) {
-        alert('Lỗi cập nhật');
+        alert((err as Error).message);
     } finally {
         setLoading(false);
     }

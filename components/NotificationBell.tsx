@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatTimeAgo } from '@/lib/utils';
 import Link from 'next/link';
+import { fetchNotificationsAction } from '@/app/actions';
 
 interface Notification {
   id: number;
@@ -24,15 +25,19 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data: notifications, isLoading } = useQuery<Notification[]>({
+  const { data: response, isLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      const res = await fetch('/api/notifications');
-      if (!res.ok) throw new Error('Failed to fetch');
-      return res.json();
+      // Use Server Action instead of fetch
+      const res = await fetchNotificationsAction(10, 1);
+      if (!res.success) throw new Error('Failed to fetch');
+      return res;
     },
-    refetchInterval: 10000, // Poll every 10s
+    refetchInterval: 30000, // Poll every 30s
+    staleTime: 10000,
   });
+
+  const notifications = response?.data;
 
   // Handle click outside
   useEffect(() => {
@@ -104,7 +109,7 @@ export default function NotificationBell() {
               ) : !notifications || notifications.length === 0 ? (
                 <div className="p-8 text-center text-slate-500 text-xs">Chưa có thông báo nào</div>
               ) : (
-                notifications?.map((notif) => (
+                notifications?.map((notif: any) => (
                   <div key={notif.id} className="p-3 rounded-xl hover:bg-white/5 transition-colors flex items-start gap-3 group border border-transparent hover:border-slate-800">
                     <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${getColor(notif.hanhDong)}`}>
                       {getIcon(notif.hanhDong)}

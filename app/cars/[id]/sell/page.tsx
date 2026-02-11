@@ -9,6 +9,7 @@ import SellCarSkeleton from '@/components/skeletons/SellCarSkeleton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { sellCarAction } from '@/app/actions';
 
 export const sellCarSchema = z.object({
   khachMua: z.string().min(1, 'Vui lòng nhập tên khách mua'),
@@ -64,14 +65,9 @@ export default function SellCarPage({ params }: { params: Promise<{ id: string }
   // 2. Optimistic Mutation
   const { mutate: sellCar, isPending } = useMutation({
     mutationFn: async (data: SellCarFormValues) => {
-      const res = await fetch(`/api/cars/${resolvedParams.id}/sell`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      const result = await sellCarAction(parseInt(resolvedParams.id), data);
       
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.error || 'Failed to sell car');
+      if (!result.success) throw new Error(result.error || 'Failed to sell car');
       return result;
     },
     onMutate: async (newData) => {

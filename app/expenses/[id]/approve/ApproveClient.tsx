@@ -7,8 +7,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-
 import { Prisma } from '@prisma/client';
+import { reviewExpense } from '@/app/actions';
 
 type ExpenseWithRelations = Prisma.ChiPhiXeGetPayload<{
   include: {
@@ -31,25 +31,24 @@ export default function ApproveExpenseClient({ expense }: { expense: ExpenseWith
     setLoading(true);
     
     try {
-      const res = await fetch(`/api/expenses/${expense.id}/approve`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        const result = await reviewExpense(expense.xeMuaVaoId || 0, {
+            id: expense.id,
             action: actionType,
             giaThucTe: finalPrice,
             nguoiDuyet: approverName,
             lyDoTuChoi: rejectReason
-        }),
-      });
+        });
 
-      if (!res.ok) throw new Error('Action failed');
+        if (!result.success) {
+            throw new Error(result.error || 'Action failed');
+        }
 
-      toast.success(actionType === 'APPROVE' ? 'Đã duyệt chi phí!' : 'Đã từ chối chi phí!');
-      
-      router.push('/expenses');
-      router.refresh();
+        toast.success(actionType === 'APPROVE' ? 'Đã duyệt chi phí!' : 'Đã từ chối chi phí!');
+        
+        router.push('/expenses');
+        router.refresh();
     } catch (error) {
-      toast.error('Lỗi', { description: 'Không thể xử lý yêu cầu.' });
+      toast.error('Lỗi', { description: (error as Error).message });
     } finally {
       setLoading(false);
     }

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, CheckCircle } from 'lucide-react';
 import CarForm from '@/components/CarForm';
 import { type CarFormData } from '@/lib/schemas';
+import { createCar } from '@/app/actions';
 
 export default function NewCarPage() {
     const router = useRouter();
@@ -44,15 +45,10 @@ export default function NewCarPage() {
     const handleSaveCar = async (data: CarFormData) => {
         setLoading(true);
         try {
-            const res = await fetch('/api/cars', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+            const result = await createCar(data);
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.error || 'Failed to save car');
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to save car');
             }
             
             // Clear draft

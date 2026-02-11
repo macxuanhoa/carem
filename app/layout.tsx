@@ -15,8 +15,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Quản Lý Xe",
-  description: "Hệ thống quản lý xe chuyên nghiệp",
+  title: {
+    template: '%s | Carem92',
+    default: 'Hệ Thống Quản Lý Xe Carem92',
+  },
+  description: "Giải pháp quản lý kinh doanh xe toàn diện, tối ưu lợi nhuận và dòng tiền.",
   manifest: "/manifest.json",
   icons: {
     icon: '/avtcarem.jpg',
@@ -24,11 +27,18 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Webxe2",
+    statusBarStyle: "black-translucent",
+    title: "Carem92",
   },
   formatDetection: {
     telephone: false,
+  },
+  openGraph: {
+    title: 'Carem92 - Quản Lý Xe Chuyên Nghiệp',
+    description: 'Theo dõi tồn kho, doanh thu và lợi nhuận xe realtime.',
+    siteName: 'Carem92',
+    locale: 'vi_VN',
+    type: 'website',
   },
 };
 

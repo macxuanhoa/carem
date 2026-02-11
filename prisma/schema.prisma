@@ -133,6 +133,9 @@ model XeGopDauTu {
   
   giayToLienQuan  String? // Link ảnh hợp đồng góp vốn
   lichSuThanhToan LichSuGopVon[] // Quan hệ 1-n để theo dõi tiến độ
+
+  @@index([xeMuaVaoId])
+  @@index([trangThai])
 }
 
 // NEW: Lịch sử nộp tiền góp vốn (Tracking tiến độ)
@@ -145,6 +148,8 @@ model LichSuGopVon {
   ngayNop         DateTime @default(now())
   ghiChu          String?
   hinhAnh         String? // Ảnh bill chuyển khoản
+
+  @@index([xeGopDauTuId])
 }
 
 // 5. CHI PHÍ – PHỤ KIỆN – PHỤ TÙNG
@@ -171,6 +176,7 @@ model ChiPhiXe {
   updatedAt       DateTime @updatedAt // Track thời gian duyệt
 
   @@index([trangThai])
+  @@index([xeMuaVaoId])
 }
 
 // 6. NOTE – XE CẦN TÌM LẠI – XE TREO
@@ -183,7 +189,10 @@ model GhiChuXe {
   loaiGhiChu      String @default("KHAC") 
   
   createdAt       DateTime @default(now())
+
+  @@index([xeMuaVaoId])
 }
+
 
 // 8. USERS & ROLES
 enum Role {
@@ -211,4 +220,7 @@ model LichSuThayDoi {
   chiTiet         String   // Nội dung thay đổi
   
   createdAt       DateTime @default(now())
+
+  @@index([xeMuaVaoId])
+  @@index([createdAt])
 }
