@@ -11,8 +11,13 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const limit = parseInt(searchParams.get('limit') || '20');
-  const page = parseInt(searchParams.get('page') || '1');
+  
+  // Safe parsing for pagination parameters
+  const limitParam = parseInt(searchParams.get('limit') || '20');
+  const pageParam = parseInt(searchParams.get('page') || '1');
+  
+  const limit = (isNaN(limitParam) || limitParam < 1) ? 20 : limitParam;
+  const page = (isNaN(pageParam) || pageParam < 1) ? 1 : pageParam;
 
   try {
     const notifications = await getNotifications(limit, page);
