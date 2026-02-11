@@ -41,13 +41,15 @@ async function ExpenseList({ currentTab, query, page }: { currentTab: string, qu
         console.error("Expense Fetch Error:", error);
         return (
             <div className="flex flex-col items-center justify-center py-20 text-red-500">
-                <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-full mb-4">
-                    <Wallet size={40} className="text-red-400" />
-                </div>
-                <p className="text-lg font-bold">Lỗi tải dữ liệu chi phí.</p>
-                <p className="text-sm text-gray-500 mb-4">Vui lòng thử lại sau.</p>
-                <Button onClick={() => window.location.reload()}>Tải lại trang</Button>
+            <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-full mb-4">
+                <Wallet size={40} className="text-red-400" />
             </div>
+            <p className="text-lg font-bold">Lỗi tải dữ liệu chi phí.</p>
+            <p className="text-sm text-gray-500 mb-4">Vui lòng thử lại sau.</p>
+            <Link href="/expenses" className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-bold">
+                Tải lại trang
+            </Link>
+        </div>
         );
     }
 
@@ -68,54 +70,54 @@ async function ExpenseList({ currentTab, query, page }: { currentTab: string, qu
     return (
         <div className="space-y-4">
             {expenses.map((exp) => (
-                <div key={exp.id} className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800 active:scale-[0.99] transition-transform">
+                <div key={exp.id} className="bg-white dark:bg-slate-900/50 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-slate-100 dark:border-slate-800/50 active:scale-[0.99] transition-all hover:border-violet-200 dark:hover:border-violet-800/50">
                     <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${
-                                exp.trangThai === 'CHO_DUYET' ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400' :
-                                exp.trangThai === 'DA_DUYET' ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
+                                exp.trangThai === 'CHO_DUYET' ? 'bg-fuchsia-50 dark:bg-fuchsia-900/20 text-fuchsia-600 dark:text-fuchsia-400' :
+                                exp.trangThai === 'DA_DUYET' ? 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400' : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                             }`}>
                                 <DollarSign size={20} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{exp.loaiChiPhi}</h3>
+                                <h3 className="font-bold text-slate-900 dark:text-white text-sm">{exp.loaiChiPhi}</h3>
                                 {exp.xeMuaVao ? (
-                                    <Link href={`/cars/${exp.xeMuaVao.id}`} className="text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline flex items-center mt-0.5">
+                                    <Link href={`/cars/${exp.xeMuaVao.id}`} className="text-xs text-violet-600 dark:text-violet-400 font-medium hover:underline flex items-center mt-0.5">
                                         {exp.xeMuaVao.dongXe} 
-                                        <span className="bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded ml-1 text-[10px] font-mono border border-gray-200 dark:border-gray-700">
+                                        <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded ml-1 text-[10px] font-mono border border-slate-200 dark:border-slate-700">
                                             {exp.xeMuaVao.bienSo || 'N/A'}
                                         </span>
                                     </Link>
                                 ) : (
-                                    <p className="text-xs text-gray-400 italic mt-0.5">Chi phí hoạt động chung</p>
+                                    <p className="text-xs text-slate-400 italic mt-0.5">Chi phí hoạt động chung</p>
                                 )}
                             </div>
                         </div>
                         <div className="text-right">
                             <span className={`block font-bold text-base ${
-                                exp.trangThai === 'TU_CHOI' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'
+                                exp.trangThai === 'TU_CHOI' ? 'text-slate-400 line-through' : 'text-slate-900 dark:text-white'
                             }`}>
                                 {formatCurrency(exp.giaDuKien)}
                             </span>
-                            <span className="text-[10px] text-gray-400 font-medium">{formatShortDate(exp.createdAt)}</span>
+                            <span className="text-[10px] text-slate-400 font-medium">{formatShortDate(exp.createdAt)}</span>
                         </div>
                     </div>
 
                     {exp.ghiChu && (
-                        <div className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-xs text-gray-600 dark:text-gray-300 mb-3 mt-2 border border-gray-100 dark:border-gray-700">
+                        <div className="bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl text-xs text-slate-600 dark:text-slate-300 mb-3 mt-2 border border-slate-100 dark:border-slate-700/50">
                             "{exp.ghiChu}"
                         </div>
                     )}
 
                     {/* Action Footer only for Pending */}
                     {exp.trangThai === 'CHO_DUYET' && (
-                        <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-dashed border-gray-100 dark:border-gray-800">
+                        <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-dashed border-slate-100 dark:border-slate-800">
                             <button className="flex items-center justify-center text-red-500 dark:text-red-400 text-xs font-bold py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
                                 <XCircle size={16} className="mr-1.5"/> Từ chối
                             </button>
                             <Link 
                                 href={`/expenses/${exp.id}/approve`}
-                                className="flex items-center justify-center bg-purple-600 dark:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-xl shadow-md shadow-purple-200 dark:shadow-none hover:bg-purple-700 transition-colors"
+                                className="flex items-center justify-center bg-violet-600 dark:bg-violet-600 text-white text-xs font-bold py-2.5 rounded-xl shadow-md shadow-violet-500/30 dark:shadow-none hover:bg-violet-700 transition-colors"
                             >
                                 <CheckCircle size={16} className="mr-1.5"/> Duyệt Chi
                             </Link>
@@ -126,7 +128,7 @@ async function ExpenseList({ currentTab, query, page }: { currentTab: string, qu
                     {exp.trangThai !== 'CHO_DUYET' && (
                         <div className="flex justify-end mt-2">
                             <span className={`text-[10px] px-2.5 py-1 rounded-lg font-bold uppercase tracking-wider ${
-                                exp.trangThai === 'DA_DUYET' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400' : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+                                exp.trangThai === 'DA_DUYET' ? 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 ring-1 ring-cyan-500/20' : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-1 ring-red-500/20'
                             }`}>
                                 {formatStatus(exp.trangThai)} {exp.nguoiDuyet ? `• ${exp.nguoiDuyet}` : ''}
                             </span>
