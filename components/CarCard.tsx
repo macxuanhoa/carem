@@ -7,7 +7,7 @@ import { Bike, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatTimeAgo, formatStatus } from '@/lib/utils';
 import { CarWithRelations } from '@/lib/types';
 
-export default function CarCard({ car }: { car: CarWithRelations }) {
+export default function CarCard({ car, priority = false }: { car: CarWithRelations; priority?: boolean }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // Touch handling for swipe
@@ -85,8 +85,9 @@ export default function CarCard({ car }: { car: CarWithRelations }) {
                                 src={images[currentImageIndex]} 
                                 alt={`${car.dongXe} - Image ${currentImageIndex + 1}`} 
                                 fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                className="object-cover transition-transform duration-500"
+                                priority={priority && currentImageIndex === 0} // Only priority if passed prop is true
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" // Optimization for Responsive
+                                className="object-cover transition-transform duration-500 will-change-transform" // Hardware acceleration hint
                             />
                             
                             {/* Navigation Arrows - Removed as per request */}

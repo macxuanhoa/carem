@@ -212,7 +212,9 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
                             <span className="ml-auto text-[10px] font-bold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">{groups[key].length} xe</span>
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {groups[key].map(car => <CarCard key={car.id} car={car} />)}
+                            {groups[key].map((car, index) => (
+                                <CarCard key={car.id} car={car} priority={index < 4} />
+                            ))}
                         </div>
                     </div>
                 ))}
@@ -227,7 +229,9 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
                  <ExcelExport data={cars} fileName={`danh-sach-xe-trang-${page}`} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
-                {cars.map((car) => <CarCard key={car.id} car={car} />)}
+                {cars.map((car: any, index: number) => (
+                    <CarCard key={car.id} car={car} priority={index < 4} />
+                ))}
             </div>
             {renderPagination()}
         </div>
