@@ -11,14 +11,14 @@ export default function QuickFilters() {
   const currentStatus = searchParams.get('status') || 'all';
 
   const mainFilters = [
-    { label: 'Tất Cả', value: 'all', icon: Bike, color: 'text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800' },
-    { label: 'Đang Bán', value: 'selling', icon: TrendingUp, color: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 border-violet-100 dark:border-violet-900/30' },
-    { label: 'Đã Cọc', value: 'deposited', icon: CheckCircle, color: 'text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 border-cyan-100 dark:border-cyan-900/30' },
-    { label: 'Đã Bán', value: 'sold', icon: CheckCircle, color: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-900/20 border-fuchsia-100 dark:border-fuchsia-900/30' },
+    { label: 'Tất Cả', value: 'all', icon: Bike, color: 'text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800', activeColor: 'bg-violet-600 border-violet-600 shadow-violet-500/30' },
+    { label: 'Đang Bán', value: 'selling', icon: TrendingUp, color: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 border-violet-100 dark:border-violet-900/30', activeColor: 'bg-violet-600 border-violet-600 shadow-violet-500/30' },
+    { label: 'Đã Cọc', value: 'deposited', icon: CheckCircle, color: 'text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 border-cyan-100 dark:border-cyan-900/30', activeColor: 'bg-cyan-600 border-cyan-600 shadow-cyan-500/30' },
+    { label: 'Đã Bán', value: 'sold', icon: CheckCircle, color: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-900/20 border-fuchsia-100 dark:border-fuchsia-900/30', activeColor: 'bg-fuchsia-600 border-fuchsia-600 shadow-fuchsia-500/30' },
   ];
 
   const docFilters = [
-    { label: 'Hồ Sơ', value: 'overdue', icon: FileText, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 border-indigo-100 dark:border-indigo-900/30' },
+    { label: 'Hồ Sơ', value: 'overdue', icon: FileText, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 border-indigo-100 dark:border-indigo-900/30', activeColor: 'bg-indigo-600 border-indigo-600 shadow-indigo-500/30' },
   ];
 
   const handleStatus = (value: string) => {
@@ -45,8 +45,8 @@ export default function QuickFilters() {
                     onClick={() => handleStatus(f.value)}
                     className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap shrink-0 snap-start
                         ${isActive 
-                            ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-500/30' 
-                            : f.color || 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                            ? `${f.activeColor} text-white shadow-md` 
+                            : f.color
                         }
                     `}
                 >
@@ -67,8 +67,8 @@ export default function QuickFilters() {
                     onClick={() => handleStatus(f.value)}
                     className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap shrink-0 snap-start
                         ${isActive 
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/30' 
-                            : f.color || 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                            ? `${f.activeColor} text-white shadow-md` 
+                            : f.color
                         }
                     `}
                 >
