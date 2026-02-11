@@ -18,12 +18,22 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', 'date-fns'],
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', 'date-fns', '@radix-ui/react-slot', 'clsx', 'tailwind-merge'],
     staleTimes: {
-      dynamic: 60, // Increase dynamic cache time
-      static: 300, // Increase static cache time
+      dynamic: 180, // Cache dynamic data for 3 minutes (Client-side)
+      static: 600,  // Cache static pages for 10 minutes
     },
     scrollRestoration: true,
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+    // Parallel Routes & Intercepting Routes optimization
+    ppr: 'incremental', 
+  },
+  logging: {
+    fetches: {
+      fullUrl: false, // Reduce logs
+    },
   },
   turbopack: {},
   images: {
