@@ -18,7 +18,7 @@ function DealTimeline({ status, deposit, isSold }: DealTimelineProps) {
     return (
         <div className="bg-slate-900/50 backdrop-blur-sm px-4 py-4 shadow-sm border-b border-white/5">
              <div className="flex items-center justify-between relative max-w-sm mx-auto">
-                <div className="absolute left-0 top-[11px] w-full h-1 bg-white/10 z-0 rounded-full"></div>
+                <div className="absolute left-0 top-[11px] w-full h-1 bg-white/20 z-0 rounded-full"></div>
                 <div className="absolute left-0 top-[11px] h-1 bg-violet-500 z-0 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-violet-500/50"
                      style={{ 
                          width: isSold ? '100%' : deposit > 0 ? '66%' : status !== 'TIM_THAY' ? '33%' : '0%' 
@@ -30,12 +30,12 @@ function DealTimeline({ status, deposit, isSold }: DealTimelineProps) {
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-slate-900 ${
                             step.active 
                             ? 'border-violet-500 scale-110 shadow-lg shadow-violet-500/30' 
-                            : 'border-slate-700'
+                            : 'border-slate-600'
                         }`}>
                             {step.active && <div className="w-2.5 h-2.5 bg-violet-500 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.8)]"></div>}
                         </div>
                         <span className={`text-[9px] font-bold mt-1.5 uppercase tracking-wide ${
-                            step.active ? 'text-violet-400' : 'text-slate-600'
+                            step.active ? 'text-violet-400' : 'text-slate-500'
                         }`}>
                             {step.label}
                         </span>
