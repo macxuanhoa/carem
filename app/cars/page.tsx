@@ -103,12 +103,12 @@ async function CarList({ sort, group, groupBy, query, status, model, page = 1 }:
 
     if (cars.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4 shadow-inner">
-                    <Bike size={40} className="text-gray-300 dark:text-gray-600" />
+            <div className="flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">
+                <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-full mb-4 shadow-inner">
+                    <Bike size={40} className="text-slate-300 dark:text-slate-600" />
                 </div>
-                <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Chưa có xe nào trong danh mục này.</p>
-                <Button variant="link" asChild className="mt-2 text-blue-600 dark:text-blue-400 font-bold">
+                <p className="text-lg font-medium text-slate-500 dark:text-slate-400">Chưa có xe nào trong danh mục này.</p>
+                <Button variant="link" asChild className="mt-2 text-violet-600 dark:text-violet-400 font-bold hover:text-violet-700">
                     <Link href="/cars/new">Nhập xe ngay</Link>
                 </Button>
             </div>
@@ -256,11 +256,11 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
       {/* Sticky Header */}
       <div className="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl pt-safe-top px-4 pb-3 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all">
         <div className="flex justify-between items-center mb-3 pt-2">
-            <h1 className="text-xl font-bold text-gray-800 dark:text-white">Kho Xe</h1>
+            <h1 className="text-xl font-bold text-slate-800 dark:text-white">Kho Xe</h1>
             
             {/* Group By Dropdown - Moved to ViewOptions */}
             <ViewOptions models={availableModels} />
-            <Button asChild className="hidden md:flex gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm ml-4">
+            <Button asChild className="hidden md:flex gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-sm ml-4">
                 <Link href="/cars/new">
                     <Plus size={18} strokeWidth={2.5} />
                     Nhập Xe

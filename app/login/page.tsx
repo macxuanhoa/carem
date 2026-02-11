@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useActionState, useState, useEffect } from 'react';
 import { authenticate } from '@/app/lib/actions';
 import { Lock, User, Loader2, AlertCircle, Eye, EyeOff, ShieldCheck, Phone, MapPin } from 'lucide-react';
-import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
+import { LazyMotion, domAnimation, m, AnimatePresence, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import logoImg from '../assets/logo.jpg';
 
@@ -16,6 +16,25 @@ export default function LoginPage() {
   );
   const [showPassword, setShowPassword] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const controls = useAnimation();
+
+  // Reset dirty state when error message changes (new submission)
+  useEffect(() => {
+    setIsDirty(false);
+    if (errorMessage) {
+        controls.start({ 
+            x: [0, -10, 10, -10, 10, 0],
+            transition: { duration: 0.4, ease: "easeInOut" }
+        });
+    }
+  }, [errorMessage, controls]);
+
+  const handleInputChange = () => {
+    if (errorMessage && !isDirty) {
+        setIsDirty(true);
+    }
+  };
 
   // Prevent scroll bounce on mobile
   useEffect(() => {
@@ -43,7 +62,10 @@ export default function LoginPage() {
         className="w-full max-w-[400px] relative z-20 flex flex-col items-center justify-center"
       >
           {/* MAIN LOGIN CARD */}
-          <div className="bg-slate-900/60 backdrop-blur-2xl w-full rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.5)] border border-white/10 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-center ring-1 ring-white/5">
+          <m.div 
+            animate={controls}
+            className="bg-slate-900/60 backdrop-blur-2xl w-full rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.5)] border border-white/10 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-center ring-1 ring-white/5"
+          >
             
             {/* Header: Logo & System Name */}
             <div className="flex flex-col items-center mb-6 sm:mb-8">
@@ -89,9 +111,10 @@ export default function LoginPage() {
                                 placeholder="Nhập tài khoản"
                                 onFocus={() => setFocusedInput('username')}
                                 onBlur={() => setFocusedInput(null)}
+                                onChange={handleInputChange}
                                 className={`pl-10 h-11 bg-slate-950/50 border-white/10 text-white placeholder:text-slate-600 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/50 transition-all ${
                                     focusedInput === 'username' ? 'shadow-[0_0_20px_rgba(139,92,246,0.15)]' : ''
-                                }`}
+                                } ${errorMessage && !isDirty ? 'border-red-500/50 ring-1 ring-red-500/20' : ''}`}
                             />
                         </div>
                     </div>
@@ -110,9 +133,10 @@ export default function LoginPage() {
                                 placeholder="••••••••"
                                 onFocus={() => setFocusedInput('password')}
                                 onBlur={() => setFocusedInput(null)}
+                                onChange={handleInputChange}
                                 className={`pl-10 pr-10 h-11 bg-slate-950/50 border-white/10 text-white placeholder:text-slate-600 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/50 transition-all ${
                                     focusedInput === 'password' ? 'shadow-[0_0_20px_rgba(139,92,246,0.15)]' : ''
-                                }`}
+                                } ${errorMessage && !isDirty ? 'border-red-500/50 ring-1 ring-red-500/20' : ''}`}
                             />
                             <button
                                 type="button"
@@ -127,7 +151,7 @@ export default function LoginPage() {
                 </div>
 
                 <AnimatePresence>
-                    {errorMessage && (
+                    {errorMessage && !isDirty && (
                         <m.div 
                             initial={{ opacity: 0, height: 0, scale: 0.95 }}
                             animate={{ opacity: 1, height: 'auto', scale: 1 }}
@@ -148,7 +172,7 @@ export default function LoginPage() {
                     {isPending ? (
                         <>
                             <Loader2 size={18} className="animate-spin text-white/90 mr-2" />
-                            <span>Authenticating...</span>
+                            <span>Đang xử lý...</span>
                         </>
                     ) : (
                         <>
@@ -174,7 +198,7 @@ export default function LoginPage() {
                  </div>
             </div>
 
-          </div>
+          </m.div>
           
           {/* Bottom Copyright */}
           <div className="text-center mt-6">

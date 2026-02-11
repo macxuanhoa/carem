@@ -60,80 +60,80 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
       <div className="relative z-50" ref={dropdownRef}>
         <button 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex items-center justify-center w-10 h-10 bg-white dark:bg-gray-900 border rounded-xl text-gray-700 dark:text-gray-300 shadow-sm active:bg-gray-50 dark:active:bg-gray-800 transition-all ${isDropdownOpen ? 'border-blue-500 ring-2 ring-blue-100 dark:ring-blue-900/30' : 'border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700'}`}
+            className={`flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-900 border rounded-xl text-slate-700 dark:text-slate-300 shadow-sm active:bg-slate-50 dark:active:bg-slate-800 transition-all ${isDropdownOpen ? 'border-violet-500 ring-2 ring-violet-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-violet-300 dark:hover:border-violet-700'}`}
         >
             <Layers size={20} />
         </button>
         
         {isDropdownOpen && (
-            <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 p-2 z-9999 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+            <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 z-9999 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
                 
                 {/* Sort Section */}
                 <div className="mb-2">
-                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 py-1 mb-1">Thời gian</p>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 mb-1">Thời gian</p>
                     <div className="space-y-1">
                         <Link 
                             href={createUrl('sort', 'date_desc')} 
                             onClick={() => setIsDropdownOpen(false)}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'date_desc' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'date_desc' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                         >
-                            <div className="flex items-center"><Calendar size={16} className="mr-3 text-gray-400 dark:text-gray-500"/> Mới nhập về</div>
-                            {currentSort === 'date_desc' && <Check size={16} className="text-blue-600 dark:text-blue-400" />}
+                            <div className="flex items-center"><Calendar size={16} className="mr-3 text-slate-400 dark:text-slate-500"/> Mới nhập về</div>
+                            {currentSort === 'date_desc' && <Check size={16} className="text-violet-600 dark:text-violet-400" />}
                         </Link>
                         <Link 
                             href={createUrl('sort', 'date_asc')} 
                             onClick={() => setIsDropdownOpen(false)}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'date_asc' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'date_asc' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                         >
-                            <div className="flex items-center"><Calendar size={16} className="mr-3 text-gray-400 dark:text-gray-500"/> Cũ nhất</div>
-                            {currentSort === 'date_asc' && <Check size={16} className="text-blue-600 dark:text-blue-400" />}
+                            <div className="flex items-center"><Calendar size={16} className="mr-3 text-slate-400 dark:text-slate-500"/> Cũ nhất</div>
+                            {currentSort === 'date_asc' && <Check size={16} className="text-violet-600 dark:text-violet-400" />}
                         </Link>
                     </div>
                 </div>
 
-                <div className="h-px bg-gray-100 dark:bg-gray-800 my-1"></div>
+                <div className="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
 
                 {/* Price Section */}
                 <div className="mb-2">
-                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 py-1 mb-1">Giá bán</p>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 mb-1">Giá bán</p>
                     <div className="space-y-1">
                         <Link 
                             href={createUrl('sort', 'price_asc')} 
                             onClick={() => setIsDropdownOpen(false)}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'price_asc' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'price_asc' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                         >
-                            <div className="flex items-center"><ArrowUp size={16} className="mr-3 text-gray-400 dark:text-gray-500"/> Giá tăng dần</div>
-                            {currentSort === 'price_asc' && <Check size={16} className="text-blue-600 dark:text-blue-400" />}
+                            <div className="flex items-center"><ArrowUp size={16} className="mr-3 text-slate-400 dark:text-slate-500"/> Giá tăng dần</div>
+                            {currentSort === 'price_asc' && <Check size={16} className="text-violet-600 dark:text-violet-400" />}
                         </Link>
                         <Link 
                             href={createUrl('sort', 'price_desc')} 
                             onClick={() => setIsDropdownOpen(false)}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'price_desc' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${currentSort === 'price_desc' ? 'bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                         >
-                            <div className="flex items-center"><ArrowDown size={16} className="mr-3 text-gray-400 dark:text-gray-500"/> Giá giảm dần</div>
-                            {currentSort === 'price_desc' && <Check size={16} className="text-blue-600 dark:text-blue-400" />}
+                            <div className="flex items-center"><ArrowDown size={16} className="mr-3 text-slate-400 dark:text-slate-500"/> Giá giảm dần</div>
+                            {currentSort === 'price_desc' && <Check size={16} className="text-violet-600 dark:text-violet-400" />}
                         </Link>
                     </div>
                 </div>
 
-                <div className="h-px bg-gray-100 dark:bg-gray-800 my-1"></div>
+                <div className="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
 
                 {/* Model Filter Section */}
                 <div>
-                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 py-1 mb-1">Lọc Dòng Xe</p>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 mb-1">Lọc Dòng Xe</p>
                     
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2">
+                    <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
                         <button 
                             onClick={() => {
                                 setIsModelModalOpen(true);
                                 setIsDropdownOpen(false);
                             }}
-                            className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+                            className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:border-violet-300 dark:hover:border-violet-700 hover:text-violet-600 dark:hover:text-violet-400 transition-all shadow-sm"
                         >
                             <span className="truncate font-medium">
                                 {currentModel ? currentModel : 'Chọn dòng xe...'}
                             </span>
-                            <Filter size={14} className="text-gray-400 dark:text-gray-500" />
+                            <Filter size={14} className="text-slate-400 dark:text-slate-500" />
                         </button>
                         
                         {currentModel && (
@@ -157,28 +157,28 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
     {/* Model Selection Modal - Portaled to Body */}
     {mounted && isModelModalOpen && createPortal(
         <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-gray-800 overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col animate-in zoom-in-95 duration-200 border border-slate-100 dark:border-slate-800 overflow-hidden">
                 {/* Modal Header */}
-                <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-gray-900 shrink-0">
-                    <h3 className="font-bold text-lg text-gray-800 dark:text-white">Chọn Dòng Xe</h3>
+                <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 shrink-0">
+                    <h3 className="font-bold text-lg text-slate-800 dark:text-white">Chọn Dòng Xe</h3>
                     <button 
                         onClick={() => setIsModelModalOpen(false)}
-                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-500 dark:text-gray-400 transition-colors"
+                        className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 dark:text-slate-400 transition-colors"
                     >
                         <X size={20} />
                     </button>
                 </div>
 
                 {/* Search & Filter */}
-                <div className="p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                <div className="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 shrink-0">
                     <div className="relative">
-                        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                         <input 
                             type="text" 
                             placeholder="Tìm kiếm nhanh..." 
                             value={modelSearch}
                             onChange={(e) => setModelSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/20 focus:border-blue-400 dark:focus:border-blue-600 outline-none transition-all"
+                            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-900/20 focus:border-violet-500 dark:focus:border-violet-600 outline-none transition-all"
                             autoFocus
                         />
                     </div>
@@ -191,8 +191,8 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
                             onClick={() => handleSelectModel('all')}
                             className={`p-3 rounded-xl text-sm font-bold border transition-all flex items-center justify-between
                                 ${!currentModel 
-                                    ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200 dark:shadow-blue-900/30' 
-                                    : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                                    ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-200 dark:shadow-violet-900/30' 
+                                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20'
                                 }
                             `}
                         >
@@ -206,8 +206,8 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
                                 onClick={() => handleSelectModel(model)}
                                 className={`p-3 rounded-xl text-sm font-medium border transition-all flex items-center justify-between text-left
                                     ${currentModel === model 
-                                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200 dark:shadow-blue-900/30' 
-                                        : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                                        ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-200 dark:shadow-violet-900/30' 
+                                        : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20'
                                     }
                                 `}
                             >
@@ -217,7 +217,7 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
                         ))}
                         
                         {filteredModels.length === 0 && (
-                            <div className="col-span-full py-8 text-center text-gray-400 dark:text-gray-500">
+                            <div className="col-span-full py-8 text-center text-slate-400 dark:text-slate-500">
                                 Không tìm thấy dòng xe nào phù hợp.
                             </div>
                         )}
@@ -225,8 +225,8 @@ export default function ViewOptions({ models = [] }: { models?: string[] }) {
                 </div>
                 
                 {/* Footer */}
-                <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 text-center shrink-0">
-                    <p className="text-xs text-gray-400 dark:text-gray-500">Hiển thị {filteredModels.length} dòng xe đang có trong kho</p>
+                <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-center shrink-0">
+                    <p className="text-xs text-slate-400 dark:text-slate-500">Hiển thị {filteredModels.length} dòng xe đang có trong kho</p>
                 </div>
             </div>
         </div>,

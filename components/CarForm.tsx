@@ -102,19 +102,19 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                         className="space-y-6"
                     >
                         <div className="text-center mb-6">
-                             <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-white dark:border-gray-800 shadow-lg shadow-blue-100 dark:shadow-none">
-                                <User size={28} className="text-blue-600 dark:text-blue-400" strokeWidth={2} />
+                             <div className="w-16 h-16 bg-violet-50 dark:bg-violet-900/20 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-white dark:border-slate-800 shadow-lg shadow-violet-100 dark:shadow-none">
+                                <User size={28} className="text-violet-600 dark:text-violet-400" strokeWidth={2} />
                             </div>
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">Thông Tin Xe</h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Nhập thông tin cơ bản về xe</p>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Thông Tin Xe</h2>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Nhập thông tin cơ bản về xe</p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-5">
+                        <div className="bg-white dark:bg-slate-900/50 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/50 space-y-5">
                             
                             {/* Image Upload */}
                             <div>
                                 <div className="flex justify-between items-center mb-3">
-                                    <label className={`text-xs font-bold uppercase ${errors.hinhAnh ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>
+                                    <label className={`text-xs font-bold uppercase ${errors.hinhAnh ? 'text-red-500' : 'text-slate-500 dark:text-slate-400'}`}>
                                         Hình Ảnh Xe {errors.hinhAnh && '(Bắt buộc)'}
                                     </label>
                                 </div>
@@ -130,16 +130,16 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                             </div>
 
                             {/* Quick Select Model */}
-                            <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block">Chọn nhanh mẫu xe</label>
+                            <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Chọn nhanh mẫu xe</label>
                              {Object.entries(MOTORBIKE_MODELS).map(([category, models]) => (
-                                <div key={category} className="border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
+                                <div key={category} className="border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden">
                                     <button 
                                         type="button"
                                         onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}
-                                        className="w-full flex justify-between items-center px-4 py-3 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                        className="w-full flex justify-between items-center px-4 py-3 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                                     >
-                                        <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{category}</span>
-                                        {expandedCategory === category ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+                                        <span className="text-[11px] font-bold text-violet-600 dark:text-violet-400 uppercase tracking-wider">{category}</span>
+                                        {expandedCategory === category ? <ChevronUp size={16} className="text-slate-400" /> : <ChevronDown size={16} className="text-slate-400" />}
                                     </button>
                                     
                                     <AnimatePresence>
@@ -150,13 +150,13 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                                                 exit={{ height: 0, opacity: 0 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className="p-3 bg-white dark:bg-gray-900 flex flex-wrap gap-2 border-t border-gray-100 dark:border-gray-800">
+                                                <div className="p-3 bg-white dark:bg-slate-900 flex flex-wrap gap-2 border-t border-slate-100 dark:border-slate-800">
                                                     {models.map(model => (
                                                         <button 
                                                             key={model}
                                                             type="button"
                                                             onClick={() => setValue('dongXe', model)}
-                                                            className="px-2.5 py-1.5 bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg text-[11px] font-bold border border-gray-100 dark:border-gray-700 transition-colors active:scale-95"
+                                                            className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-violet-50 dark:hover:bg-violet-900/20 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 rounded-lg text-[11px] font-bold border border-slate-100 dark:border-slate-700 transition-colors active:scale-95"
                                                         >
                                                             {model}
                                                         </button>
@@ -170,23 +170,23 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
                             {/* Main Info Inputs */}
                             <div>
-                                <label className="text-xs font-bold uppercase block mb-1.5 text-gray-500 dark:text-gray-400">Dòng Xe</label>
+                                <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Dòng Xe</label>
                                 <Input
                                     {...register('dongXe')}
-                                    className={`h-14 text-lg font-bold ${errors.dongXe ? 'border-red-500' : ''}`}
+                                    className={`h-14 text-lg font-bold bg-white dark:bg-slate-950 ${errors.dongXe ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
                                     placeholder="Vd: Honda SH 150i 2023..."
                                 />
                                 {errors.dongXe && <p className="text-xs text-red-500 mt-1">{errors.dongXe.message}</p>}
                             </div>
 
                             {/* Condition Slider */}
-                            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
                                 <div className="flex justify-between items-center mb-2">
-                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Tình Trạng Xe</label>
+                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Tình Trạng Xe</label>
                                     <span className={`text-sm font-bold px-2 py-0.5 rounded ${
                                         (formData.tinhTrang || 90) >= 90 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
-                                        (formData.tinhTrang || 90) >= 70 ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' : 
-                                        'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                                        (formData.tinhTrang || 90) >= 70 ? 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400' : 
+                                        'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
                                     }`}>
                                         {formData.tinhTrang || 90}%
                                     </span>
@@ -197,9 +197,9 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                                     max="100" 
                                     step="5"
                                     {...register('tinhTrang')}
-                                    className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-violet-600"
                                 />
-                                <div className="flex justify-between text-[10px] text-gray-400 dark:text-gray-500 font-bold mt-1">
+                                <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-1">
                                     <span>Nát</span>
                                     <span>Trung bình</span>
                                     <span>Lướt</span>
@@ -209,18 +209,18 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-xs font-bold uppercase block mb-1.5 text-gray-500 dark:text-gray-400">Đời Xe</label>
+                                    <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Đời Xe</label>
                                     <Input
                                         type="number"
                                         {...register('namSanXuat')}
-                                        className="text-center font-bold"
+                                        className="text-center font-bold bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold uppercase block mb-1.5 text-gray-500 dark:text-gray-400">Màu Sắc</label>
+                                    <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Màu Sắc</label>
                                     <Input
                                         {...register('mauXe')}
-                                        className="text-center font-medium"
+                                        className="text-center font-medium bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
                                         placeholder="Trắng"
                                     />
                                 </div>
@@ -228,35 +228,35 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-xs font-bold uppercase block mb-1.5 text-gray-500 dark:text-gray-400">Số Khung</label>
+                                    <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Số Khung</label>
                                     <Input
                                         {...register('soKhung')}
-                                        className="text-center font-mono text-xs"
+                                        className="text-center font-mono text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
                                         placeholder="----"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold uppercase block mb-1.5 text-gray-500 dark:text-gray-400">Số Máy</label>
+                                    <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Số Máy</label>
                                     <Input
                                         {...register('soMay')}
-                                        className="text-center font-mono text-xs"
+                                        className="text-center font-mono text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
                                         placeholder="----"
                                     />
                                 </div>
                             </div>
                             
                             <div>
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Biển Số</label>
+                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-1.5">Biển Số</label>
                                 <Input
                                     {...register('bienSo')}
-                                    className="font-mono uppercase tracking-widest text-center border-dashed"
+                                    className="font-mono uppercase tracking-widest text-center border-dashed bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
                                     placeholder="30K-XXXXX"
                                 />
                             </div>
 
                             {/* Additional Info */}
-                            <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
-                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">Nguồn Gốc Xe</label>
+                            <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-2">Nguồn Gốc Xe</label>
                                 <div className="grid grid-cols-2 gap-2 mb-4">
                                     {[
                                         { id: 'MUA_DAN', label: 'Mua Dân' },
@@ -270,8 +270,8 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                                             onClick={() => setValue('nguonGoc', source.id)}
                                             className={`p-3 rounded-xl text-xs font-bold border transition-all ${
                                                 formData.nguonGoc === source.id
-                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
-                                                : 'bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                                ? 'bg-violet-50 dark:bg-violet-900/20 border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-400'
+                                                : 'bg-slate-50 dark:bg-slate-800 border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                                             }`}
                                         >
                                             {source.label}
@@ -281,34 +281,34 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Người Bán</label>
+                                        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-1.5">Người Bán</label>
                                         <div className="relative group">
-                                            <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"/>
-                                            <Input {...register('nguoiBan')} className="pl-10" placeholder="Tên chủ xe" />
+                                            <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10"/>
+                                            <Input {...register('nguoiBan')} className="pl-10 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700" placeholder="Tên chủ xe" />
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">SĐT Liên Hệ</label>
+                                        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-1.5">SĐT Liên Hệ</label>
                                         <div className="relative group">
-                                            <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"/>
-                                            <Input {...register('soDienThoai')} className="pl-10" placeholder="09..." />
+                                            <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10"/>
+                                            <Input {...register('soDienThoai')} className="pl-10 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700" placeholder="09..." />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="mb-4 mt-4">
-                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Khu Vực</label>
+                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-1.5">Khu Vực</label>
                                     <div className="relative group">
-                                        <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"/>
-                                        <Input {...register('tinhThanh')} className="pl-10" placeholder="Hà Nội" />
+                                        <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10"/>
+                                        <Input {...register('tinhThanh')} className="pl-10 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700" placeholder="Hà Nội" />
                                     </div>
                                 </div>
 
                                 <div className="mt-4">
-                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase block mb-1.5">Link Facebook</label>
+                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase block mb-1.5">Link Facebook</label>
                                     <div className="relative group">
-                                        <LinkIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"/>
-                                        <Input {...register('facebookLink')} className="pl-10 text-blue-600" placeholder="https://facebook.com/..." />
+                                        <LinkIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10"/>
+                                        <Input {...register('facebookLink')} className="pl-10 text-violet-600 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700" placeholder="https://facebook.com/..." />
                                     </div>
                                 </div>
                             </div>
@@ -317,7 +317,7 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                         <Button 
                             type="button"
                             onClick={handleStepSubmit}
-                            className="w-full h-12 text-base"
+                            className="w-full h-12 text-base bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-2xl shadow-lg shadow-violet-500/30"
                         >
                             Tiếp Theo
                         </Button>

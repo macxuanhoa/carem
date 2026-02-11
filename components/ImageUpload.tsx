@@ -91,13 +91,13 @@ export default function ImageUpload({
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         
         {/* Custom Upload Button - Modern Design */}
-        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 bg-gray-50 dark:bg-gray-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
-                <CloudUpload size={24} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+        <label className={`relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-violet-500 dark:hover:border-violet-400 bg-slate-50 dark:bg-slate-800/50 hover:bg-violet-50 dark:hover:bg-violet-900/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+                <CloudUpload size={24} className="text-slate-400 group-hover:text-violet-500 transition-colors" />
             </div>
             <div className="text-center px-2">
-                <span className="text-sm font-semibold text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 block">Thêm Ảnh</span>
-                <span className="text-[10px] text-gray-400 mt-1 block">Tối đa 10MB</span>
+                <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 group-hover:text-violet-600 dark:group-hover:text-violet-400 block">Thêm Ảnh</span>
+                <span className="text-[10px] text-slate-400 mt-1 block">Tối đa 10MB</span>
             </div>
             <input 
                 type="file" 
@@ -111,15 +111,15 @@ export default function ImageUpload({
 
         {/* Loading State */}
         {isUploading && (
-            <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex flex-col items-center justify-center animate-pulse">
-                <Loader2 className="animate-spin text-blue-500 mb-2" size={28} />
-                <span className="text-xs text-gray-500 font-medium">Đang xử lý...</span>
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center animate-pulse">
+                <Loader2 className="animate-spin text-violet-500 mb-2" size={28} />
+                <span className="text-xs text-slate-500 font-medium">Đang xử lý...</span>
             </div>
         )}
 
         {/* Images */}
         {value.map((url) => (
-            <div key={url} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 group bg-gray-100 dark:bg-gray-800 shadow-sm hover:shadow-md transition-all">
+            <div key={url} className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group bg-slate-100 dark:bg-slate-800 shadow-sm hover:shadow-md transition-all">
                 <div className="absolute top-2 right-2 z-10">
                     <button
                         type="button"
@@ -127,7 +127,7 @@ export default function ImageUpload({
                             e.preventDefault();
                             onRemove(url);
                         }}
-                        className="bg-white/90 dark:bg-black/70 text-gray-500 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 p-1.5 rounded-full shadow-sm backdrop-blur-sm transition-all hover:scale-110"
+                        className="bg-white/90 dark:bg-black/70 text-slate-500 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 p-1.5 rounded-full shadow-sm backdrop-blur-sm transition-all hover:scale-110"
                     >
                         <X size={16} strokeWidth={2.5} />
                     </button>
