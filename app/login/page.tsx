@@ -167,7 +167,7 @@ export default function LoginPage() {
                 <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full h-11 mt-4 bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 text-xs uppercase tracking-widest transition-all active:scale-[0.98]"
+                    className="w-full h-11 mt-4 bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 text-xs uppercase tracking-widest transition-all active:scale-[0.98] touch-manipulation"
                 >
                     {isPending ? (
                         <>

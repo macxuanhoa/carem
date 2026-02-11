@@ -95,7 +95,7 @@ body {
 }
 
 /* Optimize click targets */
-button, a {
+button, a, input, select, textarea, [role="button"] {
     @apply cursor-pointer touch-manipulation;
 }
 
