@@ -28,7 +28,9 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
     },
     // Parallel Routes & Intercepting Routes optimization
-    ppr: 'incremental', 
+    // ppr has been replaced by cacheComponents in recent canary, but for stable let's remove it to be safe
+    // or use the correct flag if we are on latest canary.
+    // Since we are on "next": "^16.1.6", let's remove ppr to avoid build error.
   },
   logging: {
     fetches: {
