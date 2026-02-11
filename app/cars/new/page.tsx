@@ -80,7 +80,7 @@ export default function NewCarPage() {
     };
 
     return (
-        <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 block">
+        <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-24 block">
             <div className="p-5 max-w-lg mx-auto">
                 <CarForm 
                     mode="create"
@@ -99,14 +99,14 @@ export default function NewCarPage() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100 dark:border-gray-800"
+                            className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-slate-100 dark:border-slate-800"
                         >
-                            <div className="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full mx-auto mb-4">
-                                <CheckCircle size={24} className="text-green-600 dark:text-green-500" />
+                            <div className="flex items-center justify-center w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 rounded-full mx-auto mb-4">
+                                <CheckCircle size={24} className="text-emerald-600 dark:text-emerald-500" />
                             </div>
                             
-                            <h3 className="text-lg font-bold text-center text-gray-900 dark:text-white mb-2">Đã Lưu Xe Thành Công!</h3>
-                            <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-6">
+                            <h3 className="text-lg font-bold text-center text-slate-900 dark:text-white mb-2">Đã Lưu Xe Thành Công!</h3>
+                            <p className="text-sm text-center text-slate-500 dark:text-slate-400 mb-6">
                                 Xe đã được thêm vào danh sách. Bạn có muốn xem chi tiết ngay không?
                             </p>
                             
@@ -116,7 +116,7 @@ export default function NewCarPage() {
                                         router.push('/cars');
                                         router.refresh();
                                     }}
-                                    className="w-full px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-blue-900/30 transition-colors"
+                                    className="w-full px-4 py-3 bg-violet-600 text-white font-bold rounded-xl hover:bg-violet-700 shadow-lg shadow-violet-200 dark:shadow-violet-900/30 transition-colors"
                                 >
                                     Về Danh Sách Xe
                                 </button>
@@ -134,27 +134,27 @@ export default function NewCarPage() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100 dark:border-gray-800"
+                            className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-slate-100 dark:border-slate-800"
                         >
-                            <div className="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full mx-auto mb-4">
-                                <FileText size={24} className="text-blue-600 dark:text-blue-500" />
+                            <div className="flex items-center justify-center w-12 h-12 bg-violet-100 dark:bg-violet-900/20 rounded-full mx-auto mb-4">
+                                <FileText size={24} className="text-violet-600 dark:text-violet-500" />
                             </div>
                             
-                            <h3 className="text-lg font-bold text-center text-gray-900 dark:text-white mb-2">Phát Hiện Bản Nháp Cũ</h3>
-                            <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-6">
+                            <h3 className="text-lg font-bold text-center text-slate-900 dark:text-white mb-2">Phát Hiện Bản Nháp Cũ</h3>
+                            <p className="text-sm text-center text-slate-500 dark:text-slate-400 mb-6">
                                 Bạn có muốn khôi phục dữ liệu xe <strong>{pendingDraftData?.dongXe || 'Chưa đặt tên'}</strong> đang nhập dở không?
                             </p>
                             
                             <div className="flex flex-col gap-3">
                                 <button 
                                     onClick={handleRestoreDraft}
-                                    className="w-full px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-blue-900/30 transition-colors"
+                                    className="w-full px-4 py-3 bg-violet-600 text-white font-bold rounded-xl hover:bg-violet-700 shadow-lg shadow-violet-200 dark:shadow-violet-900/30 transition-colors"
                                 >
                                     Khôi Phục Bản Nháp
                                 </button>
                                 <button 
                                     onClick={handleDiscardDraft}
-                                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                    className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-rose-500 dark:text-rose-400 font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                                 >
                                     Hủy Bỏ, Tạo Mới
                                 </button>

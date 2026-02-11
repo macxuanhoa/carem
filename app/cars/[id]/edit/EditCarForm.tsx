@@ -58,14 +58,14 @@ export default function EditCarForm({ car }: { car: any }) {
     };
 
     return (
-        <div className="bg-gray-50 dark:bg-gray-950 min-h-screen pb-24 font-sans">
+        <div className="bg-slate-50 dark:bg-slate-950 min-h-screen pb-24 font-sans">
              {/* Header */}
-            <div className="bg-white dark:bg-gray-900 sticky top-0 z-30 px-4 py-3 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 sticky top-0 z-30 px-4 py-3 shadow-sm border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center">
-                    <Link href={`/cars/${car.id}`} className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-full">
+                    <Link href={`/cars/${car.id}`} className="p-2 -ml-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <ArrowLeft size={20} />
                     </Link>
-                    <h1 className="font-bold text-lg text-gray-800 dark:text-white ml-2">Sửa Xe</h1>
+                    <h1 className="font-bold text-lg text-slate-800 dark:text-white ml-2">Sửa Xe</h1>
                 </div>
             </div>
 

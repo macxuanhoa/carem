@@ -57,7 +57,7 @@ export default function CarCard({ car }: { car: CarWithRelations }) {
     
     // Helper for status badge
     const getStatusBadge = () => {
-        if (isSold) return { label: 'Đã Bán', color: 'bg-fuchsia-100 text-fuchsia-700 ring-1 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-300' };
+        if (isSold) return { label: 'Đã Bán', color: 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-900/30 dark:text-emerald-300' };
         if (isDeposited) return { label: 'Đã Cọc', color: 'bg-cyan-100 text-cyan-700 ring-1 ring-cyan-600/20 dark:bg-cyan-900/30 dark:text-cyan-300' };
         if (isOverdue) return { label: 'Quá Hạn', color: 'bg-rose-100 text-rose-700 ring-1 ring-rose-600/20 dark:bg-rose-900/30 dark:text-rose-300' };
         if (isSelling) return { label: 'Đang Bán', color: 'bg-violet-100 text-violet-700 ring-1 ring-violet-600/20 dark:bg-violet-900/30 dark:text-violet-300' };

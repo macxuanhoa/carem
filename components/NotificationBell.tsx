@@ -70,7 +70,7 @@ export default function NotificationBell() {
     <div className="relative" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-slate-800/50 border border-slate-700 p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all relative active:scale-95 shadow-sm"
+        className="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl text-slate-200 hover:text-white hover:bg-slate-700 transition-all relative active:scale-95 shadow-sm"
       >
         <Bell size={20} strokeWidth={2} />
         {/* Show red dot if there are notifications */}

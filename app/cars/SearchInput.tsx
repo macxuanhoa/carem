@@ -21,7 +21,7 @@ export default function SearchInput() {
 
   return (
     <div className="relative group mb-4">
-        <div className="absolute inset-0 bg-violet-600/20 blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute inset-0 bg-violet-600/20 blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10 pointer-events-none">
             <Search size={20} />
         </div>
