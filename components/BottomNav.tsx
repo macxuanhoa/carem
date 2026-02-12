@@ -55,7 +55,7 @@ export default function BottomNav() {
                     className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 touch-manipulation ${
                         active 
                         ? 'text-violet-600 dark:text-violet-400' 
-                        : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                        : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                     }`}
                 >
                     <div className={`p-1.5 rounded-xl transition-all duration-300 ${active ? 'bg-violet-50 dark:bg-violet-900/20 translate-y-[-2px]' : ''}`}>

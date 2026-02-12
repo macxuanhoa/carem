@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" suppressHydrationWarning className="dark">
+    <html lang="vi" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen pb-20 md:pb-0 bg-background text-foreground antialiased`}>
         <Providers>
         <NextTopLoader 
@@ -74,16 +74,15 @@ export default function RootLayout({
             <ScrollToTop />
             <Toaster 
               position="top-right" 
-              theme="dark"
               richColors 
               closeButton
               toastOptions={{
                 classNames: {
-                  toast: 'bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-4',
-                  title: 'text-white font-bold text-sm',
-                  description: 'text-slate-400 text-xs font-medium',
+                  toast: 'bg-white dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-2xl rounded-2xl p-4',
+                  title: 'text-slate-900 dark:text-white font-bold text-sm',
+                  description: 'text-slate-500 dark:text-slate-400 text-xs font-medium',
                   actionButton: 'bg-violet-600 text-white font-bold rounded-xl text-xs',
-                  cancelButton: 'bg-slate-800 text-slate-300 font-bold rounded-xl text-xs',
+                  cancelButton: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 font-bold rounded-xl text-xs',
                 },
                 style: {
                   borderRadius: '16px',
