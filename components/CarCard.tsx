@@ -88,6 +88,7 @@ export default function CarCard({ car, priority = false }: { car: CarWithRelatio
                                 priority={priority && currentImageIndex === 0} // Only priority if passed prop is true
                                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" // Optimization for Responsive
                                 className="object-cover transition-transform duration-500 will-change-transform" // Hardware acceleration hint
+                                unoptimized={images[currentImageIndex].startsWith('data:')}
                             />
                             
                             {/* Navigation Arrows - Removed as per request */}

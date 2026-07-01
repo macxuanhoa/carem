@@ -135,6 +135,7 @@ export default function InfoTab({ car, isOverdue, userRole }: InfoTabProps) {
                             className="object-cover bg-slate-100 dark:bg-slate-800" 
                             alt={`Car ${currentImageIdx}`}
                             priority
+                            unoptimized={images[currentImageIdx].startsWith('data:')}
                         />
                         <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-md z-10">
                             {currentImageIdx + 1} / {images.length}

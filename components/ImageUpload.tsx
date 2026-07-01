@@ -133,12 +133,13 @@ export default function ImageUpload({
                     </button>
                 </div>
                 <Image
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    alt="Car Image"
-                    src={url}
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                />
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                alt="Car Image"
+                src={url}
+                sizes="(max-width: 768px) 50vw, 25vw"
+                unoptimized={url.startsWith('data:')}
+            />
             </div>
         ))}
       </div>
