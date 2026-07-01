@@ -32,6 +32,7 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
     const form = useForm<CarFormData>({
         resolver: zodResolver(carSchema) as any,
         mode: 'onTouched',
+        reValidateMode: 'onChange',
         defaultValues: {
             tinhTrang: 95,
             namSanXuat: new Date().getFullYear(),
@@ -214,16 +215,18 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
                                     <Input
                                         type="number"
                                         {...register('namSanXuat')}
-                                        className="text-center font-bold bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
+                                        className={`text-center font-bold bg-white dark:bg-slate-950 ${errors.namSanXuat ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
                                     />
+                                    {errors.namSanXuat && <p className="text-xs text-red-500 mt-1">{errors.namSanXuat.message}</p>}
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold uppercase block mb-1.5 text-slate-500 dark:text-slate-400">Màu Sắc</label>
                                     <Input
                                         {...register('mauXe')}
-                                        className="text-center font-medium bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
+                                        className={`text-center font-medium bg-white dark:bg-slate-950 ${errors.mauXe ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
                                         placeholder="Trắng"
                                     />
+                                    {errors.mauXe && <p className="text-xs text-red-500 mt-1">{errors.mauXe.message}</p>}
                                 </div>
                             </div>
 

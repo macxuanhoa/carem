@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, CheckCircle } from 'lucide-react';
+import { toast } from 'sonner';
 import CarForm from '@/components/CarForm';
 import { type CarFormData } from '@/lib/schemas';
 import { createCar } from '@/app/actions';
@@ -48,7 +49,9 @@ export default function NewCarPage() {
             const result = await createCar(data);
 
             if (!result.success) {
-                throw new Error(result.error || 'Failed to save car');
+                toast.error(result.error || 'Không thể lưu xe');
+                setLoading(false);
+                return;
             }
             
             // Clear draft
@@ -58,7 +61,7 @@ export default function NewCarPage() {
             setShowDocsPrompt(true);
         } catch (error) {
             console.error(error);
-            alert('Lỗi khi lưu xe: ' + (error as Error).message);
+            toast.error('Lỗi khi lưu xe: ' + (error as Error).message);
             setLoading(false);
         }
     };
