@@ -188,7 +188,11 @@ async function main() {
             tongGiaMua: 42000000,
             soTienCoc: 4000000,
             trangThai: 'CHO_GIAO_XE',
-            hinhAnh: ['/uploads/1770447139604-364954473-shmode.jpg']
+            hinhAnh: [
+                '/uploads/Yamaha Exciter 155/Exciter-155-VVA-Red-Standard_004-768x645.webp',
+                '/uploads/Yamaha Exciter 155/Exciter-155VVA-Pre-Black-Gold-004-768x576.webp',
+                '/uploads/Yamaha Exciter 155/Exciter-155VVA-Pre-GP-004-1-768x576.webp'
+            ]
         }
     });
 
@@ -205,7 +209,16 @@ async function main() {
             tongGiaMua: 35000000,
             soTienCoc: 3500000,
             trangThai: 'DANG_BAN',
-            hinhAnh: ['/uploads/1770449423010-642536159-shmode.jpg'],
+            hinhAnh: [
+                '/uploads/Honda Winner X/5pmobl4qqtnfofnm1mbq-171989121752.jpg',
+                '/uploads/Honda Winner X/7trwrlqvqb7le17mcl67-171989100676.jpg',
+                '/uploads/Honda Winner X/b4ypoebadbyiywkvhraa-171989093756.jpg',
+                '/uploads/Honda Winner X/image.png',
+                '/uploads/Honda Winner X/images.jpg',
+                '/uploads/Honda Winner X/jqq1zfxkkaqsyzxqcaz8-171989097439.jpg',
+                '/uploads/Honda Winner X/ju3wjeahzhl8nou8au6o-171989117857.jpg',
+                '/uploads/Honda Winner X/sloo3iqc09nntjld86gg-171989108374.jpg'
+            ],
             chiPhi: {
                 create: [
                     { loaiChiPhi: 'Thay nhông sên dĩa', giaDuKien: 800000, giaThucTe: 800000, nguoiBaoGia: 'Admin', trangThai: 'DA_DUYET' },
