@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Bike, ChevronLeft, ChevronRight } from 'lucide-react';
-import { formatTimeAgo, formatStatus } from '@/lib/utils';
+import { formatTimeAgo, formatStatus, formatCurrency } from '@/lib/utils';
 import { CarWithRelations } from '@/lib/types';
 
 export default function CarCard({ car, priority = false }: { car: CarWithRelations; priority?: boolean }) {
@@ -154,13 +154,13 @@ export default function CarCard({ car, priority = false }: { car: CarWithRelatio
                 <div className="mt-auto bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 p-4 flex justify-between items-end">
                      <div>
                         <p className="text-[10px] text-slate-400 uppercase font-bold mb-0.5 tracking-wide">Giá vốn</p>
-                        <p className="font-bold text-slate-900 dark:text-white text-xl tracking-tight">{car.tongGiaMua.toLocaleString()} <span className="text-xs font-normal text-slate-500">đ</span></p>
+                        <p className="font-bold text-slate-900 dark:text-white text-xl tracking-tight">{formatCurrency(car.tongGiaMua)}</p>
                      </div>
                      {car.soTienCoc > 0 && (
                          <div className="text-right">
                              <p className="text-[10px] text-slate-400 uppercase font-bold mb-0.5">Đã cọc</p>
                              <p className="font-bold text-emerald-600 dark:text-emerald-400 text-sm bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-md border border-emerald-100 dark:border-emerald-900/30">
-                                +{car.soTienCoc.toLocaleString()}
+                                +{formatCurrency(car.soTienCoc).replace(' đ', '')}
                              </p>
                          </div>
                      )}

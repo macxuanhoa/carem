@@ -40,16 +40,16 @@ export default function HeroStats({ totalRevenue, totalExpense, chartData }: Her
                     <div>
                         <p className="text-[10px] text-slate-400 font-medium mb-0.5">Doanh Thu Tuần</p>
                         <h2 className="text-3xl font-black tracking-tight text-white drop-shadow-lg leading-none">
-                            {formatCurrency(totalRevenue).replace('₫', '')}
-                            <span className="text-xl text-violet-400/80 font-medium ml-0.5">₫</span>
+                            {formatCurrency(totalRevenue).replace(' đ', '')}
+                            <span className="text-xl text-violet-400/80 font-medium ml-0.5">đ</span>
                         </h2>
                     </div>
                     <div className="w-px h-8 bg-white/10"></div>
                     <div>
                         <p className="text-[10px] text-slate-400 font-medium mb-0.5">Chi Nhập Xe</p>
                         <h2 className="text-xl font-bold tracking-tight text-white/90 leading-none">
-                            {formatCurrency(totalExpense).replace('₫', '')}
-                            <span className="text-sm text-violet-400/60 font-medium ml-0.5">₫</span>
+                            {formatCurrency(totalExpense).replace(' đ', '')}
+                            <span className="text-sm text-violet-400/60 font-medium ml-0.5">đ</span>
                         </h2>
                     </div>
                 </div>

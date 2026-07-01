@@ -6,11 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    maximumFractionDigits: 0,
-  }).format(amount).replace('₫', 'đ'); // Replace symbol for cleaner look
+  const s = amount.toString();
+  let result = '';
+  for (let i = 0; i < s.length; i++) {
+    if (i > 0 && (s.length - i) % 3 === 0) {
+      result += '.';
+    }
+    result += s[i];
+  }
+  return result + ' đ';
 }
 
 export function formatShortDate(dateStr: string | Date): string {

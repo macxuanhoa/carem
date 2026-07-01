@@ -4,6 +4,7 @@ import {
     Users, Wrench 
 } from 'lucide-react';
 import Link from 'next/link';
+import { formatCurrency } from '@/lib/utils';
 import { FinanceTabProps } from './types';
 
 export default function FinanceTab({ car, totalGop, totalChiPhi }: FinanceTabProps) {
@@ -16,19 +17,19 @@ export default function FinanceTab({ car, totalGop, totalChiPhi }: FinanceTabPro
                 <div className="relative z-10">
                     <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Tổng Giá Mua</p>
                     <div className="flex items-baseline gap-1 mb-6">
-                        <h2 className="text-3xl font-bold tracking-tight">{car.tongGiaMua.toLocaleString()}</h2>
+                        <h2 className="text-3xl font-bold tracking-tight">{formatCurrency(car.tongGiaMua).replace(' đ', '')}</h2>
                         <span className="text-sm font-medium text-slate-500">VNĐ</span>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
                         <div>
                              <p className="text-emerald-400 text-[10px] uppercase font-bold mb-1">Đã Cọc</p>
-                             <p className="font-bold text-lg">{car.soTienCoc.toLocaleString()}</p>
+                             <p className="font-bold text-lg">{formatCurrency(car.soTienCoc).replace(' đ', '')}</p>
                         </div>
                          <div>
                              {/* Note: soTienDaChuyen might not exist on Car type yet, check prisma schema */}
                              <p className="text-violet-400 text-[10px] uppercase font-bold mb-1">Đã Chuyển</p>
-                             <p className="font-bold text-lg">{car.soTienDaChuyen?.toLocaleString() || '0'}</p>
+                             <p className="font-bold text-lg">{car.soTienDaChuyen ? formatCurrency(car.soTienDaChuyen).replace(' đ', '') : '0'}</p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +42,7 @@ export default function FinanceTab({ car, totalGop, totalChiPhi }: FinanceTabPro
                         <div className="p-1.5 rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-900/20 dark:text-violet-400"><Users size={14} /></div>
                         <p className="text-xs text-slate-500 font-bold uppercase">Vốn Góp</p>
                     </div>
-                    <p className="font-bold text-lg text-slate-900 dark:text-white">{totalGop.toLocaleString()}</p>
+                    <p className="font-bold text-lg text-slate-900 dark:text-white">{formatCurrency(totalGop).replace(' đ', '')}</p>
                     <div className="w-full bg-slate-100 dark:bg-slate-800 h-1 mt-2 rounded-full overflow-hidden">
                         <div className="bg-violet-500 h-full rounded-full" style={{ width: `${Math.min((totalGop / (car.tongGiaMua || 1)) * 100, 100)}%` }}></div>
                     </div>
@@ -51,7 +52,7 @@ export default function FinanceTab({ car, totalGop, totalChiPhi }: FinanceTabPro
                         <div className="p-1.5 rounded-lg bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400"><Wrench size={14} /></div>
                         <p className="text-xs text-slate-500 font-bold uppercase">Chi Phí</p>
                     </div>
-                    <p className="font-bold text-lg text-orange-600">{totalChiPhi.toLocaleString()}</p>
+                    <p className="font-bold text-lg text-orange-600">{formatCurrency(totalChiPhi).replace(' đ', '')}</p>
                     <p className="text-[10px] text-slate-400 mt-1">{car.chiPhi.length} khoản mục</p>
                 </div>
             </div>
@@ -77,7 +78,7 @@ export default function FinanceTab({ car, totalGop, totalChiPhi }: FinanceTabPro
                                 </div>
                             </div>
                             <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                                {inv.soTienGop.toLocaleString()}
+                                {formatCurrency(inv.soTienGop).replace(' đ', '')}
                             </span>
                         </div>
                     ))}
