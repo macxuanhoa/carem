@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, Suspense, lazy } from 'react';
+import { useState } from 'react';
 import { DealTimelineProps } from './tabs/types';
-const InfoTab = lazy(() => import('./tabs/InfoTab'));
-const FinanceTab = lazy(() => import('./tabs/FinanceTab'));
-const RecordsTab = lazy(() => import('./tabs/RecordsTab'));
+import InfoTab from './tabs/InfoTab';
+import FinanceTab from './tabs/FinanceTab';
+import RecordsTab from './tabs/RecordsTab';
 
 // Deal Timeline Component
 function DealTimeline({ status, deposit, isSold }: DealTimelineProps) {
@@ -88,21 +88,9 @@ export default function CarDetailTabs({ car, totalGop, totalChiPhi, isOverdue, u
         </div>
 
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            {activeTab === 'info' && (
-                <Suspense fallback={<div className="p-8 text-center text-slate-500">Đang tải...</div>}>
-                    <InfoTab car={car} isOverdue={isOverdue} userRole={userRole} />
-                </Suspense>
-            )}
-            {activeTab === 'finance' && (
-                <Suspense fallback={<div className="p-8 text-center text-slate-500">Đang tải...</div>}>
-                    <FinanceTab car={car} totalGop={totalGop} totalChiPhi={totalChiPhi} />
-                </Suspense>
-            )}
-            {activeTab === 'records' && (
-                <Suspense fallback={<div className="p-8 text-center text-slate-500">Đang tải...</div>}>
-                    <RecordsTab car={car} isOverdue={isOverdue} />
-                </Suspense>
-            )}
+            {activeTab === 'info' && <InfoTab car={car} isOverdue={isOverdue} userRole={userRole} />}
+            {activeTab === 'finance' && <FinanceTab car={car} totalGop={totalGop} totalChiPhi={totalChiPhi} />}
+            {activeTab === 'records' && <RecordsTab car={car} isOverdue={isOverdue} />}
         </div>
     </div>
   );
