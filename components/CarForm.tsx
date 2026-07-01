@@ -31,6 +31,7 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
     const form = useForm<CarFormData>({
         resolver: zodResolver(carSchema) as any,
+        mode: 'onTouched',
         defaultValues: {
             tinhTrang: 95,
             namSanXuat: new Date().getFullYear(),
@@ -76,7 +77,7 @@ export default function CarForm({ defaultValues, onSubmit, loading, mode, onValu
 
     const handleStepSubmit = async () => {
         if (activeStep === 1) {
-            const result = await form.trigger(['dongXe', 'namSanXuat', 'mauXe', 'hinhAnh']);
+            const result = await form.trigger(['dongXe', 'namSanXuat', 'mauXe']);
             if (!result) return;
         }
         setActiveStep(prev => prev + 1);

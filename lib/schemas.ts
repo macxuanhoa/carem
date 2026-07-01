@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const carSchema = z.object({
   dongXe: z.string().min(1, "Tên dòng xe là bắt buộc"),
   bienSo: z.string().optional().or(z.literal('')),
-  namSanXuat: z.coerce.number().min(1900).max(new Date().getFullYear() + 1),
+  namSanXuat: z.coerce.number().min(1900, "Năm sản xuất không hợp lệ").max(new Date().getFullYear() + 1, "Năm sản xuất không hợp lệ"),
   mauXe: z.string().min(1, "Màu xe là bắt buộc"),
   soKhung: z.string().optional().or(z.literal('')),
   soMay: z.string().optional().or(z.literal('')),
