@@ -10,6 +10,8 @@ import CarCard from '@/components/CarCard';
 import { Button } from '@/components/ui/button';
 import ExcelExport from '@/components/ExcelExport';
 
+export const revalidate = 60; // Cache for 60 seconds
+
 const CAR_STATUS_GROUPS = [
     { label: 'Kho Xe (Đang bán)', statuses: ['TIM_THAY', 'DA_COC', 'DA_CHUYEN_TIEN', 'CHO_GIAO_XE', 'XE_DA_VE', 'DANG_BAN'] },
     { label: 'Đã Bán', statuses: ['DA_BAN'] },

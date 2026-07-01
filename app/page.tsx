@@ -53,7 +53,7 @@ const getDashboardStats = unstable_cache(
     { revalidate: 60, tags: ['dashboard'] } // Increased revalidate to 60s for better performance
 );
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function Dashboard() {
   const {

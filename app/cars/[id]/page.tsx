@@ -7,7 +7,7 @@ import CarHeaderActions from './CarHeaderActions';
 import { auth } from '@/auth';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60; // Cache for 60 seconds
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
