@@ -18,7 +18,7 @@ export async function GET(
                 hoSo: true,
                 lichSu: { orderBy: { createdAt: 'desc' } },
                 chiPhi: true,
-                nguoiGopVon: true
+                gopVon: true
             }
         });
 
